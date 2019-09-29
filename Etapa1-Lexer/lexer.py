@@ -64,6 +64,7 @@ tokens = [
     'TkAsig',
     'TkSemicolon',
     'TkArrow',
+    'TkGuard'
 
     #Operadores
 
@@ -122,6 +123,7 @@ t_TkClosePar = r'\)'
 t_TkAsig = r':='
 t_TkSemicolon = r';'
 t_TkArrow = r'\-\->'
+t_TkGuard = r'\[\]'
 
 # Expresiones de los Operadores
 
@@ -137,7 +139,7 @@ t_TkLess = r'<'
 t_TkLeq = r'<='
 t_TkGeq = r'>='
 t_TkGreater = r'>'
-t_TkEqual = r'='
+t_TkEqual = r'=='
 t_TkNEqual = r'!='
 t_TkOBracket = r'\['
 t_TkCBracket = r'\]'
