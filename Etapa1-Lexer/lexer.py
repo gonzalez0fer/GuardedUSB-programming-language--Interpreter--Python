@@ -64,7 +64,7 @@ tokens = [
     'TkAsig',
     'TkSemicolon',
     'TkArrow',
-    'TkGuard'
+    'TkGuard',
 
     #Operadores
 
@@ -192,7 +192,6 @@ if __name__ == '__main__':
     
     if (len(error) != 0):
         for aux in error :
-            print('hoy')
             print('Error: Unexpected character "' + str(aux.value[0]) +'" in row ' + str(aux.lineno) +' ,column '+ str(find_column(lexer.lexdata,aux)))
     else:
         for aux in token_list:
