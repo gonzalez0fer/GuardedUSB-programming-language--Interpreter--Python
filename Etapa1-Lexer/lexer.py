@@ -101,7 +101,7 @@ def t_TkNum(t):
     return t
 
 def t_TkId(t):
-    r'[A-Za-z]([_A-Za-z0-9])*'
+    r'[_A-Za-z]([_A-Za-z0-9])*'
     t.type = gusb_keywords.get(t.value,'TkId')
     return t
 
