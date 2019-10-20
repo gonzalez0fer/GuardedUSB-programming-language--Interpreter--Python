@@ -1,1 +1,2 @@
-Etapa2-Parser
+*.pyc
+__pycache__
