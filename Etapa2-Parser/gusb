@@ -1,0 +1,39 @@
+from lexer import *
+from parser import *
+import ply.lex as lex
+import ply.yacc as yacc
+
+import sys
+
+if __name__ == '__main__':
+
+    # Inicializacion del lexer
+    lexer = lex.lex()
+    
+    if (len(sys.argv) != 2):
+        print('Error: incorrect number of parameters\n      input file is missing.')
+        sys.exit(1)
+    elif not (sys.argv[1].lower().endswith(('.gusb'))):
+        print('Error: unknown file extension\n      only .gusb files supported.')
+        sys.exit(1)
+    else:
+        pass
+
+    input_file = open(sys.argv[1], "r")
+    lexer.input(input_file.read())
+
+    while True:
+        tok = lexer.token()
+        if not tok: break
+        token_list.append(tok)
+    
+    if (len(error) != 0):
+        for aux in error :
+            print('Error: Unexpected character "' + str(aux.value[0]) +'" in row ' + str(aux.lineno) +' ,column '+ str(find_column(lexer.lexdata,aux)))
+    else:
+        # Inicializacion del parser.
+        parser = yacc.yacc()
+        out = parser.parse(data)
+        if not(parser_error):
+            print (out.toString(0))
+    input_file.close()
