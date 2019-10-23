@@ -7,6 +7,10 @@
 # Kevin Mena 13-10869
 #######################################
 
+# Defino una variable global que fija un Tab de 2
+#espacios para la identacion del arbol.
+TAB = '  '
+
 # Clases para establecer la inicializacion del objeto que representara
 # al token ['__init__'] y un metodo de impresion para el arbol ['ToString'].
 class Block:
@@ -17,14 +21,40 @@ class Block:
         self.expression = expression
         self.declaration = declaration
 
-    def toString(self, spacing):
-        output = '  '*spacing + 'BLOCK\n'
+    def toString(self, identation):
+        output = TAB*identation + 'Block\n'
         if self.declaration != None:
-            output += self.declaration.toString(spacing + 2)
+            output += self.declaration.toString(identation + 2)
         if self.expression != None:
-            output += '  '*spacing + 'KCOLB\n'
+            output += TAB*identation + 'kcolB\n'
         return output
 
+class Declare:
+    """ Definicion del objeto [Declaracion], se inicializa con una lista 
+    de variables(Id's)"""
+    def __init__(self,_list):
+        self._list = _list
+
+    def toString(self,identation):
+        output = TAB*identation + 'Declare\n'
+        output += self._list.toString(identation + 2) 
+        output += TAB*identation + 'eralceD\n'
+
+        return output
+
+class ConditionalStatements:
+    """ Definicion del objeto [Declaracion Condicional], se inicializa con
+    una lista de tuplas de la forma [(conditional, instruction)] para hacer
+    la analogia del ELIF planteado en GuardedUSB"""
+    def __init__(self, _list):
+        self._list = _list
+
+    def toString(self, identation):
+        output = TAB*identation + 'IF\n'
+        for statement in self._list:
+            output += TAB*(identation+2) + 'Guard\n'
+            output += statement[0].toString(identation+4)
+        #debo definir de manera recursiva la impresion
 
 class BinaryOperator:
     """ Definicion del objeto [Operador Binario], se inicializa con ambos
@@ -35,7 +65,7 @@ class BinaryOperator:
         self.operator = operator
         self.right_operand = right_operand
 
-    def toString(self,spacing):
+    def toString(self,identation):
         operators ={
             '+'     : 'PLUS',
             '-'     : 'MINUS',
@@ -46,30 +76,30 @@ class BinaryOperator:
            r'/\\'   : 'AND',
             '<'     : 'LESS',
             '<='    : 'LESS_EQUAL',
-            '<'     : 'GREATER',
+            '>'     : 'GREATER',
             '>='    : 'GREATER_EQUAL',
             '=='    : 'EQUALS',
             '!='    : 'NOT_EQUAL',
            r'\|\|'  : 'CONCAT',
         }
-        output = '  '*spacing + operators[self.operator] + ' ' + self.operator +'\n'
+        output = TAB*identation + operators[self.operator] + ' ' + self.operator +'\n'
         if isinstance(self.left_operand,OperandHandler):
             if self.left_operand.data_type == 'id':
-                output += '  '*(spacing + 2) + 'Ident:\n'
-                output += '  '*(spacing + 4) + self.left_operand + '\n'
+                output += TAB*(identation + 2) + 'Ident:\n'
+                output += TAB*(identation + 4) + self.left_operand + '\n'
             else:
-                output += self.left_operand.toString(spacing +2)
+                output += self.left_operand.toString(identation +2)
         else:
-            output += self.left_operand.toString(spacing +2)
+            output += self.left_operand.toString(identation +2)
         
         if isinstance(self.right_operand,OperandHandler):
             if self.right_operand.data_type == 'id':
-                output += '  '*(spacing + 2) + 'Ident:\n'
-                output += '  '*(spacing + 4) + self.left_operand + '\n'
+                output += TAB*(identation + 2) + 'Ident:\n'
+                output += TAB*(identation + 4) + self.left_operand + '\n'
             else:
-                output += self.right_operand.toString(spacing +2)
+                output += self.right_operand.toString(identation +2)
         else:
-            output += self.right_operand.toString(spacing +2)
+            output += self.right_operand.toString(identation +2)
         return output
 
 class OperandHandler:
@@ -80,16 +110,16 @@ class OperandHandler:
         self.data_type = data_type
         self.data_value = data_value
 
-    def toString(self,spacing):
+    def toString(self,identation):
         if (self.data_type=='id'):
-            output = ' '*spacing + 'Ident:' + '\n'
-            output += ' '*(spacing + 2) + str(self.data_value) + '\n'
+            output = ' '*identation + 'Ident:' + '\n'
+            output += ' '*(identation + 2) + str(self.data_value) + '\n'
         elif (self.data_type=='array'):
-            output = ' '*spacing + self.data_type + '\n'
-            output += self.data_value.toString(spacing + 2)
+            output = ' '*identation + self.data_type + '\n'
+            output += self.data_value.toString(identation + 2)
         else:    
-            output = ' '*spacing + self.data_type + '\n'
-            output += ' '*(spacing + 2) + str(self.data_value) + '\n'
+            output = ' '*identation + self.data_type + '\n'
+            output += ' '*(identation + 2) + str(self.data_value) + '\n'
         return output
 
 
