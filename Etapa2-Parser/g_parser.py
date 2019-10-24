@@ -15,13 +15,23 @@ from g_AbsSyntaxTree import *
 # nuestro arbol sintactico abstracto.
 
 def p_expressions(p):
-	'''expression : expression TkPlus expression
-				| expression TkMinus expression
-				| expression TkMult expression
-				| expression TkDiv expression
-				| expression TkMod expression
-                | TkOpenPar expression TkClosePar 
-                | TkOBracket expression TkCBracket
+	'''expression : TkOpenPar expression TkClosePar
+                |   TkOBracket expression TkCBracket
+                |   expression TkPlus expression
+				|   expression TkMinus expression
+				|   expression TkMult expression
+				|   expression TkDiv expression
+				|   expression TkMod expression
+				|   expression TkAnd expression
+				|   expression TkOr expression
+				|   expression TkLess expression
+				|   expression TkLeq expression
+				|   expression TkGreater expression
+				|   expression TkGeq expression
+				|   expression TkEqual expression
+				|   expression TkNEqual expression
+				|   expression TkConcat expression
+				|   expression TkNot
     '''
 	if len(p) == 4 :
 		# Definicion de la regla para Operadores aritmeticos binarios.
@@ -29,10 +39,10 @@ def p_expressions(p):
 			p[0] = BinaryOperator(p[1],p[2],p[3])
 
         # Definicion de la regla para Delimitadores de la expresion.
-		# elif ((p[1] == '(') and (p[3] == ')')):
-		# 	p[0] = ParentisedExpression(p[1], p[2], p[3])
-		# elif ((p[1] == '[') and (p[3] == ']')):
-		# 	p[0] = BracketedExpression(p[1], p[2], p[3])
+		elif ((p[1] == '(') and (p[3] == ')')):
+		    p[0] = ParentisedExpression(p[1], p[2], p[3])
+		elif ((p[1] == '[') and (p[3] == ']')):
+		 	p[0] = BracketedExpression(p[1], p[2], p[3])
 
 
 # Regla para poder encontrar los errores sintácticos.
