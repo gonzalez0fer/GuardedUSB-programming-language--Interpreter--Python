@@ -6,6 +6,9 @@
 # Fernando Gonzalez 08-10464
 # Kevin Mena 13-10869
 #######################################
+import ply.lex as lex
+import sys
+
 
 
 # Palabras reservadas de GuardedUSB
@@ -171,3 +174,24 @@ def t_error(t):
 global error
 error = []
 token_list = []
+
+# Inicializacion del lexer
+lexer = lex.lex()
+
+# Funcion que se encarga de construir el lexer.
+def lexer_builder(meta_program):
+    lexer.input(meta_program)
+    while True:
+        tok = lexer.token()
+        if not tok: break
+        token_list.append(tok)
+    
+    # Impresion de errores del lexer, en caso de existir.
+    if (len(error) != 0):
+        for aux in error :
+            print('Error: Unexpected character "' + str(aux.value[0]) +'" in row ' + str(aux.lineno) +' ,column '+ str(find_column(lexer.lexdata,aux)))
+        sys.exit()
+    else:
+        pass
+    
+lex.lex()

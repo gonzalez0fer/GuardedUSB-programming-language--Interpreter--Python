@@ -1,14 +1,8 @@
-from lexer import *
-from parser import *
-import ply.lex as lex
-import ply.yacc as yacc
-
+from g_lexer import *
+from g_parser import *
 import sys
 
 if __name__ == '__main__':
-
-    # Inicializacion del lexer
-    lexer = lex.lex()
     
     # Bloque que garantiza parametros de entrada via bash para iniciar nuestro programa
     if (len(sys.argv) != 2):
@@ -23,26 +17,12 @@ if __name__ == '__main__':
     #lectura del archivo que contiene el programa a evaluar.
     input_file = open(sys.argv[1], "r")
     meta_program = input_file.read()
-
-    # Pasando el archivo al lexer.
-    lexer.input(meta_program)
-    while True:
-        tok = lexer.token()
-        if not tok: break
-        token_list.append(tok)
     
-    # Impresion de errores del lexer, en caso de existir.
-    if (len(error) != 0):
-        for aux in error :
-            print('Error: Unexpected character "' + str(aux.value[0]) +'" in row ' + str(aux.lineno) +' ,column '+ str(find_column(lexer.lexdata,aux)))
-    else:
-        # Inicializacion del parser.
-        parser = yacc.yacc()
+    # Inicializacion de Lexer para ubicar errores lexicograficos
+    lexer_builder(meta_program)
 
-        #pasando el programa lexicograficamente correcto al parser.
-        out = parser.parse(meta_program)
-
-        #impresion del arbol sintactico en caso de no existir errores en el parser.
-        if not(parser_error):
-            print (out.toString(0))
+    # Inicializacion del Parser para la ubicacion de errores sintacticos.
+    parser_output = parser_builder(meta_program)
+    print(parser_output)
+    
     input_file.close()

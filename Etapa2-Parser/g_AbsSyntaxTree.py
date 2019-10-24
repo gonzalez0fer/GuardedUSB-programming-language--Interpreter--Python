@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 #######################################
 # CI3715 Traductores e Interpretadores
 # Entrega 2. 
@@ -121,12 +119,3 @@ class OperandHandler:
             output = ' '*identation + self.data_type + '\n'
             output += ' '*(identation + 2) + str(self.data_value) + '\n'
         return output
-
-
-#WRITE RULES BELOW
-
-
-
-# Variable global del primer error del parser si existe.
-global parser_error
-parser_error = False
