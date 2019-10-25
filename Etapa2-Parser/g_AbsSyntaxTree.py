@@ -164,9 +164,9 @@ class Asignacion:
         self.var = var
         self.valor = valor
 
-    def toString(self,tabs):
-        string = ' '*tabs + 'ASSIGN\n'
-        string += self.var.toString(tabs + 2) 
-        string += ' '*(tabs + 2) + 'value\n'
-        string += self.valor.toString(tabs + 4) 
+    def toString(self,identation):
+        string = TAB*identation + 'ASSIGN\n'
+        string += self.var.toString(identation + 2) 
+        string += TAB*(identation + 2) + 'value\n'
+        string += self.valor.toString(identation + 4) 
         return string

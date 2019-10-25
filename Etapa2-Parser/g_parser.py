@@ -14,6 +14,7 @@ from g_AbsSyntaxTree import *
 # de nuestro lenguaje para filtrar errores sintacticos y construir 
 # nuestro arbol sintactico abstracto.
 
+# Creando regla para definir tipajes de Gusb.
 def p_datatype(p):
     ''' DATATYPE    :   TkInt
                     |   TkBool
@@ -21,19 +22,17 @@ def p_datatype(p):
     '''
     p[0] = p[1]
 
-
+# Regla para la Declaracion de variables, Comienza con la palabra 
+# reservada [<Declare>] seguida de una lista de declaraciones.
 def p_declarar(p):
     '''DECLARE : TkDeclare DECLARATION_LIST
     '''
     p[0] = Declare(p[2])
 
 
-def p_epsilon(p):
-    ''' EPSILON : 
-    '''
-    pass
-
-
+# Creando una regla que defina la declaracion de variables. Tienen la forma
+# predefinida de [<Lista de Id's>:<Tipo de data>;] en caso de tener varias
+# listas de declaraciones, finaliza con una nueva instancia de la lista. 
 def p_declarationlist(p):
     '''DECLARATION_LIST   : ID_LIST TkTwoPoints DATATYPE TkSemicolon DECLARATION_LIST
                             | ID_LIST TkTwoPoints DATATYPE TkSemicolon 
@@ -44,27 +43,36 @@ def p_declarationlist(p):
         p[0] = DeclarationList(p[1],p[2],p[4])
 
 
+# Regla que define la creacion de listas de isentificadores de variables
+# separadas por comas para implementar la declaracion listada de variables.
 def p_idList(p):
     '''ID_LIST    : ID_LIST TkComma TkId 
-                    | TkId '''
+                    | TkId 
+    '''
     if (len(p)==2):
         p[0] = IdList(None,OperandHandler('id',p[1]))
     else:
         p[0] = IdList(p[1],OperandHandler('id',p[3]))
 
 
+# Regla que permite hacer una secuencia de instrucciones, estas siempre
+# seran de la forma [<instruccion1>; ... ...<instruccion n>;] hasta que
+# no exista otra (cayendo a lamda terminal).
 def p_instList(p):
     '''INSTRUCTION_LIST : INSTRUCTION TkSemicolon INSTRUCTION_LIST
-                        | EPSILON '''
+                        | LAMBDA 
+    '''
     if (len(p)==4):
         p[0] = InstructionList(p[1],p[3])
     elif (len(p)==2):
         pass
 
-
+# Regla para las expresiones permitidas del lenguaje. Desde identificadores,
+# constantes booleanas y los operadores permitidos por guardedusb.
 def p_expressions(p):
 	'''EXPRESSION : TkNum
                 |   TkId
+                |   TkString
                 |   TkOpenPar EXPRESSION TkClosePar
                 |   TkOBracket EXPRESSION TkCBracket
                 |   EXPRESSION TkPlus EXPRESSION
@@ -88,6 +96,9 @@ def p_expressions(p):
                 |   TkFalse
                 |   TkTrue
 				|   EXPRESSION TkNot
+                |   TkPrint EXPRESSION
+                |   TkPrintln EXPRESSION
+                |   TkArray TkOBracket TkNum TkSoForth TkNum TkCBracket
 
     '''
 	if len(p) == 4 :
@@ -96,6 +107,14 @@ def p_expressions(p):
 			p[0] = BinaryOperator(p[1],p[2],p[3])
 
 
+# Defino una regla para una frase vacia
+def p_lambda(p):
+    ''' LAMBDA : 
+    '''
+    pass
+ 
+
+# Creando regla para las instrucciones permitidas por el lenguaje .
 def p_instruction(p):
     '''INSTRUCTION : TkId TkAsig EXPRESSION
                 |   TkOBlock DECLARE INSTRUCTION_LIST TkCBlock
@@ -107,10 +126,24 @@ def p_instruction(p):
                 |   TkIf EXPRESSION TkArrow INSTRUCTION TkFi
     '''
 
+# Reglas de precedencia para el parser        
+precedence = (
+	('left', 'TkComma'),
+	('left','TkOBracket','TkCBracket'),
+	('left','TkOpenPar','TkClosePar'),
+	('left','TkMult','TkDiv','TkMod'),
+	('left','TkPlus','TkMinus'),
+	('left','TkLess','TkLeq','TkGreater','TkGeq','TkNEqual'),
+	('left','TkEqual'),
+	('left','TkNot'),
+	('left','TkAnd','TkOr'),
+	('left','TkConcat')
+    )
+
 def p_error(p):
     global parser_error
     if (p is not None):
-        msg = "[Syntax Error]. Wrong token found " + str(p.value) + " line "
+        msg = "[Syntax Error] Wrong token found: '" + str(p.value) + "' in line "
         msg += str(p.lineno) + ", column " + str(find_column(p.lexer.lexdata,p))
     else:
         msg = "[Syntax Error] at end of file."
