@@ -104,6 +104,7 @@ def p_instruction(p):
                 |   TkFor TkId TkIn EXPRESSION TkTo EXPRESSION TkArrow INSTRUCTION TkRof
                 |   TkDo EXPRESSION TkArrow INSTRUCTION TkOd
                 |   TkGuard EXPRESSION TkArrow INSTRUCTION
+                |   TkIf EXPRESSION TkArrow INSTRUCTION TkFi
     '''
 
 def p_error(p):

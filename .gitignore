@@ -4,3 +4,5 @@ __pycache__
 *.rar
 *.tar
 *.tar.gz
+parsetab.py
+parser.out
