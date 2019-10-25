@@ -1,9 +1,11 @@
 from g_lexer import *
 from g_parser import *
-import sys
+import sys, os
 
 if __name__ == '__main__':
     
+    os.remove("parsetab.py")
+    os.remove("parser.out")
     # Bloque que garantiza parametros de entrada via bash para iniciar nuestro programa
     if (len(sys.argv) != 2):
         print('Error: incorrect number of parameters\n      input file is missing.')

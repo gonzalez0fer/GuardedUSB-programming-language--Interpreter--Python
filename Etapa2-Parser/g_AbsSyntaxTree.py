@@ -119,3 +119,54 @@ class OperandHandler:
             output = ' '*identation + self.data_type + '\n'
             output += ' '*(identation + 2) + str(self.data_value) + '\n'
         return output
+
+
+class DeclarationList:
+    def __init__(self, idList, _type, decList):
+        self.idList = idList
+        self._type = _type
+        self.decList = decList
+
+    def toString(self,identation):
+        string = ' '*identation + self._type + '\n'
+        string += self.idList.toString(identation + 2)
+        if (self.decList!=None):
+            string += self.decList.toString(identation)
+        return string
+
+
+class IdList:
+    def __init__(self,idList,first_Id):
+        self.idList = idList
+        self.first_Id = first_Id
+
+    def toString(self,identation):
+        string = ''
+        if (self.idList!=None):
+            string += self.idList.toString(identation)
+        string += self.first_Id.toString(identation)
+        return string
+
+
+class InstructionList:
+    def __init__(self,first_instruction,second_instruction):
+        self.first_instruction = first_instruction
+        self.second_instruction = second_instruction
+
+    def toString(self,identation):
+        string = self.first_instruction.toString(identation)
+        if (self.second_instruction!=None):
+            string += self.second_instruction.toString(identation)
+        return string
+
+class Asignacion:
+    def __init__(self,var,valor):
+        self.var = var
+        self.valor = valor
+
+    def toString(self,tabs):
+        string = ' '*tabs + 'ASSIGN\n'
+        string += self.var.toString(tabs + 2) 
+        string += ' '*(tabs + 2) + 'value\n'
+        string += self.valor.toString(tabs + 4) 
+        return string

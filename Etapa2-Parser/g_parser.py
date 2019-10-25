@@ -14,45 +14,105 @@ from g_AbsSyntaxTree import *
 # de nuestro lenguaje para filtrar errores sintacticos y construir 
 # nuestro arbol sintactico abstracto.
 
+def p_datatype(p):
+    ''' DATATYPE    :   TkInt
+                    |   TkBool
+                    |   TkArray
+    '''
+    p[0] = p[1]
+
+
+def p_declarar(p):
+    '''DECLARE : TkDeclare DECLARATION_LIST
+    '''
+    p[0] = Declare(p[2])
+
+
+def p_epsilon(p):
+    ''' EPSILON : 
+    '''
+    pass
+
+
+def p_declarationlist(p):
+    '''DECLARATION_LIST   : ID_LIST TkTwoPoints DATATYPE TkSemicolon DECLARATION_LIST
+                            | ID_LIST TkTwoPoints DATATYPE TkSemicolon 
+    '''
+    if (len(p)==4):
+        p[0] = DeclarationList(p[1],p[2],None)
+    else:
+        p[0] = DeclarationList(p[1],p[2],p[4])
+
+
+def p_idList(p):
+    '''ID_LIST    : ID_LIST TkComma TkId 
+                    | TkId '''
+    if (len(p)==2):
+        p[0] = IdList(None,OperandHandler('id',p[1]))
+    else:
+        p[0] = IdList(p[1],OperandHandler('id',p[3]))
+
+
+def p_instList(p):
+    '''INSTRUCTION_LIST : INSTRUCTION TkSemicolon INSTRUCTION_LIST
+                        | EPSILON '''
+    if (len(p)==4):
+        p[0] = InstructionList(p[1],p[3])
+    elif (len(p)==2):
+        pass
+
+
 def p_expressions(p):
-	'''expression : TkOpenPar expression TkClosePar
-                |   TkOBracket expression TkCBracket
-                |   expression TkPlus expression
-				|   expression TkMinus expression
-				|   expression TkMult expression
-				|   expression TkDiv expression
-				|   expression TkMod expression
-				|   expression TkAnd expression
-				|   expression TkOr expression
-				|   expression TkLess expression
-				|   expression TkLeq expression
-				|   expression TkGreater expression
-				|   expression TkGeq expression
-				|   expression TkEqual expression
-				|   expression TkNEqual expression
-				|   expression TkConcat expression
-				|   expression TkNot
+	'''EXPRESSION : TkNum
+                |   TkId
+                |   TkOpenPar EXPRESSION TkClosePar
+                |   TkOBracket EXPRESSION TkCBracket
+                |   EXPRESSION TkPlus EXPRESSION
+				|   EXPRESSION TkMinus EXPRESSION
+				|   EXPRESSION TkMult EXPRESSION
+				|   EXPRESSION TkDiv EXPRESSION
+				|   EXPRESSION TkMod EXPRESSION
+				|   EXPRESSION TkAnd EXPRESSION
+				|   EXPRESSION TkOr EXPRESSION
+				|   EXPRESSION TkLess EXPRESSION
+				|   EXPRESSION TkLeq EXPRESSION
+				|   EXPRESSION TkGreater EXPRESSION
+				|   EXPRESSION TkGeq EXPRESSION
+				|   EXPRESSION TkEqual EXPRESSION
+				|   EXPRESSION TkNEqual EXPRESSION
+				|   EXPRESSION TkConcat EXPRESSION
+                |   TkSize EXPRESSION
+                |   TkMax EXPRESSION
+                |   TkMin EXPRESSION
+                |   TkAtoi EXPRESSION
+                |   TkFalse
+                |   TkTrue
+				|   EXPRESSION TkNot
+
     '''
 	if len(p) == 4 :
 		# Definicion de la regla para Operadores aritmeticos binarios.
 		if (p[2]=='+' or p[2]=='-' or p[2]=='*' or p[2]=='/' or p[2]=='%') :
 			p[0] = BinaryOperator(p[1],p[2],p[3])
 
-        # Definicion de la regla para Delimitadores de la expresion.
-		elif ((p[1] == '(') and (p[3] == ')')):
-		    p[0] = ParentisedExpression(p[1], p[2], p[3])
-		elif ((p[1] == '[') and (p[3] == ']')):
-		 	p[0] = BracketedExpression(p[1], p[2], p[3])
 
+def p_instruction(p):
+    '''INSTRUCTION : TkId TkAsig EXPRESSION
+                |   TkOBlock DECLARE INSTRUCTION_LIST TkCBlock
+                |   TkOBlock INSTRUCTION_LIST TkCBlock
+                |   TkRead TkId
+                |   TkFor TkId TkIn EXPRESSION TkTo EXPRESSION TkArrow INSTRUCTION TkRof
+                |   TkDo EXPRESSION TkArrow INSTRUCTION TkOd
+                |   TkGuard EXPRESSION TkArrow INSTRUCTION
+    '''
 
-# Regla para poder encontrar los errores sintácticos.
 def p_error(p):
     global parser_error
     if (p is not None):
-        msg = "Error de sintaxis. Se encontró token " + str(p.value) + " en la linea "
-        msg += str(p.lineno) + ", columna " + str(find_column(p.lexer.lexdata,p))
+        msg = "[Syntax Error]. Wrong token found " + str(p.value) + " line "
+        msg += str(p.lineno) + ", column " + str(find_column(p.lexer.lexdata,p))
     else:
-        msg = "Error de sintaxis al final del archivo"
+        msg = "[Syntax Error] at end of file."
     print (msg)
     parser_error = True
 
