@@ -10,62 +10,62 @@
    yacc.py: 410:
    yacc.py: 411:State  : 4
    yacc.py: 434:Stack  : TkOBlock TkDeclare . LexToken(TkId,'a',3,17)
-   yacc.py: 445:Action : Shift and goto state 41
+   yacc.py: 445:Action : Shift and goto state 42
    yacc.py: 410:
-   yacc.py: 411:State  : 41
+   yacc.py: 411:State  : 42
    yacc.py: 434:Stack  : TkOBlock TkDeclare TkId . LexToken(TkComma,',',3,18)
-   yacc.py: 445:Action : Shift and goto state 86
+   yacc.py: 445:Action : Shift and goto state 88
    yacc.py: 410:
-   yacc.py: 411:State  : 86
+   yacc.py: 411:State  : 88
    yacc.py: 434:Stack  : TkOBlock TkDeclare TkId TkComma . LexToken(TkId,'b',3,20)
-   yacc.py: 445:Action : Shift and goto state 41
+   yacc.py: 445:Action : Shift and goto state 42
    yacc.py: 410:
-   yacc.py: 411:State  : 41
+   yacc.py: 411:State  : 42
    yacc.py: 434:Stack  : TkOBlock TkDeclare TkId TkComma TkId . LexToken(TkComma,',',3,21)
-   yacc.py: 445:Action : Shift and goto state 86
+   yacc.py: 445:Action : Shift and goto state 88
    yacc.py: 410:
-   yacc.py: 411:State  : 86
+   yacc.py: 411:State  : 88
    yacc.py: 434:Stack  : TkOBlock TkDeclare TkId TkComma TkId TkComma . LexToken(TkId,'c',3,23)
-   yacc.py: 445:Action : Shift and goto state 41
+   yacc.py: 445:Action : Shift and goto state 42
+   yacc.py: 410:
+   yacc.py: 411:State  : 42
+   yacc.py: 434:Stack  : TkOBlock TkDeclare TkId TkComma TkId TkComma TkId . LexToken(TkTwoPoints,':',3,25)
+   yacc.py: 469:Action : Reduce rule [Variables -> TkId] with ['c'] and goto state 142
+   yacc.py: 506:Result : <NoneType @ 0x6c196ce8> (None)
+   yacc.py: 410:
+   yacc.py: 411:State  : 142
+   yacc.py: 430:Defaulted state 142: Reduce using 83
+   yacc.py: 434:Stack  : TkOBlock TkDeclare TkId TkComma TkId TkComma Variables . LexToken(TkTwoPoints,':',3,25)
+   yacc.py: 469:Action : Reduce rule [Variables -> TkId TkComma Variables] with ['b',',',None] and goto state 142
+   yacc.py: 506:Result : <NoneType @ 0x6c196ce8> (None)
+   yacc.py: 410:
+   yacc.py: 411:State  : 142
+   yacc.py: 430:Defaulted state 142: Reduce using 83
+   yacc.py: 434:Stack  : TkOBlock TkDeclare TkId TkComma Variables . LexToken(TkTwoPoints,':',3,25)
+   yacc.py: 469:Action : Reduce rule [Variables -> TkId TkComma Variables] with ['a',',',None] and goto state 41
+   yacc.py: 506:Result : <NoneType @ 0x6c196ce8> (None)
    yacc.py: 410:
    yacc.py: 411:State  : 41
-   yacc.py: 434:Stack  : TkOBlock TkDeclare TkId TkComma TkId TkComma TkId . LexToken(TkTwoPoints,':',3,25)
-   yacc.py: 469:Action : Reduce rule [Variables -> TkId] with ['c'] and goto state 140
-   yacc.py: 506:Result : <NoneType @ 0x6b736ce8> (None)
-   yacc.py: 410:
-   yacc.py: 411:State  : 140
-   yacc.py: 430:Defaulted state 140: Reduce using 81
-   yacc.py: 434:Stack  : TkOBlock TkDeclare TkId TkComma TkId TkComma Variables . LexToken(TkTwoPoints,':',3,25)
-   yacc.py: 469:Action : Reduce rule [Variables -> TkId TkComma Variables] with ['b',',',None] and goto state 140
-   yacc.py: 506:Result : <NoneType @ 0x6b736ce8> (None)
-   yacc.py: 410:
-   yacc.py: 411:State  : 140
-   yacc.py: 430:Defaulted state 140: Reduce using 81
-   yacc.py: 434:Stack  : TkOBlock TkDeclare TkId TkComma Variables . LexToken(TkTwoPoints,':',3,25)
-   yacc.py: 469:Action : Reduce rule [Variables -> TkId TkComma Variables] with ['a',',',None] and goto state 40
-   yacc.py: 506:Result : <NoneType @ 0x6b736ce8> (None)
-   yacc.py: 410:
-   yacc.py: 411:State  : 40
    yacc.py: 434:Stack  : TkOBlock TkDeclare Variables . LexToken(TkTwoPoints,':',3,25)
-   yacc.py: 445:Action : Shift and goto state 85
+   yacc.py: 445:Action : Shift and goto state 87
    yacc.py: 410:
-   yacc.py: 411:State  : 85
+   yacc.py: 411:State  : 87
    yacc.py: 434:Stack  : TkOBlock TkDeclare Variables TkTwoPoints . LexToken(TkInt,'int',3,27)
-   yacc.py: 445:Action : Shift and goto state 137
+   yacc.py: 445:Action : Shift and goto state 139
    yacc.py: 410:
-   yacc.py: 411:State  : 137
+   yacc.py: 411:State  : 139
    yacc.py: 434:Stack  : TkOBlock TkDeclare Variables TkTwoPoints TkInt . LexToken(TkCBlock,']|',4,31)
    yacc.py: 579:Error  : TkOBlock TkDeclare Variables TkTwoPoints TkInt . LexToken(TkCBlock,']|',4,31)
    yacc.py: 410:
-   yacc.py: 411:State  : 137
+   yacc.py: 411:State  : 139
    yacc.py: 434:Stack  : TkOBlock TkDeclare Variables TkTwoPoints TkInt . error
    yacc.py: 579:Error  : TkOBlock TkDeclare Variables TkTwoPoints TkInt . error
    yacc.py: 410:
-   yacc.py: 411:State  : 85
+   yacc.py: 411:State  : 87
    yacc.py: 434:Stack  : TkOBlock TkDeclare Variables TkTwoPoints . error
    yacc.py: 579:Error  : TkOBlock TkDeclare Variables TkTwoPoints . error
    yacc.py: 410:
-   yacc.py: 411:State  : 40
+   yacc.py: 411:State  : 41
    yacc.py: 434:Stack  : TkOBlock TkDeclare Variables . error
    yacc.py: 579:Error  : TkOBlock TkDeclare Variables . error
    yacc.py: 410:

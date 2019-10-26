@@ -22,6 +22,21 @@ logging.basicConfig(
 # de nuestro lenguaje para filtrar errores sintacticos y construir 
 # nuestro arbol sintactico abstracto.
 
+# Reglas de precedencia para el parser        
+precedence = (
+	('nonassoc', 'TkGreater', 'TkLess', 'TkGeq', 'TkLeq'),
+	('left', 'TkPlus', 'TkMinus'),
+	('left', 'TkMult', 'TkDiv', 'TkMod'),
+	('right', 'uminus'),
+	('left', 'TkConcat'),
+	('left', 'TkOBracket', 'TkCBracket'),
+	('left', 'TkOpenPar', 'TkClosePar'),
+	('left', 'TkEqual', 'TkNEqual'),
+	('left', 'TkAnd', 'TkOr'),
+	('right', 'TkNot'),
+	('nonassoc', 'TkNum', 'TkId')
+)
+
 
 def p_program(p):
     ''' Block   :   TkOBlock Content TkCBlock
@@ -40,7 +55,8 @@ def p_declaration(p):
 
 
 def p_array(p):
-    ''' Array   :   TkArray TkOBracket TkNum TkSoForth TkNum TkCBracket
+    ''' Array   :   TkArray TkOBracket Terminal TkSoForth Terminal TkCBracket
+                |   TkArray TkOBracket AritmeticOperator TkSoForth AritmeticOperator TkCBracket
     '''
 def p_terminal(p):
 	'''
@@ -66,7 +82,7 @@ def p_instruction(p):
                     |   Conditional
                     |   Forloop
                     |   Doloop
-                    |   Asign
+                    |   Asign TkSemicolon
                     |   Input TkSemicolon
                     |   Output TkSemicolon
     '''
@@ -112,6 +128,7 @@ def p_expression(p):
                     |   RelationalOperator
                     |   BooleanOperator
                     |   StrOperator
+                    |   ArrayOperator
     '''
 def p_aritmoper(p):
 	''' AritmeticOperator : Expression TkMinus Expression
@@ -131,14 +148,18 @@ def p_aritmoper(p):
 def p_Stroper(p):
 	''' StrOperator : TkId TkConcat TkId
                 | TkOpenPar TkId TkConcat TkId TkClosePar
-                | TkSize TkOpenPar TkId TkClosePar
-                | TkMax TkOpenPar TkId TkClosePar
-                | TkMin TkOpenPar TkId TkClosePar
-                | TkAtoi TkOpenPar TkId TkClosePar
-                | TkSize TkOpenPar Array TkClosePar
-                | TkMax TkOpenPar Array TkClosePar
-                | TkMin TkOpenPar Array TkClosePar
-                | TkAtoi TkOpenPar Array TkClosePar
+
+    '''
+
+def p_arrayoper(p):
+    ''' ArrayOperator   :   TkSize TkOpenPar TkId TkClosePar
+                    | TkMax TkOpenPar TkId TkClosePar
+                    | TkMin TkOpenPar TkId TkClosePar
+                    | TkAtoi TkOpenPar TkId TkClosePar
+                    | TkSize TkOpenPar Array TkClosePar
+                    | TkMax TkOpenPar Array TkClosePar
+                    | TkMin TkOpenPar Array TkClosePar
+                    | TkAtoi TkOpenPar Array TkClosePar
     '''
 
 
@@ -174,20 +195,6 @@ def p_boolop(p):
 	'''
 
 
-# Reglas de precedencia para el parser        
-precedence = (
-	('nonassoc', 'TkGreater', 'TkLess', 'TkGeq', 'TkLeq'),
-	('left', 'TkPlus', 'TkMinus'),
-	('left', 'TkMult', 'TkDiv', 'TkMod'),
-	('right', 'uminus'),
-	('left', 'TkConcat'),
-	('left', 'TkOBracket', 'TkCBracket'),
-	('left', 'TkOpenPar', 'TkClosePar'),
-	('left', 'TkEqual', 'TkNEqual'),
-	('left', 'TkAnd', 'TkOr'),
-	('right', 'TkNot'),
-	('nonassoc', 'TkNum', 'TkId')
-)
 
 def p_error(p):
     global parser_error
