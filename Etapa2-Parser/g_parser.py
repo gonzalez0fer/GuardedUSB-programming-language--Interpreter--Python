@@ -23,140 +23,171 @@ logging.basicConfig(
 # nuestro arbol sintactico abstracto.
 
 
-
-# Creando regla para las instrucciones permitidas por el lenguaje .
-def p_instruction(p):
-    '''INSTRUCTION : TkId TkAsig EXPRESSION
-                |   TkOBlock TkDeclare DECLARATION_LIST INSTRUCTION_LIST TkCBlock
-                |   TkOBlock INSTRUCTION_LIST TkCBlock
-                |   TkRead TkId TkSemicolon
-                |   TkIf EXPRESSION TkArrow INSTRUCTION_LIST TkFi
-                |   TkGuard EXPRESSION TkArrow INSTRUCTION_LIST
-                |   TkFor TkId TkIn EXPRESSION TkTo EXPRESSION TkArrow INSTRUCTION TkRof
-                |   TkDo EXPRESSION TkArrow INSTRUCTION_LIST TkOd
+def p_program(p):
+    ''' Block   :   TkOBlock Content TkCBlock
+                |   TkOBlock TkDeclare Declaration Content TkCBlock
     '''
-
-# Regla que permite hacer una secuencia de instrucciones, estas siempre
-# seran de la forma [<instruccion1>; ... ...<instruccion n>;] hasta que
-# no exista otra (cayendo a lamda terminal).
-def p_instList(p):
-    '''INSTRUCTION_LIST :   INSTRUCTION
-                        |   EXPRESSION TkSemicolon
-                        |   INSTRUCTION_LIST TkSemicolon INSTRUCTION
-                        |   INSTRUCTION_LIST TkSemicolon EXPRESSION
-                        |   LAMBDA 
-    '''
-    if (len(p)==4):
-        p[0] = InstructionList(p[1],p[3])
-    elif (len(p)==2):
-        pass
-
-
-# Creando una regla que defina la declaracion de variables. Tienen la forma
-# predefinida de [<Lista de Id's>:<Tipo de data>;] en caso de tener varias
-# listas de declaraciones, finaliza con una nueva instancia de la lista. 
-def p_declarationlist(p):
-    '''DECLARATION_LIST   : DECLARATION
-                        |   DECLARATION_LIST DECLARATION
-                        |   TkId  TkTwoPoints DATATYPE TkSemicolon 
-    '''
-
 
 
 def p_declaration(p):
-    ''' DECLARATION :   ARGUMENTS TkTwoPoints DATATYPE TkSemicolon
-                    |   TkId TkTwoPoints TkArray TkOBracket NUMBER TkSoForth NUMBER TkCBracket
+    ''' Declaration :   Variables TkTwoPoints TkInt
+                    |   Variables TkTwoPoints TkBool
+                    |   Variables TkTwoPoints Array
+                    |   Variables TkTwoPoints TkInt Declaration
+                    |   Variables TkTwoPoints TkBool Declaration
+                    |   Variables TkTwoPoints Array Declaration
     '''
 
-
-# Regla que define la creacion de listas de isentificadores de variables
-# separadas por comas para implementar la declaracion listada de variables.
-def p_arguments(p):
-    '''ARGUMENTS    : ARGUMENTS TkComma TkId 
-                    | TkId 
-                    | LAMBDA
-    '''
-
-
-# Creando regla para definir tipajes de Gusb.
-def p_datatype(p):
-    ''' DATATYPE    :   TkInt
-                    |   TkBool
-    '''
-
-
-# Defino una regla para una frase vacia
-def p_lambda(p):
-    ''' LAMBDA : 
-    '''
-    pass
-
-# Regla para las expresiones permitidas del lenguaje. Desde identificadores,
-# constantes booleanas y los operadores permitidos por guardedusb.
-def p_expressions(p):
-	'''EXPRESSION : NUMBER
-                |   TkId
-                |   TkString
-                |   ARRAY
-                |   TkOpenPar EXPRESSION TkClosePar
-                |   TkOBracket EXPRESSION TkCBracket
-                |   EXPRESSION TkPlus EXPRESSION
-				|   EXPRESSION TkMinus EXPRESSION
-				|   EXPRESSION TkMult EXPRESSION
-				|   EXPRESSION TkDiv EXPRESSION
-				|   EXPRESSION TkMod EXPRESSION
-				|   EXPRESSION TkConcat EXPRESSION
-                |   TkSize EXPRESSION
-                |   TkMax EXPRESSION
-                |   TkMin EXPRESSION
-                |   TkAtoi EXPRESSION
-                |   BOOLEAN
-				|   EXPRESSION TkAnd EXPRESSION
-				|   EXPRESSION TkOr EXPRESSION
-				|   TkNot EXPRESSION %prec UMINUS
-				|   EXPRESSION TkLess EXPRESSION
-				|   EXPRESSION TkLeq EXPRESSION
-				|   EXPRESSION TkGreater EXPRESSION
-				|   EXPRESSION TkGeq EXPRESSION
-				|   EXPRESSION TkEqual EXPRESSION
-				|   EXPRESSION TkNEqual EXPRESSION
-                |   TkPrint EXPRESSION
-                |   TkPrintln EXPRESSION
-    '''
-	if len(p) == 4 :
-		# Definicion de la regla para Operadores aritmeticos binarios.
-		if (p[2]=='+' or p[2]=='-' or p[2]=='*' or p[2]=='/' or p[2]=='%') :
-			p[0] = BinaryOperator(p[1],p[2],p[3])
-
-
-def p_numbers(p):
-    ''' NUMBER  :   TkNum
-    '''
-
-def p_booleans(p):
-    ''' BOOLEAN : TkTrue
-                | TkFalse
-    '''
 
 def p_array(p):
-    ''' ARRAY   : TkArray TkOBracket TkNum TkSoForth TkNum TkCBracket
+    ''' Array   :   TkArray TkOBracket TkNum TkSoForth TkNum TkCBracket
     '''
+def p_terminal(p):
+	'''
+	Terminal :  TkId
+			  | TkString
+			  | TkNum
+			  | TkTrue
+			  | TkFalse
+              | TkQuote
+			  | TkOpenPar Terminal TkClosePar
+	'''
+
+def p_content(p):
+	''' Content :   Instruction
+                |   Instruction Content
+                |   Block Content
+                |   Block
+	'''
+
+
+def p_instruction(p):
+    ''' Instruction :   Expression TkSemicolon
+                    |   Conditional
+                    |   Forloop
+                    |   Doloop
+                    |   Asign
+                    |   Input TkSemicolon
+                    |   Output TkSemicolon
+    '''
+
+def p_conditional(p):
+    ''' Conditional :   TkIf Expression TkArrow Content TkFi
+                    |   TkIf Expression TkArrow Content Guard TkFi
+    '''
+
+def p_guard(p):
+    ''' Guard   :   Guard TkGuard Expression TkArrow Content
+                |   
+    '''
+
+def p_asign(p):
+    ''' Asign    :   TkId TkAsig Expression
+    '''
+
+def p_input(p):
+	''' Input   :   TkRead TkId
+	'''
+
+def p_output(p):
+	'''Output   :   TkPrint TkQuote Expression TkQuote
+                |   TkPrintln TkQuote Expression TkQuote
+	'''
+
+def p_doloop(p):
+    ''' Doloop :   TkDo RelationalOperator TkArrow Content TkOd
+                |   TkDo BooleanOperator TkArrow Content TkOd 
+    '''
+
+def p_forloop(p):
+    ''' Forloop : TkFor TkId TkIn AritmeticOperator TkTo AritmeticOperator TkArrow Content TkRof
+                | TkFor TkId TkIn AritmeticOperator TkTo Terminal TkArrow Content TkRof
+                | TkFor TkId TkIn Terminal TkTo AritmeticOperator TkArrow Content TkRof
+                | TkFor TkId TkIn Terminal TkTo Terminal TkArrow Content TkRof
+    ''' 
+
+def p_expression(p):
+    ''' Expression  :   AritmeticOperator
+                    |   Terminal
+                    |   RelationalOperator
+                    |   BooleanOperator
+                    |   StrOperator
+    '''
+def p_aritmoper(p):
+	''' AritmeticOperator : Expression TkMinus Expression
+                    |   Expression TkPlus Expression
+                    |   Expression TkDiv Expression
+                    |   Expression TkMult Expression
+                    |   Expression TkMod Expression
+                    |   TkOpenPar Expression TkMinus Expression TkClosePar
+                    |   TkOpenPar Expression TkPlus Expression TkClosePar
+                    |   TkOpenPar Expression TkDiv Expression TkClosePar
+                    |   TkOpenPar Expression TkMult Expression TkClosePar
+                    |   TkOpenPar Expression TkMod Expression TkClosePar
+                    |   TkMinus Expression %prec uminus
+                    |   TkOpenPar TkMinus Expression TkClosePar %prec uminus
+    '''
+
+def p_Stroper(p):
+	''' StrOperator : TkId TkConcat TkId
+                | TkOpenPar TkId TkConcat TkId TkClosePar
+                | TkSize TkOpenPar TkId TkClosePar
+                | TkMax TkOpenPar TkId TkClosePar
+                | TkMin TkOpenPar TkId TkClosePar
+                | TkAtoi TkOpenPar TkId TkClosePar
+                | TkSize TkOpenPar Array TkClosePar
+                | TkMax TkOpenPar Array TkClosePar
+                | TkMin TkOpenPar Array TkClosePar
+                | TkAtoi TkOpenPar Array TkClosePar
+    '''
+
+
+def p_opRel(p):
+	'''RelationalOperator : Expression TkLess Expression
+                |   Expression TkLeq Expression
+                |   Expression TkGreater Expression
+                |   Expression TkGeq Expression
+                |   Expression TkEqual Expression
+                |   Expression TkNEqual Expression
+                |   TkOpenPar Expression TkGreater Expression TkClosePar
+                |   TkOpenPar Expression TkGeq Expression TkClosePar
+                |   TkOpenPar Expression TkLess Expression TkClosePar
+                |   TkOpenPar Expression TkLeq Expression TkClosePar
+                |   TkOpenPar Expression TkEqual Expression TkClosePar
+                |   TkOpenPar Expression TkNEqual Expression TkClosePar
+	'''
+
+def p_variables(p):
+	''' Variables : TkId TkComma Variables
+                | TkId TkAsig Expression TkComma Variables
+                | TkId 
+                | TkId TkAsig Expression
+	'''
+
+def p_boolop(p):
+	'''BooleanOperator : Expression TkAnd Expression
+                |   Expression TkOr Expression
+                |   TkOpenPar Expression TkAnd Expression TkClosePar
+                |   TkOpenPar Expression TkOr Expression TkClosePar
+                |   TkNot Expression
+                |   TkOpenPar TkNot Expression TkClosePar
+	'''
+
 
 # Reglas de precedencia para el parser        
 precedence = (
-	('left', 'TkComma'),
-	('left','TkOBracket','TkCBracket'),
-	('left','TkOpenPar','TkClosePar'),
-	('right','TkNot'),
-	('left','TkAnd'),
-	('left','TkOr'),
-	('left','TkConcat'),
-    ('right', 'UMINUS', 'TkSize'),
-	('left','TkMult','TkDiv','TkMod'),
-	('left','TkPlus','TkMinus'),
-	('nonassoc','TkLess','TkLeq','TkGreater','TkGeq'),
-	('left','TkEqual','TkNEqual'),
-    )
+	('nonassoc', 'TkGreater', 'TkLess', 'TkGeq', 'TkLeq'),
+	('left', 'TkPlus', 'TkMinus'),
+	('left', 'TkMult', 'TkDiv', 'TkMod'),
+	('right', 'uminus'),
+	('left', 'TkConcat'),
+	('left', 'TkOBracket', 'TkCBracket'),
+	('left', 'TkOpenPar', 'TkClosePar'),
+	('left', 'TkEqual', 'TkNEqual'),
+	('left', 'TkAnd', 'TkOr'),
+	('right', 'TkNot'),
+	('nonassoc', 'TkNum', 'TkId')
+)
 
 def p_error(p):
     global parser_error
@@ -179,5 +210,4 @@ def parser_builder(meta_program):
     out = parser.parse(meta_program, debug=log)
 
     if not(parser_error):
-        print(out)
         return (out)
