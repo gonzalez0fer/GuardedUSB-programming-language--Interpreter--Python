@@ -94,8 +94,8 @@ def p_conditional(p):
     '''
 
 def p_guard(p):
-    ''' Guard   :   Guard TkGuard Expression TkArrow Content
-                |   
+    ''' Guard   :   TkGuard Expression TkArrow Content
+                |   TkGuard Expression TkArrow Content Guard
     '''
 
 def p_asign(p):
