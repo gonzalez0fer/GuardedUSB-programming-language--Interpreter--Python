@@ -126,7 +126,7 @@ t_TkAsig = r':='
 t_TkSemicolon = r';'
 t_TkArrow = r'\-\->'
 t_TkGuard = r'\[\]'
-t_TkQuote = r'\"'
+t_TkQuote = r'\"|\''
 
 # Expresiones de los Operadores
 

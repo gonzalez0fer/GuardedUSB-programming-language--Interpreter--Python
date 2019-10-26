@@ -40,7 +40,8 @@ precedence = (
 
 def p_program(p):
     ''' Block   :   TkOBlock Content TkCBlock
-                |   TkOBlock TkDeclare Declaration TkSemicolon Content TkCBlock
+                |   TkOBlock TkDeclare Declaration Content TkCBlock
+                |   TkOBlock TkDeclare Declaration TkSemicolon Declaration Content TkCBlock
                 |   TkOBlock TkDeclare Declaration TkSemicolon TkCBlock
     '''
 
@@ -99,7 +100,7 @@ def p_guard(p):
     '''
 
 def p_asign(p):
-    ''' Asign    :   TkId TkAsig Expression TkSemicolon
+    ''' Asign    :   TkId TkAsig Expression
     '''
 
 def p_input(p):
@@ -109,10 +110,16 @@ def p_input(p):
 def p_output(p):
 	'''Output   :   TkPrint TkQuote Expression TkQuote
                 |   TkPrintln TkQuote Expression TkQuote
-                |   TkPrint StrOperator
-                |   TkPrintln StrOperator
+                |   TkPrint Expression
+                |   TkPrint Expression ConcatExpression
+                |   TkPrintln Expression
+                |   TkPrintln Expression ConcatExpression
 	'''
 
+def p_concatexp(p):
+    ''' ConcatExpression : TkConcat Expression
+                        |   TkConcat Expression ConcatExpression
+    '''
 def p_doloop(p):
     ''' Doloop :   TkDo RelationalOperator TkArrow Content TkOd
                 |   TkDo BooleanOperator TkArrow Content TkOd 
@@ -123,6 +130,7 @@ def p_forloop(p):
                 | TkFor TkId TkIn AritmeticOperator TkTo Terminal TkArrow Content TkRof
                 | TkFor TkId TkIn Terminal TkTo AritmeticOperator TkArrow Content TkRof
                 | TkFor TkId TkIn Terminal TkTo Terminal TkArrow Content TkRof
+                | TkFor TkId TkIn Expression TkTo Expression TkArrow Content TkRof
     ''' 
 
 def p_expression(p):
@@ -132,7 +140,15 @@ def p_expression(p):
                     |   BooleanOperator
                     |   StrOperator
                     |   ArrayOperator
+                    |   ArrayExpression
     '''
+def p_arrayexpres(p):
+    ''' ArrayExpression :   TkId TkOpenPar Terminal TkTwoPoints Terminal TkClosePar
+                        |   ArrayExpression TkOpenPar Terminal TkTwoPoints Terminal TkClosePar
+                        |   TkId TkOBracket Terminal TkCBracket
+                        |   ArrayExpression TkOBracket Terminal TkCBracket
+    '''
+
 def p_aritmoper(p):
 	''' AritmeticOperator : Expression TkMinus Expression
                     |   Expression TkPlus Expression
