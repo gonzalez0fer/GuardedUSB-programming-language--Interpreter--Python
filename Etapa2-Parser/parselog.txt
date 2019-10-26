@@ -5,73 +5,1045 @@
    yacc.py: 445:Action : Shift and goto state 2
    yacc.py: 410:
    yacc.py: 411:State  : 2
-   yacc.py: 434:Stack  : TkOBlock . LexToken(TkDeclare,'declare',2,5)
+   yacc.py: 434:Stack  : TkOBlock . LexToken(TkDeclare,'declare',2,9)
    yacc.py: 445:Action : Shift and goto state 4
    yacc.py: 410:
    yacc.py: 411:State  : 4
-   yacc.py: 434:Stack  : TkOBlock TkDeclare . LexToken(TkId,'a',3,17)
+   yacc.py: 434:Stack  : TkOBlock TkDeclare . LexToken(TkId,'a',3,21)
    yacc.py: 445:Action : Shift and goto state 42
    yacc.py: 410:
    yacc.py: 411:State  : 42
-   yacc.py: 434:Stack  : TkOBlock TkDeclare TkId . LexToken(TkComma,',',3,18)
-   yacc.py: 445:Action : Shift and goto state 88
+   yacc.py: 434:Stack  : TkOBlock TkDeclare TkId . LexToken(TkComma,',',3,22)
+   yacc.py: 445:Action : Shift and goto state 92
    yacc.py: 410:
-   yacc.py: 411:State  : 88
-   yacc.py: 434:Stack  : TkOBlock TkDeclare TkId TkComma . LexToken(TkId,'b',3,20)
+   yacc.py: 411:State  : 92
+   yacc.py: 434:Stack  : TkOBlock TkDeclare TkId TkComma . LexToken(TkId,'b',3,24)
    yacc.py: 445:Action : Shift and goto state 42
    yacc.py: 410:
    yacc.py: 411:State  : 42
-   yacc.py: 434:Stack  : TkOBlock TkDeclare TkId TkComma TkId . LexToken(TkComma,',',3,21)
-   yacc.py: 445:Action : Shift and goto state 88
+   yacc.py: 434:Stack  : TkOBlock TkDeclare TkId TkComma TkId . LexToken(TkComma,',',3,25)
+   yacc.py: 445:Action : Shift and goto state 92
    yacc.py: 410:
-   yacc.py: 411:State  : 88
-   yacc.py: 434:Stack  : TkOBlock TkDeclare TkId TkComma TkId TkComma . LexToken(TkId,'c',3,23)
+   yacc.py: 411:State  : 92
+   yacc.py: 434:Stack  : TkOBlock TkDeclare TkId TkComma TkId TkComma . LexToken(TkId,'i',3,27)
    yacc.py: 445:Action : Shift and goto state 42
    yacc.py: 410:
    yacc.py: 411:State  : 42
-   yacc.py: 434:Stack  : TkOBlock TkDeclare TkId TkComma TkId TkComma TkId . LexToken(TkTwoPoints,':',3,25)
-   yacc.py: 469:Action : Reduce rule [Variables -> TkId] with ['c'] and goto state 143
+   yacc.py: 434:Stack  : TkOBlock TkDeclare TkId TkComma TkId TkComma TkId . LexToken(TkTwoPoints,':',3,29)
+   yacc.py: 469:Action : Reduce rule [Variables -> TkId] with ['i'] and goto state 147
    yacc.py: 506:Result : <NoneType @ 0x6c196ce8> (None)
    yacc.py: 410:
-   yacc.py: 411:State  : 143
-   yacc.py: 430:Defaulted state 143: Reduce using 84
-   yacc.py: 434:Stack  : TkOBlock TkDeclare TkId TkComma TkId TkComma Variables . LexToken(TkTwoPoints,':',3,25)
-   yacc.py: 469:Action : Reduce rule [Variables -> TkId TkComma Variables] with ['b',',',None] and goto state 143
+   yacc.py: 411:State  : 147
+   yacc.py: 430:Defaulted state 147: Reduce using 86
+   yacc.py: 434:Stack  : TkOBlock TkDeclare TkId TkComma TkId TkComma Variables . LexToken(TkTwoPoints,':',3,29)
+   yacc.py: 469:Action : Reduce rule [Variables -> TkId TkComma Variables] with ['b',',',None] and goto state 147
    yacc.py: 506:Result : <NoneType @ 0x6c196ce8> (None)
    yacc.py: 410:
-   yacc.py: 411:State  : 143
-   yacc.py: 430:Defaulted state 143: Reduce using 84
-   yacc.py: 434:Stack  : TkOBlock TkDeclare TkId TkComma Variables . LexToken(TkTwoPoints,':',3,25)
+   yacc.py: 411:State  : 147
+   yacc.py: 430:Defaulted state 147: Reduce using 86
+   yacc.py: 434:Stack  : TkOBlock TkDeclare TkId TkComma Variables . LexToken(TkTwoPoints,':',3,29)
    yacc.py: 469:Action : Reduce rule [Variables -> TkId TkComma Variables] with ['a',',',None] and goto state 41
    yacc.py: 506:Result : <NoneType @ 0x6c196ce8> (None)
    yacc.py: 410:
    yacc.py: 411:State  : 41
-   yacc.py: 434:Stack  : TkOBlock TkDeclare Variables . LexToken(TkTwoPoints,':',3,25)
-   yacc.py: 445:Action : Shift and goto state 87
+   yacc.py: 434:Stack  : TkOBlock TkDeclare Variables . LexToken(TkTwoPoints,':',3,29)
+   yacc.py: 445:Action : Shift and goto state 91
    yacc.py: 410:
-   yacc.py: 411:State  : 87
-   yacc.py: 434:Stack  : TkOBlock TkDeclare Variables TkTwoPoints . LexToken(TkInt,'int',3,27)
-   yacc.py: 445:Action : Shift and goto state 140
+   yacc.py: 411:State  : 91
+   yacc.py: 434:Stack  : TkOBlock TkDeclare Variables TkTwoPoints . LexToken(TkInt,'int',3,31)
+   yacc.py: 445:Action : Shift and goto state 144
    yacc.py: 410:
-   yacc.py: 411:State  : 140
-   yacc.py: 434:Stack  : TkOBlock TkDeclare Variables TkTwoPoints TkInt . LexToken(TkSemicolon,';',3,30)
+   yacc.py: 411:State  : 144
+   yacc.py: 434:Stack  : TkOBlock TkDeclare Variables TkTwoPoints TkInt . LexToken(TkSemicolon,';',3,34)
    yacc.py: 469:Action : Reduce rule [Declaration -> Variables TkTwoPoints TkInt] with [None,':','int'] and goto state 40
    yacc.py: 506:Result : <NoneType @ 0x6c196ce8> (None)
    yacc.py: 410:
    yacc.py: 411:State  : 40
-   yacc.py: 434:Stack  : TkOBlock TkDeclare Declaration . LexToken(TkSemicolon,';',3,30)
-   yacc.py: 445:Action : Shift and goto state 86
+   yacc.py: 434:Stack  : TkOBlock TkDeclare Declaration . LexToken(TkSemicolon,';',3,34)
+   yacc.py: 445:Action : Shift and goto state 90
    yacc.py: 410:
-   yacc.py: 411:State  : 86
-   yacc.py: 434:Stack  : TkOBlock TkDeclare Declaration TkSemicolon . LexToken(TkCBlock,']|',4,32)
-   yacc.py: 445:Action : Shift and goto state 139
+   yacc.py: 411:State  : 90
+   yacc.py: 434:Stack  : TkOBlock TkDeclare Declaration TkSemicolon . LexToken(TkId,'x',4,45)
+   yacc.py: 445:Action : Shift and goto state 22
    yacc.py: 410:
-   yacc.py: 411:State  : 139
-   yacc.py: 434:Stack  : TkOBlock TkDeclare Declaration TkSemicolon TkCBlock . $end
-   yacc.py: 469:Action : Reduce rule [Block -> TkOBlock TkDeclare Declaration TkSemicolon TkCBlock] with ['|[','declare',None,';',']|'] and goto state 1
+   yacc.py: 411:State  : 22
+   yacc.py: 434:Stack  : TkOBlock TkDeclare Declaration TkSemicolon TkId . LexToken(TkComma,',',4,46)
+   yacc.py: 579:Error  : TkOBlock TkDeclare Declaration TkSemicolon TkId . LexToken(TkComma,',',4,46)
+   yacc.py: 410:
+   yacc.py: 411:State  : 22
+   yacc.py: 434:Stack  : TkOBlock TkDeclare Declaration TkSemicolon TkId . error
+   yacc.py: 579:Error  : TkOBlock TkDeclare Declaration TkSemicolon TkId . error
+   yacc.py: 410:
+   yacc.py: 411:State  : 90
+   yacc.py: 434:Stack  : TkOBlock TkDeclare Declaration TkSemicolon . error
+   yacc.py: 579:Error  : TkOBlock TkDeclare Declaration TkSemicolon . error
+   yacc.py: 410:
+   yacc.py: 411:State  : 40
+   yacc.py: 434:Stack  : TkOBlock TkDeclare Declaration . error
+   yacc.py: 579:Error  : TkOBlock TkDeclare Declaration . error
+   yacc.py: 410:
+   yacc.py: 411:State  : 4
+   yacc.py: 434:Stack  : TkOBlock TkDeclare . error
+   yacc.py: 579:Error  : TkOBlock TkDeclare . error
+   yacc.py: 410:
+   yacc.py: 411:State  : 2
+   yacc.py: 434:Stack  : TkOBlock . error
+   yacc.py: 579:Error  : TkOBlock . error
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . error
+   yacc.py: 579:Error  : . error
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkId,'y',4,48)
+   yacc.py: 579:Error  : . LexToken(TkId,'y',4,48)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkTwoPoints,':',4,50)
+   yacc.py: 579:Error  : . LexToken(TkTwoPoints,':',4,50)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkArray,'array',4,52)
+   yacc.py: 579:Error  : . LexToken(TkArray,'array',4,52)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkOBracket,'[',4,57)
+   yacc.py: 579:Error  : . LexToken(TkOBracket,'[',4,57)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkNum,2,4,58)
+   yacc.py: 579:Error  : . LexToken(TkNum,2,4,58)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkSoForth,'..',4,59)
+   yacc.py: 579:Error  : . LexToken(TkSoForth,'..',4,59)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkNum,5,4,61)
+   yacc.py: 579:Error  : . LexToken(TkNum,5,4,61)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkCBracket,']',4,62)
+   yacc.py: 579:Error  : . LexToken(TkCBracket,']',4,62)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkRead,'read',7,103)
+   yacc.py: 579:Error  : . LexToken(TkRead,'read',7,103)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkId,'a',7,108)
+   yacc.py: 579:Error  : . LexToken(TkId,'a',7,108)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkSemicolon,';',7,109)
+   yacc.py: 579:Error  : . LexToken(TkSemicolon,';',7,109)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkRead,'read',8,117)
+   yacc.py: 579:Error  : . LexToken(TkRead,'read',8,117)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkId,'b',8,122)
+   yacc.py: 579:Error  : . LexToken(TkId,'b',8,122)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkSemicolon,';',8,123)
+   yacc.py: 579:Error  : . LexToken(TkSemicolon,';',8,123)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkId,'x',9,131)
+   yacc.py: 579:Error  : . LexToken(TkId,'x',9,131)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkAsig,':=',9,133)
+   yacc.py: 579:Error  : . LexToken(TkAsig,':=',9,133)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkId,'x',9,136)
+   yacc.py: 579:Error  : . LexToken(TkId,'x',9,136)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkOpenPar,'(',9,137)
+   yacc.py: 579:Error  : . LexToken(TkOpenPar,'(',9,137)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkNum,2,9,138)
+   yacc.py: 579:Error  : . LexToken(TkNum,2,9,138)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkTwoPoints,':',9,139)
+   yacc.py: 579:Error  : . LexToken(TkTwoPoints,':',9,139)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkId,'a',9,140)
+   yacc.py: 579:Error  : . LexToken(TkId,'a',9,140)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkClosePar,')',9,141)
+   yacc.py: 579:Error  : . LexToken(TkClosePar,')',9,141)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkOpenPar,'(',9,142)
+   yacc.py: 579:Error  : . LexToken(TkOpenPar,'(',9,142)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkNum,3,9,143)
+   yacc.py: 579:Error  : . LexToken(TkNum,3,9,143)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkTwoPoints,':',9,144)
+   yacc.py: 579:Error  : . LexToken(TkTwoPoints,':',9,144)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkId,'b',9,145)
+   yacc.py: 579:Error  : . LexToken(TkId,'b',9,145)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkClosePar,')',9,146)
+   yacc.py: 579:Error  : . LexToken(TkClosePar,')',9,146)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkSemicolon,';',9,147)
+   yacc.py: 579:Error  : . LexToken(TkSemicolon,';',9,147)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkFor,'for',10,155)
+   yacc.py: 579:Error  : . LexToken(TkFor,'for',10,155)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkId,'i',10,159)
+   yacc.py: 579:Error  : . LexToken(TkId,'i',10,159)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkIn,'in',10,161)
+   yacc.py: 579:Error  : . LexToken(TkIn,'in',10,161)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkId,'a',10,164)
+   yacc.py: 579:Error  : . LexToken(TkId,'a',10,164)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkTo,'to',10,166)
+   yacc.py: 579:Error  : . LexToken(TkTo,'to',10,166)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkId,'b',10,169)
+   yacc.py: 579:Error  : . LexToken(TkId,'b',10,169)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkArrow,'-->',10,171)
+   yacc.py: 579:Error  : . LexToken(TkArrow,'-->',10,171)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkOBlock,'|[',11,187)
+   yacc.py: 445:Action : Shift and goto state 2
+   yacc.py: 410:
+   yacc.py: 411:State  : 2
+   yacc.py: 434:Stack  : TkOBlock . LexToken(TkPrintln,'println',12,208)
+   yacc.py: 445:Action : Shift and goto state 27
+   yacc.py: 410:
+   yacc.py: 411:State  : 27
+   yacc.py: 434:Stack  : TkOBlock TkPrintln . LexToken(TkString,'Variable \\"i\\" es igual a: ',12,216)
+   yacc.py: 579:Error  : TkOBlock TkPrintln . LexToken(TkString,'Variable \\"i\\" es igual a: ',12,216)
+   yacc.py: 410:
+   yacc.py: 411:State  : 27
+   yacc.py: 434:Stack  : TkOBlock TkPrintln . error
+   yacc.py: 579:Error  : TkOBlock TkPrintln . error
+   yacc.py: 410:
+   yacc.py: 411:State  : 2
+   yacc.py: 434:Stack  : TkOBlock . error
+   yacc.py: 579:Error  : TkOBlock . error
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . error
+   yacc.py: 579:Error  : . error
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkConcat,'||',12,246)
+   yacc.py: 579:Error  : . LexToken(TkConcat,'||',12,246)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkId,'i',12,249)
+   yacc.py: 579:Error  : . LexToken(TkId,'i',12,249)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkSemicolon,';',12,250)
+   yacc.py: 579:Error  : . LexToken(TkSemicolon,';',12,250)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkCBlock,']|',13,264)
+   yacc.py: 579:Error  : . LexToken(TkCBlock,']|',13,264)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkRof,'rof',14,273)
+   yacc.py: 579:Error  : . LexToken(TkRof,'rof',14,273)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkSemicolon,';',14,276)
+   yacc.py: 579:Error  : . LexToken(TkSemicolon,';',14,276)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkRead,'read',17,343)
+   yacc.py: 579:Error  : . LexToken(TkRead,'read',17,343)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkId,'y',17,348)
+   yacc.py: 579:Error  : . LexToken(TkId,'y',17,348)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkSemicolon,';',17,349)
+   yacc.py: 579:Error  : . LexToken(TkSemicolon,';',17,349)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkFor,'for',18,357)
+   yacc.py: 579:Error  : . LexToken(TkFor,'for',18,357)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkId,'j',18,361)
+   yacc.py: 579:Error  : . LexToken(TkId,'j',18,361)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkIn,'in',18,363)
+   yacc.py: 579:Error  : . LexToken(TkIn,'in',18,363)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkMin,'min',18,366)
+   yacc.py: 579:Error  : . LexToken(TkMin,'min',18,366)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkOpenPar,'(',18,369)
+   yacc.py: 579:Error  : . LexToken(TkOpenPar,'(',18,369)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkId,'y',18,370)
+   yacc.py: 579:Error  : . LexToken(TkId,'y',18,370)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkClosePar,')',18,371)
+   yacc.py: 579:Error  : . LexToken(TkClosePar,')',18,371)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkTo,'to',18,373)
+   yacc.py: 579:Error  : . LexToken(TkTo,'to',18,373)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkMax,'max',18,376)
+   yacc.py: 579:Error  : . LexToken(TkMax,'max',18,376)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkOpenPar,'(',18,379)
+   yacc.py: 579:Error  : . LexToken(TkOpenPar,'(',18,379)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkId,'y',18,380)
+   yacc.py: 579:Error  : . LexToken(TkId,'y',18,380)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkClosePar,')',18,381)
+   yacc.py: 579:Error  : . LexToken(TkClosePar,')',18,381)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkArrow,'-->',18,383)
+   yacc.py: 579:Error  : . LexToken(TkArrow,'-->',18,383)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkOBlock,'|[',19,399)
+   yacc.py: 445:Action : Shift and goto state 2
+   yacc.py: 410:
+   yacc.py: 411:State  : 2
+   yacc.py: 434:Stack  : TkOBlock . LexToken(TkPrint,'print',20,420)
+   yacc.py: 445:Action : Shift and goto state 25
+   yacc.py: 410:
+   yacc.py: 411:State  : 25
+   yacc.py: 434:Stack  : TkOBlock TkPrint . LexToken(TkId,'j',20,426)
+   yacc.py: 445:Action : Shift and goto state 74
+   yacc.py: 410:
+   yacc.py: 411:State  : 74
+   yacc.py: 434:Stack  : TkOBlock TkPrint TkId . LexToken(TkConcat,'||',20,428)
+   yacc.py: 445:Action : Shift and goto state 66
+   yacc.py: 410:
+   yacc.py: 411:State  : 66
+   yacc.py: 434:Stack  : TkOBlock TkPrint TkId TkConcat . LexToken(TkString,':',20,431)
+   yacc.py: 579:Error  : TkOBlock TkPrint TkId TkConcat . LexToken(TkString,':',20,431)
+   yacc.py: 410:
+   yacc.py: 411:State  : 66
+   yacc.py: 434:Stack  : TkOBlock TkPrint TkId TkConcat . error
+   yacc.py: 579:Error  : TkOBlock TkPrint TkId TkConcat . error
+   yacc.py: 410:
+   yacc.py: 411:State  : 74
+   yacc.py: 434:Stack  : TkOBlock TkPrint TkId . error
+   yacc.py: 579:Error  : TkOBlock TkPrint TkId . error
+   yacc.py: 410:
+   yacc.py: 411:State  : 25
+   yacc.py: 434:Stack  : TkOBlock TkPrint . error
+   yacc.py: 579:Error  : TkOBlock TkPrint . error
+   yacc.py: 410:
+   yacc.py: 411:State  : 2
+   yacc.py: 434:Stack  : TkOBlock . error
+   yacc.py: 579:Error  : TkOBlock . error
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . error
+   yacc.py: 579:Error  : . error
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkConcat,'||',20,435)
+   yacc.py: 579:Error  : . LexToken(TkConcat,'||',20,435)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkId,'y',20,438)
+   yacc.py: 579:Error  : . LexToken(TkId,'y',20,438)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkOBracket,'[',20,439)
+   yacc.py: 579:Error  : . LexToken(TkOBracket,'[',20,439)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkId,'j',20,440)
+   yacc.py: 579:Error  : . LexToken(TkId,'j',20,440)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkCBracket,']',20,441)
+   yacc.py: 579:Error  : . LexToken(TkCBracket,']',20,441)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkConcat,'||',20,443)
+   yacc.py: 579:Error  : . LexToken(TkConcat,'||',20,443)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkString,' ',20,446)
+   yacc.py: 579:Error  : . LexToken(TkString,' ',20,446)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkSemicolon,';',20,449)
+   yacc.py: 579:Error  : . LexToken(TkSemicolon,';',20,449)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkCBlock,']|',21,463)
+   yacc.py: 579:Error  : . LexToken(TkCBlock,']|',21,463)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkRof,'rof',22,472)
+   yacc.py: 579:Error  : . LexToken(TkRof,'rof',22,472)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkSemicolon,';',22,475)
+   yacc.py: 579:Error  : . LexToken(TkSemicolon,';',22,475)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkId,'a',24,488)
+   yacc.py: 579:Error  : . LexToken(TkId,'a',24,488)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkAsig,':=',24,490)
+   yacc.py: 579:Error  : . LexToken(TkAsig,':=',24,490)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkNum,3,24,493)
+   yacc.py: 579:Error  : . LexToken(TkNum,3,24,493)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkPlus,'+',24,495)
+   yacc.py: 579:Error  : . LexToken(TkPlus,'+',24,495)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkId,'b',24,497)
+   yacc.py: 579:Error  : . LexToken(TkId,'b',24,497)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkSemicolon,';',24,498)
+   yacc.py: 579:Error  : . LexToken(TkSemicolon,';',24,498)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkId,'b',25,506)
+   yacc.py: 579:Error  : . LexToken(TkId,'b',25,506)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkAsig,':=',25,508)
+   yacc.py: 579:Error  : . LexToken(TkAsig,':=',25,508)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkMinus,'-',25,511)
+   yacc.py: 579:Error  : . LexToken(TkMinus,'-',25,511)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkNum,4,25,512)
+   yacc.py: 579:Error  : . LexToken(TkNum,4,25,512)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkSemicolon,';',25,513)
+   yacc.py: 579:Error  : . LexToken(TkSemicolon,';',25,513)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkIf,'if',27,526)
+   yacc.py: 579:Error  : . LexToken(TkIf,'if',27,526)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkMin,'min',27,529)
+   yacc.py: 579:Error  : . LexToken(TkMin,'min',27,529)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkOpenPar,'(',27,532)
+   yacc.py: 579:Error  : . LexToken(TkOpenPar,'(',27,532)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkId,'x',27,533)
+   yacc.py: 579:Error  : . LexToken(TkId,'x',27,533)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkClosePar,')',27,534)
+   yacc.py: 579:Error  : . LexToken(TkClosePar,')',27,534)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkLeq,'<=',27,536)
+   yacc.py: 579:Error  : . LexToken(TkLeq,'<=',27,536)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkId,'b',27,539)
+   yacc.py: 579:Error  : . LexToken(TkId,'b',27,539)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkAnd,'/\\',27,541)
+   yacc.py: 579:Error  : . LexToken(TkAnd,'/\\',27,541)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkId,'b',27,544)
+   yacc.py: 579:Error  : . LexToken(TkId,'b',27,544)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkLeq,'<=',27,546)
+   yacc.py: 579:Error  : . LexToken(TkLeq,'<=',27,546)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkMax,'max',27,549)
+   yacc.py: 579:Error  : . LexToken(TkMax,'max',27,549)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkOpenPar,'(',27,552)
+   yacc.py: 579:Error  : . LexToken(TkOpenPar,'(',27,552)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkId,'x',27,553)
+   yacc.py: 579:Error  : . LexToken(TkId,'x',27,553)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkClosePar,')',27,554)
+   yacc.py: 579:Error  : . LexToken(TkClosePar,')',27,554)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkArrow,'-->',27,556)
+   yacc.py: 579:Error  : . LexToken(TkArrow,'-->',27,556)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkPrintln,'println',27,560)
+   yacc.py: 579:Error  : . LexToken(TkPrintln,'println',27,560)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkId,'b',27,568)
+   yacc.py: 579:Error  : . LexToken(TkId,'b',27,568)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkGuard,'[]',28,576)
+   yacc.py: 579:Error  : . LexToken(TkGuard,'[]',28,576)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkMin,'min',28,579)
+   yacc.py: 579:Error  : . LexToken(TkMin,'min',28,579)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkOpenPar,'(',28,582)
+   yacc.py: 579:Error  : . LexToken(TkOpenPar,'(',28,582)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkId,'y',28,583)
+   yacc.py: 579:Error  : . LexToken(TkId,'y',28,583)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkClosePar,')',28,584)
+   yacc.py: 579:Error  : . LexToken(TkClosePar,')',28,584)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkLess,'<',28,586)
+   yacc.py: 579:Error  : . LexToken(TkLess,'<',28,586)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkId,'b',28,588)
+   yacc.py: 579:Error  : . LexToken(TkId,'b',28,588)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkAnd,'/\\',28,590)
+   yacc.py: 579:Error  : . LexToken(TkAnd,'/\\',28,590)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkId,'b',28,593)
+   yacc.py: 579:Error  : . LexToken(TkId,'b',28,593)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkLess,'<',28,595)
+   yacc.py: 579:Error  : . LexToken(TkLess,'<',28,595)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkMax,'max',28,597)
+   yacc.py: 579:Error  : . LexToken(TkMax,'max',28,597)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkOpenPar,'(',28,600)
+   yacc.py: 579:Error  : . LexToken(TkOpenPar,'(',28,600)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkId,'y',28,601)
+   yacc.py: 579:Error  : . LexToken(TkId,'y',28,601)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkClosePar,')',28,602)
+   yacc.py: 579:Error  : . LexToken(TkClosePar,')',28,602)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkArrow,'-->',28,604)
+   yacc.py: 579:Error  : . LexToken(TkArrow,'-->',28,604)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkPrintln,'println',28,608)
+   yacc.py: 579:Error  : . LexToken(TkPrintln,'println',28,608)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkId,'a',28,616)
+   yacc.py: 579:Error  : . LexToken(TkId,'a',28,616)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkGuard,'[]',29,624)
+   yacc.py: 579:Error  : . LexToken(TkGuard,'[]',29,624)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkMin,'min',29,627)
+   yacc.py: 579:Error  : . LexToken(TkMin,'min',29,627)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkOpenPar,'(',29,630)
+   yacc.py: 579:Error  : . LexToken(TkOpenPar,'(',29,630)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkId,'y',29,631)
+   yacc.py: 579:Error  : . LexToken(TkId,'y',29,631)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkClosePar,')',29,632)
+   yacc.py: 579:Error  : . LexToken(TkClosePar,')',29,632)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkGeq,'>=',29,634)
+   yacc.py: 579:Error  : . LexToken(TkGeq,'>=',29,634)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkId,'b',29,637)
+   yacc.py: 579:Error  : . LexToken(TkId,'b',29,637)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkOr,'\\/',29,639)
+   yacc.py: 579:Error  : . LexToken(TkOr,'\\/',29,639)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkId,'b',29,642)
+   yacc.py: 579:Error  : . LexToken(TkId,'b',29,642)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkGeq,'>=',29,644)
+   yacc.py: 579:Error  : . LexToken(TkGeq,'>=',29,644)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkMax,'max',29,647)
+   yacc.py: 579:Error  : . LexToken(TkMax,'max',29,647)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkOpenPar,'(',29,650)
+   yacc.py: 579:Error  : . LexToken(TkOpenPar,'(',29,650)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkId,'y',29,651)
+   yacc.py: 579:Error  : . LexToken(TkId,'y',29,651)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkClosePar,')',29,652)
+   yacc.py: 579:Error  : . LexToken(TkClosePar,')',29,652)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkArrow,'-->',29,654)
+   yacc.py: 579:Error  : . LexToken(TkArrow,'-->',29,654)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkOBlock,'|[',30,671)
+   yacc.py: 445:Action : Shift and goto state 2
+   yacc.py: 410:
+   yacc.py: 411:State  : 2
+   yacc.py: 434:Stack  : TkOBlock . LexToken(TkDeclare,'declare',31,694)
+   yacc.py: 445:Action : Shift and goto state 4
+   yacc.py: 410:
+   yacc.py: 411:State  : 4
+   yacc.py: 434:Stack  : TkOBlock TkDeclare . LexToken(TkId,'z',31,702)
+   yacc.py: 445:Action : Shift and goto state 42
+   yacc.py: 410:
+   yacc.py: 411:State  : 42
+   yacc.py: 434:Stack  : TkOBlock TkDeclare TkId . LexToken(TkTwoPoints,':',31,704)
+   yacc.py: 469:Action : Reduce rule [Variables -> TkId] with ['z'] and goto state 41
    yacc.py: 506:Result : <NoneType @ 0x6c196ce8> (None)
    yacc.py: 410:
-   yacc.py: 411:State  : 1
-   yacc.py: 434:Stack  : Block . $end
-   yacc.py: 571:Done   : Returning <NoneType @ 0x6c196ce8> (None)
-   yacc.py: 572:PLY: PARSE DEBUG END
+   yacc.py: 411:State  : 41
+   yacc.py: 434:Stack  : TkOBlock TkDeclare Variables . LexToken(TkTwoPoints,':',31,704)
+   yacc.py: 445:Action : Shift and goto state 91
+   yacc.py: 410:
+   yacc.py: 411:State  : 91
+   yacc.py: 434:Stack  : TkOBlock TkDeclare Variables TkTwoPoints . LexToken(TkArray,'array',31,706)
+   yacc.py: 445:Action : Shift and goto state 135
+   yacc.py: 410:
+   yacc.py: 411:State  : 135
+   yacc.py: 434:Stack  : TkOBlock TkDeclare Variables TkTwoPoints TkArray . LexToken(TkOBracket,'[',31,711)
+   yacc.py: 445:Action : Shift and goto state 176
+   yacc.py: 410:
+   yacc.py: 411:State  : 176
+   yacc.py: 434:Stack  : TkOBlock TkDeclare Variables TkTwoPoints TkArray TkOBracket . LexToken(TkNum,2,31,712)
+   yacc.py: 445:Action : Shift and goto state 31
+   yacc.py: 410:
+   yacc.py: 411:State  : 31
+   yacc.py: 434:Stack  : TkOBlock TkDeclare Variables TkTwoPoints TkArray TkOBracket TkNum . LexToken(TkSoForth,'..',31,713)
+   yacc.py: 469:Action : Reduce rule [Terminal -> TkNum] with [2] and goto state 209
+   yacc.py: 506:Result : <NoneType @ 0x6c196ce8> (None)
+   yacc.py: 410:
+   yacc.py: 411:State  : 209
+   yacc.py: 434:Stack  : TkOBlock TkDeclare Variables TkTwoPoints TkArray TkOBracket Terminal . LexToken(TkSoForth,'..',31,713)
+   yacc.py: 445:Action : Shift and goto state 217
+   yacc.py: 410:
+   yacc.py: 411:State  : 217
+   yacc.py: 434:Stack  : TkOBlock TkDeclare Variables TkTwoPoints TkArray TkOBracket Terminal TkSoForth . LexToken(TkNum,3,31,715)
+   yacc.py: 445:Action : Shift and goto state 31
+   yacc.py: 410:
+   yacc.py: 411:State  : 31
+   yacc.py: 434:Stack  : TkOBlock TkDeclare Variables TkTwoPoints TkArray TkOBracket Terminal TkSoForth TkNum . LexToken(TkCBracket,']',31,716)
+   yacc.py: 469:Action : Reduce rule [Terminal -> TkNum] with [3] and goto state 224
+   yacc.py: 506:Result : <NoneType @ 0x6c196ce8> (None)
+   yacc.py: 410:
+   yacc.py: 411:State  : 224
+   yacc.py: 434:Stack  : TkOBlock TkDeclare Variables TkTwoPoints TkArray TkOBracket Terminal TkSoForth Terminal . LexToken(TkCBracket,']',31,716)
+   yacc.py: 445:Action : Shift and goto state 233
+   yacc.py: 410:
+   yacc.py: 411:State  : 233
+   yacc.py: 434:Stack  : TkOBlock TkDeclare Variables TkTwoPoints TkArray TkOBracket Terminal TkSoForth Terminal TkCBracket . LexToken(TkPrintln,'println',32,738)
+   yacc.py: 579:Error  : TkOBlock TkDeclare Variables TkTwoPoints TkArray TkOBracket Terminal TkSoForth Terminal TkCBracket . LexToken(TkPrintln,'println',32,738)
+   yacc.py: 410:
+   yacc.py: 411:State  : 233
+   yacc.py: 434:Stack  : TkOBlock TkDeclare Variables TkTwoPoints TkArray TkOBracket Terminal TkSoForth Terminal TkCBracket . error
+   yacc.py: 579:Error  : TkOBlock TkDeclare Variables TkTwoPoints TkArray TkOBracket Terminal TkSoForth Terminal TkCBracket . error
+   yacc.py: 410:
+   yacc.py: 411:State  : 224
+   yacc.py: 434:Stack  : TkOBlock TkDeclare Variables TkTwoPoints TkArray TkOBracket Terminal TkSoForth Terminal . error
+   yacc.py: 579:Error  : TkOBlock TkDeclare Variables TkTwoPoints TkArray TkOBracket Terminal TkSoForth Terminal . error
+   yacc.py: 410:
+   yacc.py: 411:State  : 217
+   yacc.py: 434:Stack  : TkOBlock TkDeclare Variables TkTwoPoints TkArray TkOBracket Terminal TkSoForth . error
+   yacc.py: 579:Error  : TkOBlock TkDeclare Variables TkTwoPoints TkArray TkOBracket Terminal TkSoForth . error
+   yacc.py: 410:
+   yacc.py: 411:State  : 209
+   yacc.py: 434:Stack  : TkOBlock TkDeclare Variables TkTwoPoints TkArray TkOBracket Terminal . error
+   yacc.py: 579:Error  : TkOBlock TkDeclare Variables TkTwoPoints TkArray TkOBracket Terminal . error
+   yacc.py: 410:
+   yacc.py: 411:State  : 176
+   yacc.py: 434:Stack  : TkOBlock TkDeclare Variables TkTwoPoints TkArray TkOBracket . error
+   yacc.py: 579:Error  : TkOBlock TkDeclare Variables TkTwoPoints TkArray TkOBracket . error
+   yacc.py: 410:
+   yacc.py: 411:State  : 135
+   yacc.py: 434:Stack  : TkOBlock TkDeclare Variables TkTwoPoints TkArray . error
+   yacc.py: 579:Error  : TkOBlock TkDeclare Variables TkTwoPoints TkArray . error
+   yacc.py: 410:
+   yacc.py: 411:State  : 91
+   yacc.py: 434:Stack  : TkOBlock TkDeclare Variables TkTwoPoints . error
+   yacc.py: 579:Error  : TkOBlock TkDeclare Variables TkTwoPoints . error
+   yacc.py: 410:
+   yacc.py: 411:State  : 41
+   yacc.py: 434:Stack  : TkOBlock TkDeclare Variables . error
+   yacc.py: 579:Error  : TkOBlock TkDeclare Variables . error
+   yacc.py: 410:
+   yacc.py: 411:State  : 4
+   yacc.py: 434:Stack  : TkOBlock TkDeclare . error
+   yacc.py: 579:Error  : TkOBlock TkDeclare . error
+   yacc.py: 410:
+   yacc.py: 411:State  : 2
+   yacc.py: 434:Stack  : TkOBlock . error
+   yacc.py: 579:Error  : TkOBlock . error
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . error
+   yacc.py: 579:Error  : . error
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkId,'a',32,746)
+   yacc.py: 579:Error  : . LexToken(TkId,'a',32,746)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkConcat,'||',32,748)
+   yacc.py: 579:Error  : . LexToken(TkConcat,'||',32,748)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkId,'b',32,751)
+   yacc.py: 579:Error  : . LexToken(TkId,'b',32,751)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkSemicolon,';',32,752)
+   yacc.py: 579:Error  : . LexToken(TkSemicolon,';',32,752)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkId,'z',33,774)
+   yacc.py: 579:Error  : . LexToken(TkId,'z',33,774)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkAsig,':=',33,776)
+   yacc.py: 579:Error  : . LexToken(TkAsig,':=',33,776)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkId,'z',33,779)
+   yacc.py: 579:Error  : . LexToken(TkId,'z',33,779)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkOpenPar,'(',33,780)
+   yacc.py: 579:Error  : . LexToken(TkOpenPar,'(',33,780)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkNum,2,33,781)
+   yacc.py: 579:Error  : . LexToken(TkNum,2,33,781)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkTwoPoints,':',33,782)
+   yacc.py: 579:Error  : . LexToken(TkTwoPoints,':',33,782)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkId,'a',33,783)
+   yacc.py: 579:Error  : . LexToken(TkId,'a',33,783)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkClosePar,')',33,784)
+   yacc.py: 579:Error  : . LexToken(TkClosePar,')',33,784)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkOpenPar,'(',33,785)
+   yacc.py: 579:Error  : . LexToken(TkOpenPar,'(',33,785)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkNum,3,33,786)
+   yacc.py: 579:Error  : . LexToken(TkNum,3,33,786)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkTwoPoints,':',33,787)
+   yacc.py: 579:Error  : . LexToken(TkTwoPoints,':',33,787)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkId,'b',33,788)
+   yacc.py: 579:Error  : . LexToken(TkId,'b',33,788)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkClosePar,')',33,789)
+   yacc.py: 579:Error  : . LexToken(TkClosePar,')',33,789)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkSemicolon,';',33,790)
+   yacc.py: 579:Error  : . LexToken(TkSemicolon,';',33,790)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkPrintln,'println',34,812)
+   yacc.py: 579:Error  : . LexToken(TkPrintln,'println',34,812)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkString,'array[',34,820)
+   yacc.py: 579:Error  : . LexToken(TkString,'array[',34,820)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkConcat,'||',34,829)
+   yacc.py: 579:Error  : . LexToken(TkConcat,'||',34,829)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkMin,'min',34,832)
+   yacc.py: 579:Error  : . LexToken(TkMin,'min',34,832)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkOpenPar,'(',34,835)
+   yacc.py: 579:Error  : . LexToken(TkOpenPar,'(',34,835)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkId,'z',34,836)
+   yacc.py: 579:Error  : . LexToken(TkId,'z',34,836)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkClosePar,')',34,837)
+   yacc.py: 579:Error  : . LexToken(TkClosePar,')',34,837)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkConcat,'||',34,839)
+   yacc.py: 579:Error  : . LexToken(TkConcat,'||',34,839)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkString,'..',34,842)
+   yacc.py: 579:Error  : . LexToken(TkString,'..',34,842)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkConcat,'||',34,847)
+   yacc.py: 579:Error  : . LexToken(TkConcat,'||',34,847)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkMax,'max',34,850)
+   yacc.py: 579:Error  : . LexToken(TkMax,'max',34,850)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkOpenPar,'(',34,853)
+   yacc.py: 579:Error  : . LexToken(TkOpenPar,'(',34,853)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkId,'z',34,854)
+   yacc.py: 579:Error  : . LexToken(TkId,'z',34,854)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkClosePar,')',34,855)
+   yacc.py: 579:Error  : . LexToken(TkClosePar,')',34,855)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkConcat,'||',34,857)
+   yacc.py: 579:Error  : . LexToken(TkConcat,'||',34,857)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkString,']',34,860)
+   yacc.py: 579:Error  : . LexToken(TkString,']',34,860)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkCBlock,']|',35,877)
+   yacc.py: 579:Error  : . LexToken(TkCBlock,']|',35,877)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkFi,'fi',36,886)
+   yacc.py: 579:Error  : . LexToken(TkFi,'fi',36,886)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkSemicolon,';',36,888)
+   yacc.py: 579:Error  : . LexToken(TkSemicolon,';',36,888)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkId,'i',38,901)
+   yacc.py: 579:Error  : . LexToken(TkId,'i',38,901)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkAsig,':=',38,903)
+   yacc.py: 579:Error  : . LexToken(TkAsig,':=',38,903)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkNum,3,38,906)
+   yacc.py: 579:Error  : . LexToken(TkNum,3,38,906)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkSemicolon,';',38,907)
+   yacc.py: 579:Error  : . LexToken(TkSemicolon,';',38,907)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkDo,'do',39,915)
+   yacc.py: 579:Error  : . LexToken(TkDo,'do',39,915)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkId,'i',39,918)
+   yacc.py: 579:Error  : . LexToken(TkId,'i',39,918)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkLess,'<',39,920)
+   yacc.py: 579:Error  : . LexToken(TkLess,'<',39,920)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkNum,10,39,922)
+   yacc.py: 579:Error  : . LexToken(TkNum,10,39,922)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkArrow,'-->',39,925)
+   yacc.py: 579:Error  : . LexToken(TkArrow,'-->',39,925)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkOBlock,'|[',40,937)
+   yacc.py: 445:Action : Shift and goto state 2
+   yacc.py: 410:
+   yacc.py: 411:State  : 2
+   yacc.py: 434:Stack  : TkOBlock . LexToken(TkRead,'read',41,954)
+   yacc.py: 445:Action : Shift and goto state 24
+   yacc.py: 410:
+   yacc.py: 411:State  : 24
+   yacc.py: 434:Stack  : TkOBlock TkRead . LexToken(TkId,'i',41,959)
+   yacc.py: 445:Action : Shift and goto state 71
+   yacc.py: 410:
+   yacc.py: 411:State  : 71
+   yacc.py: 430:Defaulted state 71: Reduce using 35
+   yacc.py: 434:Stack  : TkOBlock TkRead TkId . None
+   yacc.py: 469:Action : Reduce rule [Input -> TkRead TkId] with ['read','i'] and goto state 12
+   yacc.py: 506:Result : <NoneType @ 0x6c196ce8> (None)
+   yacc.py: 410:
+   yacc.py: 411:State  : 12
+   yacc.py: 434:Stack  : TkOBlock Input . LexToken(TkSemicolon,';',41,960)
+   yacc.py: 445:Action : Shift and goto state 60
+   yacc.py: 410:
+   yacc.py: 411:State  : 60
+   yacc.py: 434:Stack  : TkOBlock Input TkSemicolon . LexToken(TkPrint,'print',42,976)
+   yacc.py: 469:Action : Reduce rule [Instruction -> Input TkSemicolon] with [None,';'] and goto state 5
+   yacc.py: 506:Result : <NoneType @ 0x6c196ce8> (None)
+   yacc.py: 410:
+   yacc.py: 411:State  : 5
+   yacc.py: 434:Stack  : TkOBlock Instruction . LexToken(TkPrint,'print',42,976)
+   yacc.py: 445:Action : Shift and goto state 25
+   yacc.py: 410:
+   yacc.py: 411:State  : 25
+   yacc.py: 434:Stack  : TkOBlock Instruction TkPrint . LexToken(TkString,'Still here!',42,982)
+   yacc.py: 579:Error  : TkOBlock Instruction TkPrint . LexToken(TkString,'Still here!',42,982)
+   yacc.py: 410:
+   yacc.py: 411:State  : 25
+   yacc.py: 434:Stack  : TkOBlock Instruction TkPrint . error
+   yacc.py: 579:Error  : TkOBlock Instruction TkPrint . error
+   yacc.py: 410:
+   yacc.py: 411:State  : 5
+   yacc.py: 434:Stack  : TkOBlock Instruction . error
+   yacc.py: 579:Error  : TkOBlock Instruction . error
+   yacc.py: 410:
+   yacc.py: 411:State  : 2
+   yacc.py: 434:Stack  : TkOBlock . error
+   yacc.py: 579:Error  : TkOBlock . error
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . error
+   yacc.py: 579:Error  : . error
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkSemicolon,';',42,995)
+   yacc.py: 579:Error  : . LexToken(TkSemicolon,';',42,995)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkId,'i',43,1011)
+   yacc.py: 579:Error  : . LexToken(TkId,'i',43,1011)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkAsig,':=',43,1013)
+   yacc.py: 579:Error  : . LexToken(TkAsig,':=',43,1013)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkId,'i',43,1016)
+   yacc.py: 579:Error  : . LexToken(TkId,'i',43,1016)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkPlus,'+',43,1017)
+   yacc.py: 579:Error  : . LexToken(TkPlus,'+',43,1017)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkNum,1,43,1018)
+   yacc.py: 579:Error  : . LexToken(TkNum,1,43,1018)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkCBlock,']|',44,1028)
+   yacc.py: 579:Error  : . LexToken(TkCBlock,']|',44,1028)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkOd,'od',45,1036)
+   yacc.py: 579:Error  : . LexToken(TkOd,'od',45,1036)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . LexToken(TkCBlock,']|',47,1048)
+   yacc.py: 579:Error  : . LexToken(TkCBlock,']|',47,1048)
+   yacc.py: 410:
+   yacc.py: 411:State  : 0
+   yacc.py: 434:Stack  : . $end
+   yacc.py: 579:Error  : . $end

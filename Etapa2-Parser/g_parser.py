@@ -109,6 +109,8 @@ def p_input(p):
 def p_output(p):
 	'''Output   :   TkPrint TkQuote Expression TkQuote
                 |   TkPrintln TkQuote Expression TkQuote
+                |   TkPrint StrOperator
+                |   TkPrintln StrOperator
 	'''
 
 def p_doloop(p):
@@ -181,9 +183,7 @@ def p_opRel(p):
 
 def p_variables(p):
 	''' Variables : TkId TkComma Variables
-                | TkId TkAsig Expression TkComma Variables
                 | TkId 
-                | TkId TkAsig Expression
 	'''
 
 def p_boolop(p):
