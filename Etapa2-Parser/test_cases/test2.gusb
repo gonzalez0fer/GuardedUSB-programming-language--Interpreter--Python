@@ -24,7 +24,7 @@
     a := 3 + b;  
     b := -4;  
     
-    if min(x) <= b /\ b <= max(x) --> println b  
+    if (min(x) <= b) /\ b <= max(x) --> println b  
     [] min(y) < b /\ b < max(y) --> println a  
     [] min(y) >= b \/ b >= max(y) -->     
         |[        

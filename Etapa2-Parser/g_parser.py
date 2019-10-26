@@ -41,18 +41,13 @@ precedence = (
 def p_program(p):
     ''' Block   :   TkOBlock Content TkCBlock
                 |   TkOBlock TkDeclare Declaration Content TkCBlock
-                |   TkOBlock TkDeclare Declaration TkSemicolon Declaration Content TkCBlock
-                |   TkOBlock TkDeclare Declaration TkSemicolon TkCBlock
+                |   TkOBlock TkDeclare Declaration TkCBlock
     '''
 
 
 def p_declaration(p):
-    ''' Declaration :   Variables TkTwoPoints TkInt 
-                    |   Variables TkTwoPoints TkBool
-                    |   Variables TkTwoPoints Array
-                    |   Variables TkTwoPoints TkInt Declaration
-                    |   Variables TkTwoPoints TkBool Declaration
-                    |   Variables TkTwoPoints Array Declaration
+    ''' Declaration :   Variables TkTwoPoints Datatype
+                    |   Variables TkTwoPoints Datatype TkSemicolon Declaration
     '''
 
 
@@ -90,13 +85,17 @@ def p_instruction(p):
     '''
 
 def p_conditional(p):
-    ''' Conditional :   TkIf Expression TkArrow Content TkFi
-                    |   TkIf Expression TkArrow Content Guard TkFi
+    ''' Conditional :   TkIf RelationalOperator TkArrow Content TkFi
+                    |   TkIf BooleanOperator TkArrow Content TkFi
+                    |   TkIf RelationalOperator TkArrow Content Guard TkFi
+                    |   TkIf BooleanOperator TkArrow Content Guard TkFi
     '''
 
 def p_guard(p):
-    ''' Guard   :   TkGuard Expression TkArrow Content
-                |   TkGuard Expression TkArrow Content Guard
+    ''' Guard   :   TkGuard RelationalOperator TkArrow Content
+                |   TkGuard BooleanOperator TkArrow Content
+                |   TkGuard RelationalOperator TkArrow Content Guard
+                |   TkGuard BooleanOperator TkArrow Content Guard
     '''
 
 def p_asign(p):
@@ -126,11 +125,10 @@ def p_doloop(p):
     '''
 
 def p_forloop(p):
-    ''' Forloop : TkFor TkId TkIn AritmeticOperator TkTo AritmeticOperator TkArrow Content TkRof
-                | TkFor TkId TkIn AritmeticOperator TkTo Terminal TkArrow Content TkRof
-                | TkFor TkId TkIn Terminal TkTo AritmeticOperator TkArrow Content TkRof
+    ''' Forloop : TkFor TkId TkIn ArrayOperator TkTo ArrayOperator TkArrow Content TkRof
+                | TkFor TkId TkIn ArrayOperator TkTo Terminal TkArrow Content TkRof
+                | TkFor TkId TkIn Terminal TkTo ArrayOperator TkArrow Content TkRof
                 | TkFor TkId TkIn Terminal TkTo Terminal TkArrow Content TkRof
-                | TkFor TkId TkIn Expression TkTo Expression TkArrow Content TkRof
     ''' 
 
 def p_expression(p):
@@ -211,6 +209,14 @@ def p_boolop(p):
                 |   TkOpenPar TkNot Expression TkClosePar
 	'''
 
+def p_datatype(p):
+    ''' Datatype : TkInt
+                |   TkBool
+                |   Array
+                |   TkInt TkComma Datatype
+                |   TkBool TkComma Datatype
+                |   Array TkComma Datatype
+    '''
 
 
 def p_error(p):
