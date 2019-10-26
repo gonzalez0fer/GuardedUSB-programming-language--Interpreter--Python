@@ -40,12 +40,13 @@ precedence = (
 
 def p_program(p):
     ''' Block   :   TkOBlock Content TkCBlock
-                |   TkOBlock TkDeclare Declaration Content TkCBlock
+                |   TkOBlock TkDeclare Declaration TkSemicolon Content TkCBlock
+                |   TkOBlock TkDeclare Declaration TkSemicolon TkCBlock
     '''
 
 
 def p_declaration(p):
-    ''' Declaration :   Variables TkTwoPoints TkInt
+    ''' Declaration :   Variables TkTwoPoints TkInt 
                     |   Variables TkTwoPoints TkBool
                     |   Variables TkTwoPoints Array
                     |   Variables TkTwoPoints TkInt Declaration
@@ -98,7 +99,7 @@ def p_guard(p):
     '''
 
 def p_asign(p):
-    ''' Asign    :   TkId TkAsig Expression
+    ''' Asign    :   TkId TkAsig Expression TkSemicolon
     '''
 
 def p_input(p):

@@ -30,17 +30,17 @@
    yacc.py: 410:
    yacc.py: 411:State  : 42
    yacc.py: 434:Stack  : TkOBlock TkDeclare TkId TkComma TkId TkComma TkId . LexToken(TkTwoPoints,':',3,25)
-   yacc.py: 469:Action : Reduce rule [Variables -> TkId] with ['c'] and goto state 142
+   yacc.py: 469:Action : Reduce rule [Variables -> TkId] with ['c'] and goto state 143
    yacc.py: 506:Result : <NoneType @ 0x6c196ce8> (None)
    yacc.py: 410:
-   yacc.py: 411:State  : 142
-   yacc.py: 430:Defaulted state 142: Reduce using 83
+   yacc.py: 411:State  : 143
+   yacc.py: 430:Defaulted state 143: Reduce using 84
    yacc.py: 434:Stack  : TkOBlock TkDeclare TkId TkComma TkId TkComma Variables . LexToken(TkTwoPoints,':',3,25)
-   yacc.py: 469:Action : Reduce rule [Variables -> TkId TkComma Variables] with ['b',',',None] and goto state 142
+   yacc.py: 469:Action : Reduce rule [Variables -> TkId TkComma Variables] with ['b',',',None] and goto state 143
    yacc.py: 506:Result : <NoneType @ 0x6c196ce8> (None)
    yacc.py: 410:
-   yacc.py: 411:State  : 142
-   yacc.py: 430:Defaulted state 142: Reduce using 83
+   yacc.py: 411:State  : 143
+   yacc.py: 430:Defaulted state 143: Reduce using 84
    yacc.py: 434:Stack  : TkOBlock TkDeclare TkId TkComma Variables . LexToken(TkTwoPoints,':',3,25)
    yacc.py: 469:Action : Reduce rule [Variables -> TkId TkComma Variables] with ['a',',',None] and goto state 41
    yacc.py: 506:Result : <NoneType @ 0x6c196ce8> (None)
@@ -51,36 +51,27 @@
    yacc.py: 410:
    yacc.py: 411:State  : 87
    yacc.py: 434:Stack  : TkOBlock TkDeclare Variables TkTwoPoints . LexToken(TkInt,'int',3,27)
+   yacc.py: 445:Action : Shift and goto state 140
+   yacc.py: 410:
+   yacc.py: 411:State  : 140
+   yacc.py: 434:Stack  : TkOBlock TkDeclare Variables TkTwoPoints TkInt . LexToken(TkSemicolon,';',3,30)
+   yacc.py: 469:Action : Reduce rule [Declaration -> Variables TkTwoPoints TkInt] with [None,':','int'] and goto state 40
+   yacc.py: 506:Result : <NoneType @ 0x6c196ce8> (None)
+   yacc.py: 410:
+   yacc.py: 411:State  : 40
+   yacc.py: 434:Stack  : TkOBlock TkDeclare Declaration . LexToken(TkSemicolon,';',3,30)
+   yacc.py: 445:Action : Shift and goto state 86
+   yacc.py: 410:
+   yacc.py: 411:State  : 86
+   yacc.py: 434:Stack  : TkOBlock TkDeclare Declaration TkSemicolon . LexToken(TkCBlock,']|',4,32)
    yacc.py: 445:Action : Shift and goto state 139
    yacc.py: 410:
    yacc.py: 411:State  : 139
-   yacc.py: 434:Stack  : TkOBlock TkDeclare Variables TkTwoPoints TkInt . LexToken(TkCBlock,']|',4,31)
-   yacc.py: 579:Error  : TkOBlock TkDeclare Variables TkTwoPoints TkInt . LexToken(TkCBlock,']|',4,31)
+   yacc.py: 434:Stack  : TkOBlock TkDeclare Declaration TkSemicolon TkCBlock . $end
+   yacc.py: 469:Action : Reduce rule [Block -> TkOBlock TkDeclare Declaration TkSemicolon TkCBlock] with ['|[','declare',None,';',']|'] and goto state 1
+   yacc.py: 506:Result : <NoneType @ 0x6c196ce8> (None)
    yacc.py: 410:
-   yacc.py: 411:State  : 139
-   yacc.py: 434:Stack  : TkOBlock TkDeclare Variables TkTwoPoints TkInt . error
-   yacc.py: 579:Error  : TkOBlock TkDeclare Variables TkTwoPoints TkInt . error
-   yacc.py: 410:
-   yacc.py: 411:State  : 87
-   yacc.py: 434:Stack  : TkOBlock TkDeclare Variables TkTwoPoints . error
-   yacc.py: 579:Error  : TkOBlock TkDeclare Variables TkTwoPoints . error
-   yacc.py: 410:
-   yacc.py: 411:State  : 41
-   yacc.py: 434:Stack  : TkOBlock TkDeclare Variables . error
-   yacc.py: 579:Error  : TkOBlock TkDeclare Variables . error
-   yacc.py: 410:
-   yacc.py: 411:State  : 4
-   yacc.py: 434:Stack  : TkOBlock TkDeclare . error
-   yacc.py: 579:Error  : TkOBlock TkDeclare . error
-   yacc.py: 410:
-   yacc.py: 411:State  : 2
-   yacc.py: 434:Stack  : TkOBlock . error
-   yacc.py: 579:Error  : TkOBlock . error
-   yacc.py: 410:
-   yacc.py: 411:State  : 0
-   yacc.py: 434:Stack  : . error
-   yacc.py: 579:Error  : . error
-   yacc.py: 410:
-   yacc.py: 411:State  : 0
-   yacc.py: 434:Stack  : . $end
-   yacc.py: 579:Error  : . $end
+   yacc.py: 411:State  : 1
+   yacc.py: 434:Stack  : Block . $end
+   yacc.py: 571:Done   : Returning <NoneType @ 0x6c196ce8> (None)
+   yacc.py: 572:PLY: PARSE DEBUG END
