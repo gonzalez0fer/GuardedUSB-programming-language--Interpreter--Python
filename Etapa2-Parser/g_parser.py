@@ -10,9 +10,44 @@ import ply.yacc as yacc
 from g_lexer import *
 from g_AbsSyntaxTree import *
 
+import logging
+logging.basicConfig(
+    level = logging.DEBUG,
+    filename = "parselog.txt",
+    filemode = "w",
+    format = "%(filename)10s:%(lineno)4d:%(message)s"
+)
+
 # De aqui en adelante escribimos las reglas que definiran la gramatica
 # de nuestro lenguaje para filtrar errores sintacticos y construir 
 # nuestro arbol sintactico abstracto.
+
+# Creando regla para las instrucciones permitidas por el lenguaje .
+def p_instruction(p):
+    '''INSTRUCTION : TkId TkAsig EXPRESSION
+                |   TkOBlock DECLARE INSTRUCTION_LIST TkCBlock
+                |   TkOBlock INSTRUCTION_LIST TkCBlock
+                |   TkRead TkId
+                |   TkFor TkId TkIn EXPRESSION TkTo EXPRESSION TkArrow INSTRUCTION TkRof
+                |   TkDo EXPRESSION TkArrow INSTRUCTION TkOd
+                |   TkGuard EXPRESSION TkArrow INSTRUCTION
+                |   TkIf EXPRESSION TkArrow INSTRUCTION TkFi
+    '''
+
+# Reglas de precedencia para el parser        
+precedence = (
+	('left', 'TkComma'),
+	('left','TkOBracket','TkCBracket'),
+	('left','TkOpenPar','TkClosePar'),
+	('left','TkMult','TkDiv','TkMod'),
+	('left','TkPlus','TkMinus'),
+	('left','TkLess','TkLeq','TkGreater','TkGeq','TkNEqual'),
+	('left','TkEqual'),
+	('left','TkNot'),
+	('left','TkAnd','TkOr'),
+	('left','TkConcat')
+    )
+
 
 # Creando regla para definir tipajes de Gusb.
 def p_datatype(p):
@@ -112,33 +147,6 @@ def p_lambda(p):
     ''' LAMBDA : 
     '''
     pass
- 
-
-# Creando regla para las instrucciones permitidas por el lenguaje .
-def p_instruction(p):
-    '''INSTRUCTION : TkId TkAsig EXPRESSION
-                |   TkOBlock DECLARE INSTRUCTION_LIST TkCBlock
-                |   TkOBlock INSTRUCTION_LIST TkCBlock
-                |   TkRead TkId
-                |   TkFor TkId TkIn EXPRESSION TkTo EXPRESSION TkArrow INSTRUCTION TkRof
-                |   TkDo EXPRESSION TkArrow INSTRUCTION TkOd
-                |   TkGuard EXPRESSION TkArrow INSTRUCTION
-                |   TkIf EXPRESSION TkArrow INSTRUCTION TkFi
-    '''
-
-# Reglas de precedencia para el parser        
-precedence = (
-	('left', 'TkComma'),
-	('left','TkOBracket','TkCBracket'),
-	('left','TkOpenPar','TkClosePar'),
-	('left','TkMult','TkDiv','TkMod'),
-	('left','TkPlus','TkMinus'),
-	('left','TkLess','TkLeq','TkGreater','TkGeq','TkNEqual'),
-	('left','TkEqual'),
-	('left','TkNot'),
-	('left','TkAnd','TkOr'),
-	('left','TkConcat')
-    )
 
 def p_error(p):
     global parser_error
@@ -157,6 +165,9 @@ parser_error = False
 # Funcion que se encarga de construir el parser.
 def parser_builder(meta_program):
     parser = yacc.yacc(debug=True)
-    out = parser.parse(meta_program)
+    log = logging.getLogger()
+    out = parser.parse(meta_program, debug=log)
+
     if not(parser_error):
-        return (out.toString(0))
+        print(out)
+        #return (out.toString(0))
