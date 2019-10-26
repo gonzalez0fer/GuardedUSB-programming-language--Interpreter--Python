@@ -24,71 +24,72 @@ logging.basicConfig(
 
 
 
-
-def p_block(p):
-    ''' BLOCK   :   TkOBlock DECLARE INSTRUCTION_LIST TkCBlock
+# Creando regla para las instrucciones permitidas por el lenguaje .
+def p_instruction(p):
+    '''INSTRUCTION : TkId TkAsig EXPRESSION
+                |   TkOBlock TkDeclare DECLARATION_LIST INSTRUCTION_LIST TkCBlock
                 |   TkOBlock INSTRUCTION_LIST TkCBlock
+                |   TkRead TkId TkSemicolon
+                |   TkIf EXPRESSION TkArrow INSTRUCTION_LIST TkFi
+                |   TkGuard EXPRESSION TkArrow INSTRUCTION_LIST
+                |   TkFor TkId TkIn EXPRESSION TkTo EXPRESSION TkArrow INSTRUCTION TkRof
+                |   TkDo EXPRESSION TkArrow INSTRUCTION_LIST TkOd
     '''
-
-# Creando regla para definir tipajes de Gusb.
-def p_datatype(p):
-    ''' DATATYPE    :   TkInt
-                    |   TkBool
-                    |   TkArray
-    '''
-    p[0] = p[1]
-
-# Regla para la Declaracion de variables, Comienza con la palabra 
-# reservada [<Declare>] seguida de una lista de declaraciones.
-def p_declarar(p):
-    '''DECLARE : TkDeclare DECLARATION_LIST
-    '''
-    p[0] = Declare(p[2])
-
-# Defino una regla para una frase vacia
-def p_lambda(p):
-    ''' LAMBDA : 
-    '''
-    pass
-
-
-# Creando una regla que defina la declaracion de variables. Tienen la forma
-# predefinida de [<Lista de Id's>:<Tipo de data>;] en caso de tener varias
-# listas de declaraciones, finaliza con una nueva instancia de la lista. 
-def p_declarationlist(p):
-    '''DECLARATION_LIST   : ID_LIST TkTwoPoints DATATYPE TkSemicolon DECLARATION_LIST
-                            | ID_LIST TkTwoPoints DATATYPE TkSemicolon 
-    '''
-    if (len(p)==4):
-        p[0] = DeclarationList(p[1],p[2],None)
-    else:
-        p[0] = DeclarationList(p[1],p[2],p[4])
 
 # Regla que permite hacer una secuencia de instrucciones, estas siempre
 # seran de la forma [<instruccion1>; ... ...<instruccion n>;] hasta que
 # no exista otra (cayendo a lamda terminal).
 def p_instList(p):
-    '''INSTRUCTION_LIST : INSTRUCTION TkSemicolon INSTRUCTION_LIST
-                        | LAMBDA 
+    '''INSTRUCTION_LIST :   INSTRUCTION
+                        |   EXPRESSION TkSemicolon
+                        |   INSTRUCTION_LIST TkSemicolon INSTRUCTION
+                        |   INSTRUCTION_LIST TkSemicolon EXPRESSION
+                        |   LAMBDA 
     '''
     if (len(p)==4):
         p[0] = InstructionList(p[1],p[3])
     elif (len(p)==2):
         pass
 
+
+# Creando una regla que defina la declaracion de variables. Tienen la forma
+# predefinida de [<Lista de Id's>:<Tipo de data>;] en caso de tener varias
+# listas de declaraciones, finaliza con una nueva instancia de la lista. 
+def p_declarationlist(p):
+    '''DECLARATION_LIST   : DECLARATION
+                        |   DECLARATION_LIST DECLARATION
+                        |   TkId  TkTwoPoints DATATYPE TkSemicolon 
+    '''
+
+
+
+def p_declaration(p):
+    ''' DECLARATION :   ARGUMENTS TkTwoPoints DATATYPE TkSemicolon
+                    |   TkId TkTwoPoints TkArray TkOBracket NUMBER TkSoForth NUMBER TkCBracket
+    '''
+
+
 # Regla que define la creacion de listas de isentificadores de variables
 # separadas por comas para implementar la declaracion listada de variables.
-def p_idList(p):
-    '''ID_LIST    : ID_LIST TkComma TkId 
+def p_arguments(p):
+    '''ARGUMENTS    : ARGUMENTS TkComma TkId 
                     | TkId 
+                    | LAMBDA
     '''
-    if (len(p)==2):
-        p[0] = IdList(None,OperandHandler('id',p[1]))
-    else:
-        p[0] = IdList(p[1],OperandHandler('id',p[3]))
 
 
+# Creando regla para definir tipajes de Gusb.
+def p_datatype(p):
+    ''' DATATYPE    :   TkInt
+                    |   TkBool
+    '''
 
+
+# Defino una regla para una frase vacia
+def p_lambda(p):
+    ''' LAMBDA : 
+    '''
+    pass
 
 # Regla para las expresiones permitidas del lenguaje. Desde identificadores,
 # constantes booleanas y los operadores permitidos por guardedusb.
@@ -112,7 +113,7 @@ def p_expressions(p):
                 |   BOOLEAN
 				|   EXPRESSION TkAnd EXPRESSION
 				|   EXPRESSION TkOr EXPRESSION
-				|   TkNot EXPRESSION 
+				|   TkNot EXPRESSION %prec UMINUS
 				|   EXPRESSION TkLess EXPRESSION
 				|   EXPRESSION TkLeq EXPRESSION
 				|   EXPRESSION TkGreater EXPRESSION
@@ -127,16 +128,6 @@ def p_expressions(p):
 		if (p[2]=='+' or p[2]=='-' or p[2]=='*' or p[2]=='/' or p[2]=='%') :
 			p[0] = BinaryOperator(p[1],p[2],p[3])
 
-# Creando regla para las instrucciones permitidas por el lenguaje .
-def p_instruction(p):
-    '''INSTRUCTION : TkId TkAsig EXPRESSION
-                |   BLOCK
-                |   TkRead TkId
-                |   TkGuard EXPRESSION TkArrow INSTRUCTION
-                |   TkFor TkId TkIn EXPRESSION TkTo EXPRESSION TkArrow INSTRUCTION TkRof
-                |   TkDo EXPRESSION TkArrow INSTRUCTION TkOd
-                |   TkIf EXPRESSION TkArrow INSTRUCTION TkFi
-    '''
 
 def p_numbers(p):
     ''' NUMBER  :   TkNum
@@ -156,13 +147,15 @@ precedence = (
 	('left', 'TkComma'),
 	('left','TkOBracket','TkCBracket'),
 	('left','TkOpenPar','TkClosePar'),
+	('right','TkNot'),
+	('left','TkAnd'),
+	('left','TkOr'),
+	('left','TkConcat'),
+    ('right', 'UMINUS', 'TkSize'),
 	('left','TkMult','TkDiv','TkMod'),
 	('left','TkPlus','TkMinus'),
-	('left','TkLess','TkLeq','TkGreater','TkGeq','TkNEqual'),
-	('left','TkEqual'),
-	('left','TkNot'),
-	('left','TkAnd','TkOr'),
-	('left','TkConcat')
+	('nonassoc','TkLess','TkLeq','TkGreater','TkGeq'),
+	('left','TkEqual','TkNEqual'),
     )
 
 def p_error(p):

@@ -2,96 +2,95 @@
    yacc.py: 410:
    yacc.py: 411:State  : 0
    yacc.py: 434:Stack  : . LexToken(TkOBlock,'|[',1,0)
-   yacc.py: 445:Action : Shift and goto state 2
-   yacc.py: 410:
-   yacc.py: 411:State  : 2
-   yacc.py: 434:Stack  : TkOBlock . LexToken(TkDeclare,'declare',2,5)
-   yacc.py: 445:Action : Shift and goto state 5
-   yacc.py: 410:
-   yacc.py: 411:State  : 5
-   yacc.py: 434:Stack  : TkOBlock TkDeclare . LexToken(TkId,'a',3,17)
-   yacc.py: 445:Action : Shift and goto state 19
-   yacc.py: 410:
-   yacc.py: 411:State  : 19
-   yacc.py: 434:Stack  : TkOBlock TkDeclare TkId . LexToken(TkComma,',',3,18)
-   yacc.py: 469:Action : Reduce rule [ID_LIST -> TkId] with ['a'] and goto state 18
-   yacc.py: 506:Result : <IdList @ 0x31841c0> (<g_AbsSyntaxTree.IdList object at 0x0318 ...)
-   yacc.py: 410:
-   yacc.py: 411:State  : 18
-   yacc.py: 434:Stack  : TkOBlock TkDeclare ID_LIST . LexToken(TkComma,',',3,18)
-   yacc.py: 445:Action : Shift and goto state 47
-   yacc.py: 410:
-   yacc.py: 411:State  : 47
-   yacc.py: 434:Stack  : TkOBlock TkDeclare ID_LIST TkComma . LexToken(TkId,'b',3,20)
-   yacc.py: 445:Action : Shift and goto state 82
-   yacc.py: 410:
-   yacc.py: 411:State  : 82
-   yacc.py: 434:Stack  : TkOBlock TkDeclare ID_LIST TkComma TkId . LexToken(TkComma,',',3,21)
-   yacc.py: 469:Action : Reduce rule [ID_LIST -> ID_LIST TkComma TkId] with [<IdList @ 0x31841c0>,',','b'] and goto state 18
-   yacc.py: 506:Result : <IdList @ 0x32a2d90> (<g_AbsSyntaxTree.IdList object at 0x032A ...)
-   yacc.py: 410:
-   yacc.py: 411:State  : 18
-   yacc.py: 434:Stack  : TkOBlock TkDeclare ID_LIST . LexToken(TkComma,',',3,21)
-   yacc.py: 445:Action : Shift and goto state 47
-   yacc.py: 410:
-   yacc.py: 411:State  : 47
-   yacc.py: 434:Stack  : TkOBlock TkDeclare ID_LIST TkComma . LexToken(TkId,'c',3,23)
-   yacc.py: 445:Action : Shift and goto state 82
-   yacc.py: 410:
-   yacc.py: 411:State  : 82
-   yacc.py: 434:Stack  : TkOBlock TkDeclare ID_LIST TkComma TkId . LexToken(TkTwoPoints,':',3,25)
-   yacc.py: 469:Action : Reduce rule [ID_LIST -> ID_LIST TkComma TkId] with [<IdList @ 0x32a2d90>,',','c'] and goto state 18
-   yacc.py: 506:Result : <IdList @ 0x3184aa8> (<g_AbsSyntaxTree.IdList object at 0x0318 ...)
-   yacc.py: 410:
-   yacc.py: 411:State  : 18
-   yacc.py: 434:Stack  : TkOBlock TkDeclare ID_LIST . LexToken(TkTwoPoints,':',3,25)
-   yacc.py: 445:Action : Shift and goto state 46
-   yacc.py: 410:
-   yacc.py: 411:State  : 46
-   yacc.py: 434:Stack  : TkOBlock TkDeclare ID_LIST TkTwoPoints . LexToken(TkInt,'int',3,27)
-   yacc.py: 445:Action : Shift and goto state 79
-   yacc.py: 410:
-   yacc.py: 411:State  : 79
-   yacc.py: 430:Defaulted state 79: Reduce using 3
-   yacc.py: 434:Stack  : TkOBlock TkDeclare ID_LIST TkTwoPoints TkInt . None
-   yacc.py: 469:Action : Reduce rule [DATATYPE -> TkInt] with ['int'] and goto state 78
-   yacc.py: 506:Result : <str @ 0x32a30c0> ('int')
-   yacc.py: 410:
-   yacc.py: 411:State  : 78
-   yacc.py: 434:Stack  : TkOBlock TkDeclare ID_LIST TkTwoPoints DATATYPE . LexToken(TkSemicolon,';',3,30)
-   yacc.py: 445:Action : Shift and goto state 104
-   yacc.py: 410:
-   yacc.py: 411:State  : 104
-   yacc.py: 434:Stack  : TkOBlock TkDeclare ID_LIST TkTwoPoints DATATYPE TkSemicolon . LexToken(TkCBlock,']|',4,32)
-   yacc.py: 469:Action : Reduce rule [DECLARATION_LIST -> ID_LIST TkTwoPoints DATATYPE TkSemicolon] with [<IdList @ 0x3184aa8>,':','int',';'] and goto state 17
-   yacc.py: 506:Result : <DeclarationList @ 0x32a2dd8> (<g_AbsSyntaxTree.DeclarationList object  ...)
-   yacc.py: 410:
-   yacc.py: 411:State  : 17
-   yacc.py: 434:Stack  : TkOBlock TkDeclare DECLARATION_LIST . LexToken(TkCBlock,']|',4,32)
-   yacc.py: 469:Action : Reduce rule [DECLARE -> TkDeclare DECLARATION_LIST] with ['declare',<DeclarationList @ 0x32a2dd8>] and goto state 3
-   yacc.py: 506:Result : <Declare @ 0x31844a8> (<g_AbsSyntaxTree.Declare object at 0x031 ...)
+   yacc.py: 445:Action : Shift and goto state 3
    yacc.py: 410:
    yacc.py: 411:State  : 3
-   yacc.py: 434:Stack  : TkOBlock DECLARE . LexToken(TkCBlock,']|',4,32)
-   yacc.py: 473:Action : Reduce rule [LAMBDA -> <empty>] with [] and goto state 7
-   yacc.py: 548:Result : <NoneType @ 0x6b736ce8> (None)
+   yacc.py: 434:Stack  : TkOBlock . LexToken(TkDeclare,'declare',2,5)
+   yacc.py: 445:Action : Shift and goto state 10
    yacc.py: 410:
-   yacc.py: 411:State  : 7
-   yacc.py: 430:Defaulted state 7: Reduce using 11
-   yacc.py: 434:Stack  : TkOBlock DECLARE LAMBDA . LexToken(TkCBlock,']|',4,32)
-   yacc.py: 469:Action : Reduce rule [INSTRUCTION_LIST -> LAMBDA] with [None] and goto state 15
+   yacc.py: 411:State  : 10
+   yacc.py: 434:Stack  : TkOBlock TkDeclare . LexToken(TkId,'a',3,17)
+   yacc.py: 445:Action : Shift and goto state 42
+   yacc.py: 410:
+   yacc.py: 411:State  : 42
+   yacc.py: 434:Stack  : TkOBlock TkDeclare TkId . LexToken(TkComma,',',3,18)
+   yacc.py: 469:Action : Reduce rule [ARGUMENTS -> TkId] with ['a'] and goto state 43
    yacc.py: 506:Result : <NoneType @ 0x6b736ce8> (None)
    yacc.py: 410:
-   yacc.py: 411:State  : 15
-   yacc.py: 434:Stack  : TkOBlock DECLARE INSTRUCTION_LIST . LexToken(TkCBlock,']|',4,32)
-   yacc.py: 445:Action : Shift and goto state 45
+   yacc.py: 411:State  : 43
+   yacc.py: 434:Stack  : TkOBlock TkDeclare ARGUMENTS . LexToken(TkComma,',',3,18)
+   yacc.py: 445:Action : Shift and goto state 83
    yacc.py: 410:
-   yacc.py: 411:State  : 45
-   yacc.py: 434:Stack  : TkOBlock DECLARE INSTRUCTION_LIST TkCBlock . $end
-   yacc.py: 469:Action : Reduce rule [BLOCK -> TkOBlock DECLARE INSTRUCTION_LIST TkCBlock] with ['|[',<Declare @ 0x31844a8>,None,']|'] and goto state 1
+   yacc.py: 411:State  : 83
+   yacc.py: 434:Stack  : TkOBlock TkDeclare ARGUMENTS TkComma . LexToken(TkId,'b',3,20)
+   yacc.py: 445:Action : Shift and goto state 114
+   yacc.py: 410:
+   yacc.py: 411:State  : 114
+   yacc.py: 434:Stack  : TkOBlock TkDeclare ARGUMENTS TkComma TkId . LexToken(TkComma,',',3,21)
+   yacc.py: 469:Action : Reduce rule [ARGUMENTS -> ARGUMENTS TkComma TkId] with [None,',','b'] and goto state 43
+   yacc.py: 506:Result : <NoneType @ 0x6b736ce8> (None)
+   yacc.py: 410:
+   yacc.py: 411:State  : 43
+   yacc.py: 434:Stack  : TkOBlock TkDeclare ARGUMENTS . LexToken(TkComma,',',3,21)
+   yacc.py: 445:Action : Shift and goto state 83
+   yacc.py: 410:
+   yacc.py: 411:State  : 83
+   yacc.py: 434:Stack  : TkOBlock TkDeclare ARGUMENTS TkComma . LexToken(TkId,'c',3,23)
+   yacc.py: 445:Action : Shift and goto state 114
+   yacc.py: 410:
+   yacc.py: 411:State  : 114
+   yacc.py: 434:Stack  : TkOBlock TkDeclare ARGUMENTS TkComma TkId . LexToken(TkTwoPoints,':',3,25)
+   yacc.py: 469:Action : Reduce rule [ARGUMENTS -> ARGUMENTS TkComma TkId] with [None,',','c'] and goto state 43
+   yacc.py: 506:Result : <NoneType @ 0x6b736ce8> (None)
+   yacc.py: 410:
+   yacc.py: 411:State  : 43
+   yacc.py: 434:Stack  : TkOBlock TkDeclare ARGUMENTS . LexToken(TkTwoPoints,':',3,25)
+   yacc.py: 445:Action : Shift and goto state 82
+   yacc.py: 410:
+   yacc.py: 411:State  : 82
+   yacc.py: 434:Stack  : TkOBlock TkDeclare ARGUMENTS TkTwoPoints . LexToken(TkInt,'int',3,27)
+   yacc.py: 445:Action : Shift and goto state 111
+   yacc.py: 410:
+   yacc.py: 411:State  : 111
+   yacc.py: 430:Defaulted state 111: Reduce using 22
+   yacc.py: 434:Stack  : TkOBlock TkDeclare ARGUMENTS TkTwoPoints TkInt . None
+   yacc.py: 469:Action : Reduce rule [DATATYPE -> TkInt] with ['int'] and goto state 113
+   yacc.py: 506:Result : <NoneType @ 0x6b736ce8> (None)
+   yacc.py: 410:
+   yacc.py: 411:State  : 113
+   yacc.py: 434:Stack  : TkOBlock TkDeclare ARGUMENTS TkTwoPoints DATATYPE . LexToken(TkSemicolon,';',3,30)
+   yacc.py: 445:Action : Shift and goto state 121
+   yacc.py: 410:
+   yacc.py: 411:State  : 121
+   yacc.py: 434:Stack  : TkOBlock TkDeclare ARGUMENTS TkTwoPoints DATATYPE TkSemicolon . LexToken(TkCBlock,']|',4,32)
+   yacc.py: 469:Action : Reduce rule [DECLARATION -> ARGUMENTS TkTwoPoints DATATYPE TkSemicolon] with [None,':',None,';'] and goto state 41
+   yacc.py: 506:Result : <NoneType @ 0x6b736ce8> (None)
+   yacc.py: 410:
+   yacc.py: 411:State  : 41
+   yacc.py: 434:Stack  : TkOBlock TkDeclare DECLARATION . LexToken(TkCBlock,']|',4,32)
+   yacc.py: 469:Action : Reduce rule [DECLARATION_LIST -> DECLARATION] with [None] and goto state 40
+   yacc.py: 506:Result : <NoneType @ 0x6b736ce8> (None)
+   yacc.py: 410:
+   yacc.py: 411:State  : 40
+   yacc.py: 434:Stack  : TkOBlock TkDeclare DECLARATION_LIST . LexToken(TkCBlock,']|',4,32)
+   yacc.py: 473:Action : Reduce rule [LAMBDA -> <empty>] with [] and goto state 79
+   yacc.py: 548:Result : <NoneType @ 0x6b736ce8> (None)
+   yacc.py: 410:
+   yacc.py: 411:State  : 79
+   yacc.py: 434:Stack  : TkOBlock TkDeclare DECLARATION_LIST LAMBDA . LexToken(TkCBlock,']|',4,32)
+   yacc.py: 469:Action : Reduce rule [INSTRUCTION_LIST -> LAMBDA] with [None] and goto state 77
+   yacc.py: 506:Result : <NoneType @ 0x6b736ce8> (None)
+   yacc.py: 410:
+   yacc.py: 411:State  : 77
+   yacc.py: 434:Stack  : TkOBlock TkDeclare DECLARATION_LIST INSTRUCTION_LIST . LexToken(TkCBlock,']|',4,32)
+   yacc.py: 445:Action : Shift and goto state 107
+   yacc.py: 410:
+   yacc.py: 411:State  : 107
+   yacc.py: 434:Stack  : TkOBlock TkDeclare DECLARATION_LIST INSTRUCTION_LIST TkCBlock . $end
+   yacc.py: 469:Action : Reduce rule [INSTRUCTION -> TkOBlock TkDeclare DECLARATION_LIST INSTRUCTION_LIST TkCBlock] with ['|[','declare',None,None,']|'] and goto state 1
    yacc.py: 506:Result : <NoneType @ 0x6b736ce8> (None)
    yacc.py: 410:
    yacc.py: 411:State  : 1
-   yacc.py: 434:Stack  : BLOCK . $end
+   yacc.py: 434:Stack  : INSTRUCTION . $end
    yacc.py: 571:Done   : Returning <NoneType @ 0x6b736ce8> (None)
    yacc.py: 572:PLY: PARSE DEBUG END
