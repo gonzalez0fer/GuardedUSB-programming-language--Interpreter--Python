@@ -22,32 +22,13 @@ logging.basicConfig(
 # de nuestro lenguaje para filtrar errores sintacticos y construir 
 # nuestro arbol sintactico abstracto.
 
-# Creando regla para las instrucciones permitidas por el lenguaje .
-def p_instruction(p):
-    '''INSTRUCTION : TkId TkAsig EXPRESSION
-                |   TkOBlock DECLARE INSTRUCTION_LIST TkCBlock
+
+
+
+def p_block(p):
+    ''' BLOCK   :   TkOBlock DECLARE INSTRUCTION_LIST TkCBlock
                 |   TkOBlock INSTRUCTION_LIST TkCBlock
-                |   TkRead TkId
-                |   TkFor TkId TkIn EXPRESSION TkTo EXPRESSION TkArrow INSTRUCTION TkRof
-                |   TkDo EXPRESSION TkArrow INSTRUCTION TkOd
-                |   TkGuard EXPRESSION TkArrow INSTRUCTION
-                |   TkIf EXPRESSION TkArrow INSTRUCTION TkFi
     '''
-
-# Reglas de precedencia para el parser        
-precedence = (
-	('left', 'TkComma'),
-	('left','TkOBracket','TkCBracket'),
-	('left','TkOpenPar','TkClosePar'),
-	('left','TkMult','TkDiv','TkMod'),
-	('left','TkPlus','TkMinus'),
-	('left','TkLess','TkLeq','TkGreater','TkGeq','TkNEqual'),
-	('left','TkEqual'),
-	('left','TkNot'),
-	('left','TkAnd','TkOr'),
-	('left','TkConcat')
-    )
-
 
 # Creando regla para definir tipajes de Gusb.
 def p_datatype(p):
@@ -64,6 +45,12 @@ def p_declarar(p):
     '''
     p[0] = Declare(p[2])
 
+# Defino una regla para una frase vacia
+def p_lambda(p):
+    ''' LAMBDA : 
+    '''
+    pass
+
 
 # Creando una regla que defina la declaracion de variables. Tienen la forma
 # predefinida de [<Lista de Id's>:<Tipo de data>;] en caso de tener varias
@@ -77,6 +64,17 @@ def p_declarationlist(p):
     else:
         p[0] = DeclarationList(p[1],p[2],p[4])
 
+# Regla que permite hacer una secuencia de instrucciones, estas siempre
+# seran de la forma [<instruccion1>; ... ...<instruccion n>;] hasta que
+# no exista otra (cayendo a lamda terminal).
+def p_instList(p):
+    '''INSTRUCTION_LIST : INSTRUCTION TkSemicolon INSTRUCTION_LIST
+                        | LAMBDA 
+    '''
+    if (len(p)==4):
+        p[0] = InstructionList(p[1],p[3])
+    elif (len(p)==2):
+        pass
 
 # Regla que define la creacion de listas de isentificadores de variables
 # separadas por comas para implementar la declaracion listada de variables.
@@ -90,24 +88,15 @@ def p_idList(p):
         p[0] = IdList(p[1],OperandHandler('id',p[3]))
 
 
-# Regla que permite hacer una secuencia de instrucciones, estas siempre
-# seran de la forma [<instruccion1>; ... ...<instruccion n>;] hasta que
-# no exista otra (cayendo a lamda terminal).
-def p_instList(p):
-    '''INSTRUCTION_LIST : INSTRUCTION TkSemicolon INSTRUCTION_LIST
-                        | LAMBDA 
-    '''
-    if (len(p)==4):
-        p[0] = InstructionList(p[1],p[3])
-    elif (len(p)==2):
-        pass
+
 
 # Regla para las expresiones permitidas del lenguaje. Desde identificadores,
 # constantes booleanas y los operadores permitidos por guardedusb.
 def p_expressions(p):
-	'''EXPRESSION : TkNum
+	'''EXPRESSION : NUMBER
                 |   TkId
                 |   TkString
+                |   ARRAY
                 |   TkOpenPar EXPRESSION TkClosePar
                 |   TkOBracket EXPRESSION TkCBracket
                 |   EXPRESSION TkPlus EXPRESSION
@@ -115,38 +104,66 @@ def p_expressions(p):
 				|   EXPRESSION TkMult EXPRESSION
 				|   EXPRESSION TkDiv EXPRESSION
 				|   EXPRESSION TkMod EXPRESSION
+				|   EXPRESSION TkConcat EXPRESSION
+                |   TkSize EXPRESSION
+                |   TkMax EXPRESSION
+                |   TkMin EXPRESSION
+                |   TkAtoi EXPRESSION
+                |   BOOLEAN
 				|   EXPRESSION TkAnd EXPRESSION
 				|   EXPRESSION TkOr EXPRESSION
+				|   TkNot EXPRESSION 
 				|   EXPRESSION TkLess EXPRESSION
 				|   EXPRESSION TkLeq EXPRESSION
 				|   EXPRESSION TkGreater EXPRESSION
 				|   EXPRESSION TkGeq EXPRESSION
 				|   EXPRESSION TkEqual EXPRESSION
 				|   EXPRESSION TkNEqual EXPRESSION
-				|   EXPRESSION TkConcat EXPRESSION
-                |   TkSize EXPRESSION
-                |   TkMax EXPRESSION
-                |   TkMin EXPRESSION
-                |   TkAtoi EXPRESSION
-                |   TkFalse
-                |   TkTrue
-				|   EXPRESSION TkNot
                 |   TkPrint EXPRESSION
                 |   TkPrintln EXPRESSION
-                |   TkArray TkOBracket TkNum TkSoForth TkNum TkCBracket
-
     '''
 	if len(p) == 4 :
 		# Definicion de la regla para Operadores aritmeticos binarios.
 		if (p[2]=='+' or p[2]=='-' or p[2]=='*' or p[2]=='/' or p[2]=='%') :
 			p[0] = BinaryOperator(p[1],p[2],p[3])
 
-
-# Defino una regla para una frase vacia
-def p_lambda(p):
-    ''' LAMBDA : 
+# Creando regla para las instrucciones permitidas por el lenguaje .
+def p_instruction(p):
+    '''INSTRUCTION : TkId TkAsig EXPRESSION
+                |   BLOCK
+                |   TkRead TkId
+                |   TkGuard EXPRESSION TkArrow INSTRUCTION
+                |   TkFor TkId TkIn EXPRESSION TkTo EXPRESSION TkArrow INSTRUCTION TkRof
+                |   TkDo EXPRESSION TkArrow INSTRUCTION TkOd
+                |   TkIf EXPRESSION TkArrow INSTRUCTION TkFi
     '''
-    pass
+
+def p_numbers(p):
+    ''' NUMBER  :   TkNum
+    '''
+
+def p_booleans(p):
+    ''' BOOLEAN : TkTrue
+                | TkFalse
+    '''
+
+def p_array(p):
+    ''' ARRAY   : TkArray TkOBracket TkNum TkSoForth TkNum TkCBracket
+    '''
+
+# Reglas de precedencia para el parser        
+precedence = (
+	('left', 'TkComma'),
+	('left','TkOBracket','TkCBracket'),
+	('left','TkOpenPar','TkClosePar'),
+	('left','TkMult','TkDiv','TkMod'),
+	('left','TkPlus','TkMinus'),
+	('left','TkLess','TkLeq','TkGreater','TkGeq','TkNEqual'),
+	('left','TkEqual'),
+	('left','TkNot'),
+	('left','TkAnd','TkOr'),
+	('left','TkConcat')
+    )
 
 def p_error(p):
     global parser_error
@@ -170,4 +187,4 @@ def parser_builder(meta_program):
 
     if not(parser_error):
         print(out)
-        #return (out.toString(0))
+        return (out)
