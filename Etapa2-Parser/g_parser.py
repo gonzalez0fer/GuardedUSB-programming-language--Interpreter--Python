@@ -68,20 +68,18 @@ def p_terminal(p):
 
 def p_content(p):
 	''' Content :   Instruction
-                |   Instruction Content
-                |   Block Content
+                |   Instruction TkSemicolon Content
+                |   Block TkSemicolon Content
                 |   Block
 	'''
-
-
+    
 def p_instruction(p):
-    ''' Instruction :   Expression TkSemicolon
-                    |   Conditional
+    ''' Instruction :   Conditional
                     |   Forloop
                     |   Doloop
-                    |   Asign TkSemicolon
-                    |   Input TkSemicolon
-                    |   Output TkSemicolon
+                    |   Asign
+                    |   Input
+                    |   Output
     '''
 
 def p_conditional(p):
@@ -107,9 +105,7 @@ def p_input(p):
 	'''
 
 def p_output(p):
-	'''Output   :   TkPrint TkQuote Expression TkQuote
-                |   TkPrintln TkQuote Expression TkQuote
-                |   TkPrint Expression
+	'''Output   :   TkPrint Expression
                 |   TkPrint Expression ConcatExpression
                 |   TkPrintln Expression
                 |   TkPrintln Expression ConcatExpression
