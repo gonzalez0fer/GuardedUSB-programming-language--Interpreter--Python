@@ -1,17 +1,78 @@
    yacc.py: 362:PLY: PARSE DEBUG START
    yacc.py: 410:
    yacc.py: 411:State  : 0
-   yacc.py: 435:Stack  : . LexToken(TkNum,3,1,0)
-   yacc.py: 580:Error  : . LexToken(TkNum,3,1,0)
+   yacc.py: 434:Stack  : . LexToken(TkOBlock,'|[',1,0)
+   yacc.py: 445:Action : Shift and goto state 2
    yacc.py: 410:
-   yacc.py: 411:State  : 0
-   yacc.py: 435:Stack  : . LexToken(TkPlus,'+',1,1)
-   yacc.py: 580:Error  : . LexToken(TkPlus,'+',1,1)
+   yacc.py: 411:State  : 2
+   yacc.py: 434:Stack  : TkOBlock . LexToken(TkDeclare,'declare',2,5)
+   yacc.py: 445:Action : Shift and goto state 4
    yacc.py: 410:
-   yacc.py: 411:State  : 0
-   yacc.py: 435:Stack  : . LexToken(TkNum,2,1,2)
-   yacc.py: 580:Error  : . LexToken(TkNum,2,1,2)
+   yacc.py: 411:State  : 4
+   yacc.py: 434:Stack  : TkOBlock TkDeclare . LexToken(TkId,'a',3,17)
+   yacc.py: 445:Action : Shift and goto state 23
    yacc.py: 410:
-   yacc.py: 411:State  : 0
-   yacc.py: 435:Stack  : . $end
-   yacc.py: 580:Error  : . $end
+   yacc.py: 411:State  : 23
+   yacc.py: 434:Stack  : TkOBlock TkDeclare TkId . LexToken(TkComma,',',3,18)
+   yacc.py: 445:Action : Shift and goto state 60
+   yacc.py: 410:
+   yacc.py: 411:State  : 60
+   yacc.py: 434:Stack  : TkOBlock TkDeclare TkId TkComma . LexToken(TkId,'b',3,20)
+   yacc.py: 445:Action : Shift and goto state 23
+   yacc.py: 410:
+   yacc.py: 411:State  : 23
+   yacc.py: 434:Stack  : TkOBlock TkDeclare TkId TkComma TkId . LexToken(TkComma,',',3,21)
+   yacc.py: 445:Action : Shift and goto state 60
+   yacc.py: 410:
+   yacc.py: 411:State  : 60
+   yacc.py: 434:Stack  : TkOBlock TkDeclare TkId TkComma TkId TkComma . LexToken(TkId,'c',3,23)
+   yacc.py: 445:Action : Shift and goto state 23
+   yacc.py: 410:
+   yacc.py: 411:State  : 23
+   yacc.py: 434:Stack  : TkOBlock TkDeclare TkId TkComma TkId TkComma TkId . LexToken(TkTwoPoints,':',3,25)
+   yacc.py: 469:Action : Reduce rule [Variables -> TkId] with ['c'] and goto state 109
+   yacc.py: 506:Result : <SyntaxLeaf @ 0x3d3b238> (<g_AbsSyntaxTree.SyntaxLeaf object at 0x ...)
+   yacc.py: 410:
+   yacc.py: 411:State  : 109
+   yacc.py: 430:Defaulted state 109: Reduce using 92
+   yacc.py: 434:Stack  : TkOBlock TkDeclare TkId TkComma TkId TkComma Variables . LexToken(TkTwoPoints,':',3,25)
+   yacc.py: 469:Action : Reduce rule [Variables -> TkId TkComma Variables] with ['b',',',<SyntaxLeaf @ 0x3d3b238>] and goto state 109
+   yacc.py: 506:Result : <SyntaxLeaf @ 0x3d3b310> (<g_AbsSyntaxTree.SyntaxLeaf object at 0x ...)
+   yacc.py: 410:
+   yacc.py: 411:State  : 109
+   yacc.py: 430:Defaulted state 109: Reduce using 92
+   yacc.py: 434:Stack  : TkOBlock TkDeclare TkId TkComma Variables . LexToken(TkTwoPoints,':',3,25)
+   yacc.py: 469:Action : Reduce rule [Variables -> TkId TkComma Variables] with ['a',',',<SyntaxLeaf @ 0x3d3b310>] and goto state 22
+   yacc.py: 506:Result : <SyntaxLeaf @ 0x3d3b118> (<g_AbsSyntaxTree.SyntaxLeaf object at 0x ...)
+   yacc.py: 410:
+   yacc.py: 411:State  : 22
+   yacc.py: 434:Stack  : TkOBlock TkDeclare Variables . LexToken(TkTwoPoints,':',3,25)
+   yacc.py: 445:Action : Shift and goto state 59
+   yacc.py: 410:
+   yacc.py: 411:State  : 59
+   yacc.py: 434:Stack  : TkOBlock TkDeclare Variables TkTwoPoints . LexToken(TkInt,'int',3,27)
+   yacc.py: 445:Action : Shift and goto state 105
+   yacc.py: 410:
+   yacc.py: 411:State  : 105
+   yacc.py: 434:Stack  : TkOBlock TkDeclare Variables TkTwoPoints TkInt . LexToken(TkCBlock,']|',4,31)
+   yacc.py: 469:Action : Reduce rule [Datatype -> TkInt] with ['int'] and goto state 104
+   yacc.py: 506:Result : <SyntaxLeaf @ 0x3d3b130> (<g_AbsSyntaxTree.SyntaxLeaf object at 0x ...)
+   yacc.py: 410:
+   yacc.py: 411:State  : 104
+   yacc.py: 434:Stack  : TkOBlock TkDeclare Variables TkTwoPoints Datatype . LexToken(TkCBlock,']|',4,31)
+   yacc.py: 469:Action : Reduce rule [Declaration -> Variables TkTwoPoints Datatype] with [<SyntaxLeaf @ 0x3d3b118>,':',<SyntaxLeaf @ 0x3d3b130>] and goto state 21
+   yacc.py: 506:Result : <SyntaxLeaf @ 0x3d3b280> (<g_AbsSyntaxTree.SyntaxLeaf object at 0x ...)
+   yacc.py: 410:
+   yacc.py: 411:State  : 21
+   yacc.py: 434:Stack  : TkOBlock TkDeclare Declaration . LexToken(TkCBlock,']|',4,31)
+   yacc.py: 445:Action : Shift and goto state 58
+   yacc.py: 410:
+   yacc.py: 411:State  : 58
+   yacc.py: 434:Stack  : TkOBlock TkDeclare Declaration TkCBlock . $end
+   yacc.py: 469:Action : Reduce rule [Block -> TkOBlock TkDeclare Declaration TkCBlock] with ['|[','declare',<SyntaxLeaf @ 0x3d3b280>,']|'] and goto state 1
+   yacc.py: 506:Result : <SyntaxLeaf @ 0x3cd5208> (<g_AbsSyntaxTree.SyntaxLeaf object at 0x ...)
+   yacc.py: 410:
+   yacc.py: 411:State  : 1
+   yacc.py: 434:Stack  : Block . $end
+   yacc.py: 571:Done   : Returning <SyntaxLeaf @ 0x3cd5208> (<g_AbsSyntaxTree.SyntaxLeaf object at 0x ...)
+   yacc.py: 572:PLY: PARSE DEBUG END
