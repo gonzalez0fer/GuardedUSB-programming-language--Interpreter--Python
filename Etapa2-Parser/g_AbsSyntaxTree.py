@@ -31,8 +31,8 @@ def SyntaxTreePrinter(syntaxLeaf, identation):
 
                 elif (leaf._type == "Declare"):
                     print('\n', identation, leaf._type)
-                    DeclareLeafPrinter(i, tabs)
+                    #DeclareLeafPrinter(i, tabs)
 
                 elif (leaf._type == "Expression"):
                     print("\n")
-                    imprimirExp(i, tabs)
+                    #imprimirExp(i, tabs)
