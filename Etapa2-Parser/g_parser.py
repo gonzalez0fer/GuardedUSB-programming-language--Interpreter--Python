@@ -46,9 +46,9 @@ def p_program(p):
     if (len(p)==4):
         p[0] = SyntaxLeaf('Block', None, [p[2]])
     elif (len(p)==6):
-        p[0] = SyntaxLeaf('Block', None, [p[4],p[5]])
+        p[0] = SyntaxLeaf('Block', None, [p[3],p[4]])
     else:
-        p[0] = SyntaxLeaf('Block', None, [p[4]])
+        p[0] = SyntaxLeaf('Block', None, [p[3]])
 
    
 
@@ -82,7 +82,7 @@ def p_terminal(p):
 			  | TkOpenPar Terminal TkClosePar
 	'''
 	if (len(p) == 4):
-		p[0] = SyntaxLeaf('Terminal', None, [p[3]])
+		p[0] = SyntaxLeaf('Terminal', None, [p[2]])
 	else:
 		p[0] = SyntaxLeaf('Terminal', p[1])
 
@@ -94,7 +94,7 @@ def p_content(p):
                 |   Block TkSemicolon Content
                 |   Block
 	'''
-	p[0] = SyntaxLeaf('Content', None, [p[1]])
+	
 	if (len(p) == 2):
 		p[0] = SyntaxLeaf('Content', None, [p[1]])
 	else:
@@ -368,4 +368,4 @@ def parser_builder(meta_program):
     out = parser.parse(meta_program, debug=log)
 
     if not(parser_error):
-        return (out)
+        SyntaxTreePrinter(out, "")

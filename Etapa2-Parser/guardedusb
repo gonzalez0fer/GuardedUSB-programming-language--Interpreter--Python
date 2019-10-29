@@ -27,6 +27,6 @@ if __name__ == '__main__':
 
     # Inicializacion del Parser para la ubicacion de errores sintacticos.
     parser_output = parser_builder(meta_program)
-    print(parser_output)
+    #print(parser_output)
     
     input_file.close()
