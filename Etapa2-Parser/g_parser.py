@@ -24,6 +24,7 @@ logging.basicConfig(
 
 # Reglas de precedencia para el parser        
 precedence = (
+    ('left', 'TkAnd', 'TkOr'),
 	('nonassoc', 'TkGreater', 'TkLess', 'TkGeq', 'TkLeq'),
 	('left', 'TkPlus', 'TkMinus'),
 	('left', 'TkMult', 'TkDiv', 'TkMod'),
@@ -32,7 +33,6 @@ precedence = (
 	('left', 'TkOBracket', 'TkCBracket'),
 	('left', 'TkOpenPar', 'TkClosePar'),
 	('left', 'TkEqual', 'TkNEqual'),
-	('left', 'TkAnd', 'TkOr'),
 	('right', 'TkNot'),
 	('nonassoc', 'TkNum', 'TkId')
 )

@@ -36,3 +36,21 @@ def SyntaxTreePrinter(syntaxLeaf, identation):
                 elif (leaf._type == "Expression"):
                     print("\n")
                     #imprimirExp(i, tabs)
+
+def PrintExpression(syntaxLeaf, identation):
+    child = syntaxLeaf.childs[0]
+
+    if (child._type == "AritmeticOperator"):
+        #PrintAritmeticOp
+    elif (child._type == "Terminal"):
+        #PrintTerminal
+    elif (child._type == "RelationalOperator"):
+        #PrintRelationalOp
+    elif (child._type == "BooleanOperator"):
+        #PrintBooleanOp
+    elif (child._type == "StrOperator"):
+        #PrintStrOp
+    elif (child._type == "ArrayOperator"):
+        #PrintArrayOp
+    elif(child._type == "ArrayExpression"):
+        #PrintArrayExp
