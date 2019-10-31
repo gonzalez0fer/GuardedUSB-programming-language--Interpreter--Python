@@ -325,8 +325,6 @@ def p_boolop(p):
 		p[0] = SyntaxLeaf('UnaryBooleanOperator', p[1], [p[2]])
 	elif (len(p) == 5):
 		p[0] = SyntaxLeaf('UnaryBooleanOperator', p[2], [p[3]])
-	elif(len(p) == 2):
-		p[0] = SyntaxLeaf('Terminal', p[1], [])
 	else:
 		p[0] = SyntaxLeaf('BooleanOperator', p[3], [p[2], p[4]])
 
