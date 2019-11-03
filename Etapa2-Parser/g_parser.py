@@ -162,9 +162,9 @@ def p_output(p):
                 |   TkPrintln Expression ConcatExpression
     '''
     if(len(p)==4):
-        p[0] = SyntaxLeaf('Output', None, [p[2],p[3]])
+        p[0] = SyntaxLeaf('Output', p[1], [p[2],p[3]])
     else:
-        p[0] = SyntaxLeaf('Output', None, [p[2]])
+        p[0] = SyntaxLeaf('Output', p[1], [p[2]])
 
 
 

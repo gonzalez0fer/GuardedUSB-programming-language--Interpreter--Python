@@ -69,8 +69,8 @@ def PrintInstruction(syntaxLeaf, identation):
         PrintAsign(child, identation)
     elif(child._type == "Input"):
         PrintInput(child, identation)
-    #elif(child._type == "Output"):
-        #PrintOutput
+    elif(child._type == "Output"):
+        PrintOutput(child, identation)
 
 
 def PrintConditional(syntaxLeaf, identation):
@@ -101,6 +101,29 @@ def PrintInput(syntaxLeaf, identation):
 
     print(identation, "Ident:", syntaxLeaf.childs[0])
 
+def PrintOutput(syntaxLeaf, identation):
+    if(syntaxLeaf.value == "Print"):
+        print(identation, "Print")
+        identation = identation + TAB
+    elif(syntaxLeaf.value == "Println"):
+        print(identation, "Println")
+        identation = identation + TAB
+    
+    for leaf in syntaxLeaf.childs:
+        if(leaf._type == "Expression"):
+            PrintExpression(leaf, identation)
+        else:
+            PrintConcatExp(leaf, identation)
+
+def PrintConcatExp(syntaxLeaf, identation):
+    print(identation, "Concat")
+    identation = identation + TAB
+
+    for leaf in syntaxLeaf.childs:
+        if(leaf._type == "Expression"):
+            PrintExpression(leaf, identation)
+        else:
+            PrintConcatExp(leaf, identation)
 
 def PrintVariable(syntaxLeaf, identation):
     if(len(syntaxLeaf.childs) > 0):
@@ -126,8 +149,8 @@ def PrintExpression(syntaxLeaf, identation):
         PrintRelationalOp(child, identation)
     elif (child._type == "BooleanOperator"):
         PrintBooleanOp(child, identation)
-    #elif (child._type == "StrOperator"):
-        #PrintStrOp
+    elif (child._type == "StrOperator"):
+        PrintStrOp(child, identation)
     #elif (child._type == "ArrayOperator"):
         #PrintArrayOp
     #elif(child._type == "ArrayExpression"):
@@ -172,3 +195,10 @@ def PrintBooleanOp(syntaxLeaf, identation):
 
     for leaf in syntaxLeaf.childs:
         PrintExpression(leaf, identation)
+
+def PrintStrOp(syntaxLeaf, identation):
+    print(identation, "Concat")
+    identation = identation + TAB
+
+    for leaf in syntaxLeaf.childs:
+        print(identation, leaf)
