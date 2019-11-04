@@ -115,10 +115,8 @@ def p_instruction(p):
 
 
 def p_conditional(p):
-    ''' Conditional :   TkIf RelationalOperator TkArrow Content TkFi
-                    |   TkIf BooleanOperator TkArrow Content TkFi
-                    |   TkIf RelationalOperator TkArrow Content Guard TkFi
-                    |   TkIf BooleanOperator TkArrow Content Guard TkFi
+    ''' Conditional :   TkIf Expression TkArrow Content TkFi
+                    |   TkIf Expression TkArrow Content Guard TkFi
     '''
     if (len(p)==6):
         p[0] = SyntaxLeaf('Conditional', None, [p[2],p[4]])
@@ -128,10 +126,8 @@ def p_conditional(p):
 
 
 def p_guard(p):
-    ''' Guard   :   TkGuard RelationalOperator TkArrow Content
-                |   TkGuard BooleanOperator TkArrow Content
-                |   TkGuard RelationalOperator TkArrow Content Guard
-                |   TkGuard BooleanOperator TkArrow Content Guard
+    ''' Guard   :   TkGuard Expression TkArrow Content
+                |   TkGuard Expression TkArrow Content Guard
     '''
     if (len(p)==5):
         p[0] = SyntaxLeaf('Guard', None, [p[2],p[4]])
@@ -180,10 +176,13 @@ def p_concatexp(p):
 
 
 def p_doloop(p):
-    ''' Doloop :   TkDo RelationalOperator TkArrow Content TkOd
-                |   TkDo BooleanOperator TkArrow Content TkOd 
+    ''' Doloop :   TkDo Expression TkArrow Content TkOd
+                |   TkDo Expression TkArrow Content Guard TkOd 
     '''
-    p[0] = SyntaxLeaf('Doloop', p[2], [p[4]])
+    if(len(p)== 6):
+        p[0] = SyntaxLeaf('Doloop', p[2], [p[4]])
+    else:
+        p[0] = SyntaxLeaf('Doloop', p[2], [p[4], p[5]])
 
 
 

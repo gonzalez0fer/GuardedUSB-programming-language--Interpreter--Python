@@ -78,10 +78,8 @@ def PrintConditional(syntaxLeaf, identation):
     identation = identation + TAB
 
     for leaf in syntaxLeaf.childs:
-        if(leaf._type == "RelationalOperator"):
-            PrintRelationalOp(leaf, identation)
-        elif(leaf._type == "BooleanOperator"):
-            PrintBooleanOp(leaf, identation)
+        if(leaf._type == "Expression"):
+            PrintExpression(leaf, identation)
         elif(leaf._type == "Content"):
             PrintContent(leaf, identation)
         elif(leaf._type == "Guard"):
