@@ -90,9 +90,9 @@ def PrintInstruction(syntaxLeaf, identation):
     elif(child._type == "Forloop"):
         print(identation, "For\n",identation+ TAB, "In")
         PrintForLoop(child,identation+ TAB)
-    elif(child._type == "DoLoop"):
-        print('>>>>>DO')
-        #PrintDoLoop
+    elif(child._type == "Doloop"):
+        print(identation, "Do")
+        PrintDoLoop(child,identation+ TAB)
     elif(child._type == "Asign"):
         PrintAsign(child, identation)
     elif(child._type == "Input"):
@@ -110,7 +110,19 @@ def PrintForLoop(syntaxLeaf, identation):
         elif (leaf._type == "Terminal"):
             PrintTerminal(leaf, identation)
 
+def PrintDoLoop(syntaxLeaf, identation):
+    print(identation+TAB, "Exp\n")
+    print(identation+TAB, "Ident:", syntaxLeaf.value)
+    identation = identation + TAB
 
+    for leaf in syntaxLeaf.childs:
+        if(leaf._type == "Expression"):
+            PrintExpression(leaf, identation)
+        elif(leaf._type == "Content"):
+            PrintContent(leaf, identation)
+        elif(leaf._type == "Guard"):
+            PrintConditional(leaf, identation)
+  
 
 
 def PrintConditional(syntaxLeaf, identation):
