@@ -98,7 +98,7 @@ def p_content(p):
 	if (len(p) == 2):
 		p[0] = SyntaxLeaf('Content', None, [p[1]])
 	else:
-		p[0] = SyntaxLeaf('Content', None, [p[1], p[3]])
+		p[0] = SyntaxLeaf('Content', None, [p[1], p[2], p[3]])
     
 
 

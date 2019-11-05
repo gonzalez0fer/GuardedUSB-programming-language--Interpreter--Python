@@ -42,7 +42,7 @@ class SyntaxLeaf:
 def SyntaxTreePrinter(syntaxLeaf, identation):
     if (syntaxLeaf):
         if(len(syntaxLeaf.childs) > 0):
-            print(syntaxLeaf._type)
+            print(identation, syntaxLeaf._type)
             identation = identation + TAB
 
             for leaf in syntaxLeaf.childs:
@@ -68,9 +68,11 @@ def PrintContent(syntaxLeaf, identation):
             PrintInstruction(child, identation)
         elif (child._type == "Block"):
             SyntaxTreePrinter(child, identation)
-    elif (len(syntaxLeaf.childs) == 2):
+    elif (len(syntaxLeaf.childs) >= 2):
         for leaf in syntaxLeaf.childs:
-            if(leaf._type == "Instruction"):
+            if (leaf==';'):
+                print(identation,'Sequencing')
+            elif(leaf._type == "Instruction"):
                 PrintInstruction(leaf, identation)
             elif(leaf._type == "Block"):
                 SyntaxTreePrinter(leaf, identation)
@@ -85,9 +87,11 @@ def PrintInstruction(syntaxLeaf, identation):
         print(identation, "If")
         identation = identation + TAB
         PrintConditional(child, identation)
-    #elif(child._type == "Forloop"):
-        #PrintForLoop
-    #elif(child._type == "DoLoop"):
+    elif(child._type == "Forloop"):
+        print(identation, "For\n",identation+ TAB, "In")
+        PrintForLoop(child,identation+ TAB)
+    elif(child._type == "DoLoop"):
+        print('>>>>>DO')
         #PrintDoLoop
     elif(child._type == "Asign"):
         PrintAsign(child, identation)
@@ -95,6 +99,18 @@ def PrintInstruction(syntaxLeaf, identation):
         PrintInput(child, identation)
     elif(child._type == "Output"):
         PrintOutput(child, identation)
+
+def PrintForLoop(syntaxLeaf, identation):
+    print(identation+TAB, "Ident:", syntaxLeaf.value)
+    identation = identation + TAB
+
+    for leaf in syntaxLeaf.childs:
+        if(leaf._type == "Content"):
+            PrintContent(leaf, identation)
+        elif (leaf._type == "Terminal"):
+            PrintTerminal(leaf, identation)
+
+
 
 
 def PrintConditional(syntaxLeaf, identation):
