@@ -47,7 +47,7 @@ def PrintContent(syntaxLeaf, identation):
     elif (len(syntaxLeaf.childs) == 2):
         for leaf in syntaxLeaf.childs:
             if(leaf._type == "Instruction"):
-                PrintInstruction(child, identation)
+                PrintInstruction(leaf, identation)
             elif(leaf._type == "Block"):
                 SyntaxTreePrinter(leaf, identation)
             elif(leaf._type == "Content"):
