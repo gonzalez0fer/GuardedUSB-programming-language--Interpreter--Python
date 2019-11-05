@@ -57,9 +57,9 @@ def p_declaration(p):
                     |   Variables TkTwoPoints Datatype TkSemicolon Declaration
     '''
     if (len(p)==4):
-        p[0] = SyntaxLeaf('Declare', None, [p[1],p[3]])
+        p[0] = SyntaxLeaf('Declare', None, [p[1]])
     else:
-        p[0] = SyntaxLeaf('Declare', None, [p[1],p[3],p[5]])      
+        p[0] = SyntaxLeaf('Declare', None, [p[1],p[5]])      
 
 
 

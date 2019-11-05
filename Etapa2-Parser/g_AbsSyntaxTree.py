@@ -9,6 +9,24 @@
 #espacio para la identacion del arbol.
 TAB = '  '
 
+# Diccionario de simbolos
+symbols = {
+    "+": "Plus",
+    "-": "Minus",
+    "*": "Mult",
+    "/": "Div",
+    "%": "Mod",
+    "\\/": "Or",
+    "/\\": "And",
+    "!": "Not",
+    "<": "Less",
+    "<=": "Leq",
+    ">=": "Geq",
+    ">": "Greater",
+    "==": "Equal",
+    "!=": "NotEqual"
+}
+
 class SyntaxLeaf:
 
     def __init__(self, _type, value = None, childs = None):
@@ -31,10 +49,16 @@ def SyntaxTreePrinter(syntaxLeaf, identation):
                 if (leaf._type == "Declare"):
                     print(identation, leaf._type)
                     identation = identation + TAB
-                    PrintVariable(leaf.childs[0], identation)
+                    PrintDeclaration(leaf, identation)
                 elif (leaf._type == "Content"):
                     PrintContent(leaf, identation)
 
+def PrintDeclaration(syntaxLeaf, identation):
+    for leaf in syntaxLeaf.childs:
+        if(leaf._type == "Variable"):
+            PrintVariable(leaf, identation)
+        elif(leaf._type == "Declare"):
+            PrintDeclaration(leaf, identation)
 
 def PrintContent(syntaxLeaf, identation):
     if (len(syntaxLeaf.childs) == 1):
@@ -87,7 +111,9 @@ def PrintConditional(syntaxLeaf, identation):
 
 
 def PrintAsign(syntaxLeaf, identation):
-    print(identation, syntaxLeaf.value)
+    print(identation, "Asig")
+    identation = identation + TAB
+    print(identation, "Ident:", syntaxLeaf.value)
     identation = identation + TAB
 
     PrintExpression(syntaxLeaf.childs[0], identation)
@@ -136,18 +162,23 @@ def PrintVariable(syntaxLeaf, identation):
 def PrintExpression(syntaxLeaf, identation):
     child = syntaxLeaf.childs[0]
 
-    print(identation, "Exp")
-    identation = identation + TAB
-
     if (child._type == "AritmeticOperator"):
+        print(identation, "Exp")
+        identation = identation + TAB
         PrintAritmeticOp(child, identation) 
     elif (child._type == "Terminal"):
         PrintTerminal(child, identation)
     elif (child._type == "RelationalOperator"):
+        print(identation, "Exp")
+        identation = identation + TAB
         PrintRelationalOp(child, identation)
     elif (child._type == "BooleanOperator"):
+        print(identation, "Exp")
+        identation = identation + TAB
         PrintBooleanOp(child, identation)
     elif (child._type == "StrOperator"):
+        print(identation, "Exp")
+        identation = identation + TAB
         PrintStrOp(child, identation)
     #elif (child._type == "ArrayOperator"):
         #PrintArrayOp
@@ -157,7 +188,7 @@ def PrintExpression(syntaxLeaf, identation):
 # TO DO: Tal vez unir todas las funciones que son de esta forma en una sola
 #        que se llame PrintOperations o algo asi
 def PrintAritmeticOp(syntaxLeaf, identation):
-    print(identation, syntaxLeaf.value)
+    print(identation, symbols[syntaxLeaf.value])
     identation = identation + TAB
 
     for leaf in syntaxLeaf.childs:
@@ -166,11 +197,11 @@ def PrintAritmeticOp(syntaxLeaf, identation):
 
 def PrintTerminal(syntaxLeaf, identation):
     if (len(syntaxLeaf.childs) == 0):
-        if(syntaxLeaf.value is chr):
-            print(identation, "Ident:", syntaxLeaf.value)
-            identation = identation + TAB
-        elif(syntaxLeaf.value is int):
+        if(isinstance(syntaxLeaf.value, int)):
             print(identation, "Literal:", syntaxLeaf.value)
+            identation = identation + TAB
+        elif(syntaxLeaf.value.isalpha() and len(syntaxLeaf.value) == 1):
+            print(identation, "Ident:", syntaxLeaf.value)
             identation = identation + TAB
         else:
             print(identation, syntaxLeaf.value)
