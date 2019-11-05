@@ -20,7 +20,8 @@ class color:
 
 def printer(*args):
     print(color.RED,*args,color.END)
-
+def printseq(identation):
+    print(color.BLUE,identation,'Sequencing',color.END)
 
 # Defino una variable global que fija un Tab de
 #espacio para la identacion del arbol.
@@ -74,7 +75,7 @@ def PrintDeclaration(syntaxLeaf, identation):
     for leaf in syntaxLeaf.childs:
         #print('<<<',leaf.value,' ',leaf._type) ####PARA DEBUG
         if(leaf== ";"):
-            print(identation,'Sequencing')        
+            printseq(identation)        
         elif(leaf._type == "Variable"):
             PrintVariable(leaf, identation+TAB)
         elif(leaf._type == "Declare"):
@@ -91,7 +92,7 @@ def PrintContent(syntaxLeaf, identation):
     elif (len(syntaxLeaf.childs) >= 2):
         for leaf in syntaxLeaf.childs:
             if (leaf==';'):
-                print(identation,'Sequencing')
+                printseq(identation)
             elif(leaf._type == "Instruction"):
                 PrintInstruction(leaf, identation)
             elif(leaf._type == "Block"):
