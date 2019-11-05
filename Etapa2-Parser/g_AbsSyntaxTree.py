@@ -55,7 +55,10 @@ def SyntaxTreePrinter(syntaxLeaf, identation):
 
 def PrintDeclaration(syntaxLeaf, identation):
     for leaf in syntaxLeaf.childs:
-        if(leaf._type == "Variable"):
+        #print('<<<',leaf.value,' ',leaf._type) ####PARA DEBUG
+        if(leaf== ";"):
+            print(identation,'Sequencing')        
+        elif(leaf._type == "Variable"):
             PrintVariable(leaf, identation)
         elif(leaf._type == "Declare"):
             PrintDeclaration(leaf, identation)
@@ -178,6 +181,7 @@ def PrintConcatExp(syntaxLeaf, identation):
             PrintConcatExp(leaf, identation)
 
 def PrintVariable(syntaxLeaf, identation):
+    #print('>>>',syntaxLeaf.value) ####PARA DEBUG
     if(len(syntaxLeaf.childs) > 0):
         print(identation, "Ident:", syntaxLeaf.value)
 

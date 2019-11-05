@@ -57,9 +57,9 @@ def p_declaration(p):
                     |   Variables TkTwoPoints Datatype TkSemicolon Declaration
     '''
     if (len(p)==4):
-        p[0] = SyntaxLeaf('Declare', None, [p[1]])
+        p[0] = SyntaxLeaf('Declare', None, [p[1],p[3]])
     else:
-        p[0] = SyntaxLeaf('Declare', None, [p[1],p[5]])      
+        p[0] = SyntaxLeaf('Declare', None, [p[1],p[3],p[4],p[5]])      
 
 
 
@@ -331,8 +331,8 @@ def p_boolop(p):
 
 def p_datatype(p):
     ''' Datatype : TkInt
-                |   TkBool
                 |   Array
+                |   TkBool
                 |   TkInt TkComma Datatype
                 |   TkBool TkComma Datatype
                 |   Array TkComma Datatype
