@@ -5,26 +5,43 @@
 # Kevin Mena 13-10869
 #######################################
 
+class color:
+   PURPLE = '\033[95m'
+   CYAN = '\033[96m'
+   DARKCYAN = '\033[36m'
+   BLUE = '\033[94m'
+   GREEN = '\033[92m'
+   YELLOW = '\033[93m'
+   RED = '\033[91m'
+   BOLD = '\033[1m'
+   UNDERLINE = '\033[4m'
+   END = '\033[0m'
+
+
+def printer(*args):
+    print(color.RED,*args,color.END)
+
+
 # Defino una variable global que fija un Tab de
 #espacio para la identacion del arbol.
 TAB = '  '
 
 # Diccionario de simbolos
 symbols = {
-    "+": "Plus",
-    "-": "Minus",
-    "*": "Mult",
-    "/": "Div",
-    "%": "Mod",
-    "\\/": "Or",
-    "/\\": "And",
-    "!": "Not",
-    "<": "Less",
-    "<=": "Leq",
-    ">=": "Geq",
-    ">": "Greater",
-    "==": "Equal",
-    "!=": "NotEqual"
+    "+": color.RED+"Plus"+color.END,
+    "-": color.RED+"Minus"+color.END,
+    "*": color.RED+"Mult"+color.END,
+    "/": color.RED+"Div"+color.END,
+    "%": color.RED+"Mod"+color.END,
+    "\\/": color.RED+"Or"+color.END,
+    "/\\": color.RED+"And"+color.END,
+    "!": color.RED+"Not"+color.END,
+    "<": color.RED+"Less"+color.END,
+    "<=": color.RED+"Leq"+color.END,
+    ">=": color.RED+"Geq"+color.END,
+    ">": color.RED+"Greater"+color.END,
+    "==": color.RED+"Equal"+color.END,
+    "!=": color.RED+"NotEqual"+color.END
 }
 
 class SyntaxLeaf:
@@ -42,12 +59,12 @@ class SyntaxLeaf:
 def SyntaxTreePrinter(syntaxLeaf, identation):
     if (syntaxLeaf):
         if(len(syntaxLeaf.childs) > 0):
-            print(identation, syntaxLeaf._type)
+            printer(identation, syntaxLeaf._type)
             identation = identation + TAB
 
             for leaf in syntaxLeaf.childs:
                 if (leaf._type == "Declare"):
-                    print(identation, leaf._type)
+                    printer(identation, leaf._type)
                     identation = identation + TAB
                     PrintDeclaration(leaf, identation)
                 elif (leaf._type == "Content"):
@@ -59,7 +76,7 @@ def PrintDeclaration(syntaxLeaf, identation):
         if(leaf== ";"):
             print(identation,'Sequencing')        
         elif(leaf._type == "Variable"):
-            PrintVariable(leaf, identation)
+            PrintVariable(leaf, identation+TAB)
         elif(leaf._type == "Declare"):
             PrintDeclaration(leaf, identation)
 
@@ -87,14 +104,14 @@ def PrintInstruction(syntaxLeaf, identation):
     child = syntaxLeaf.childs[0]
 
     if(child._type == "Conditional"):
-        print(identation, "If")
+        printer(identation, "If")
         identation = identation + TAB
         PrintConditional(child, identation)
     elif(child._type == "Forloop"):
-        print(identation, "For\n",identation+ TAB, "In")
+        printer(identation, "For\n",identation+ TAB, "In")
         PrintForLoop(child,identation+ TAB)
     elif(child._type == "Doloop"):
-        print(identation, "Do")
+        printer(identation, "Do")
         PrintDoLoop(child,identation+ TAB)
     elif(child._type == "Asign"):
         PrintAsign(child, identation)
@@ -114,7 +131,7 @@ def PrintForLoop(syntaxLeaf, identation):
             PrintTerminal(leaf, identation)
 
 def PrintDoLoop(syntaxLeaf, identation):
-    print(identation+TAB, "Exp\n")
+    printer(identation+TAB, "Exp\n")
     print(identation+TAB, "Ident:", syntaxLeaf.value)
     identation = identation + TAB
 
@@ -129,7 +146,7 @@ def PrintDoLoop(syntaxLeaf, identation):
 
 
 def PrintConditional(syntaxLeaf, identation):
-    print(identation, "Guard")
+    printer(identation, "Guard")
     identation = identation + TAB
 
     for leaf in syntaxLeaf.childs:
@@ -142,7 +159,7 @@ def PrintConditional(syntaxLeaf, identation):
 
 
 def PrintAsign(syntaxLeaf, identation):
-    print(identation, "Asig")
+    printer(identation, "Asig")
     identation = identation + TAB
     print(identation, "Ident:", syntaxLeaf.value)
     identation = identation + TAB
@@ -151,17 +168,17 @@ def PrintAsign(syntaxLeaf, identation):
 
 
 def PrintInput(syntaxLeaf, identation):
-    print(identation, syntaxLeaf.value)
+    printer(identation, syntaxLeaf.value)
     identation = identation + TAB
 
     print(identation, "Ident:", syntaxLeaf.childs[0])
 
 def PrintOutput(syntaxLeaf, identation):
     if(syntaxLeaf.value == "Print"):
-        print(identation, "Print")
+        printer(identation, "Print")
         identation = identation + TAB
     elif(syntaxLeaf.value == "Println"):
-        print(identation, "Println")
+        printer(identation, "Println")
         identation = identation + TAB
     
     for leaf in syntaxLeaf.childs:
@@ -171,7 +188,7 @@ def PrintOutput(syntaxLeaf, identation):
             PrintConcatExp(leaf, identation)
 
 def PrintConcatExp(syntaxLeaf, identation):
-    print(identation, "Concat")
+    printer(identation, "Concat")
     identation = identation + TAB
 
     for leaf in syntaxLeaf.childs:
