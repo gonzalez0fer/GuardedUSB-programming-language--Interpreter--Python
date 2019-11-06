@@ -216,16 +216,9 @@ def p_arrayexpres(p):
                         |   TkId TkOBracket Terminal TkCBracket
     '''
     if (len(p)==7):
-        if p[1] == 'ArrayExpression':
-            p[0] = SyntaxLeaf('ArrayExpression', None, [p[1],p[3],p[5]])
-        else:
-            p[0] = SyntaxLeaf('ArrayExpression', p[1], [p[3],p[5]])
+        p[0] = SyntaxLeaf('ArrayExpression', p[1], [p[3],p[5]])
     else:
-        if p[1] == 'ArrayExpression':
-            p[0] = SyntaxLeaf('ArrayExpression', None, [p[1], p[3]])
-        else:
-            p[0] = SyntaxLeaf('ArrayExpression', p[1], [p[3]])
-
+        p[0] = SyntaxLeaf('ArrayExpression', p[1], [p[3]])
 
 
 

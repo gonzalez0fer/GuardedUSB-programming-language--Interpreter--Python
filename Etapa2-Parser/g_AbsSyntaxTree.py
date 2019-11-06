@@ -240,24 +240,25 @@ def PrintExpression(syntaxLeaf, identation):
 
 
 def PrintArrayExp(syntaxLeaf, identation):
-
-    if(syntaxLeaf.value is not None):
-        if(len(syntaxLeaf.childs) == 1):
-            printer(identation, "EvalArray")
-            identation = identation + TAB
-            print(identation, "Ident:", syntaxLeaf.value)
-            PrintExpression(syntaxLeaf, identation)
+    if(len(syntaxLeaf.childs) == 2):
+        printer(identation, "ArrayAsign")
+        identation = identation + TAB
+        if(isinstance(syntaxLeaf.value, SyntaxLeaf)):
+            PrintArrayExp(syntaxLeaf.value, identation)
         else:
-            printer(identation, "ArrayAsig")
-            identation = identation + TAB
             print(identation, "Ident:", syntaxLeaf.value)
-            for leaf in syntaxLeaf.childs:
+
+        for leaf in syntaxLeaf.childs:
                 PrintTerminal(leaf, identation)
     else:
+        printer(identation, "EvalArray")
+        identation = identation + TAB
+        if(isinstance(syntaxLeaf.value, SyntaxLeaf)):
+            PrintArrayExp(syntaxLeaf.value, identation)
+        else:
+            print(identation, "Ident:", syntaxLeaf.value)
+
         for leaf in syntaxLeaf.childs:
-            if(leaf._type == "ArrayExpression"):
-                PrintArrayExp(leaf, identation)
-            else:
                 PrintTerminal(leaf, identation)
 
 
