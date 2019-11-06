@@ -121,6 +121,7 @@ def PrintInstruction(syntaxLeaf, identation):
     elif(child._type == "Output"):
         PrintOutput(child, identation)
 
+
 def PrintForLoop(syntaxLeaf, identation):
     print(identation+TAB, "Ident:", syntaxLeaf.value)
     identation = identation + TAB
@@ -131,10 +132,11 @@ def PrintForLoop(syntaxLeaf, identation):
         elif (leaf._type == "Terminal"):
             PrintTerminal(leaf, identation)
 
+
 def PrintDoLoop(syntaxLeaf, identation):
-    printer(identation+TAB, "Exp\n")
-    print(identation+TAB, "Ident:", syntaxLeaf.value)
-    identation = identation + TAB
+    #printer(identation+TAB, "Exp\n")
+    #print(identation+TAB, "Ident:", syntaxLeaf.value)
+    #identation = identation + TAB
 
     for leaf in syntaxLeaf.childs:
         if(leaf._type == "Expression"):
@@ -143,7 +145,6 @@ def PrintDoLoop(syntaxLeaf, identation):
             PrintContent(leaf, identation)
         elif(leaf._type == "Guard"):
             PrintConditional(leaf, identation)
-  
 
 
 def PrintConditional(syntaxLeaf, identation):
@@ -169,24 +170,24 @@ def PrintAsign(syntaxLeaf, identation):
 
 
 def PrintInput(syntaxLeaf, identation):
-    printer(identation, syntaxLeaf.value)
+    printer(identation, "Read")
     identation = identation + TAB
 
     print(identation, "Ident:", syntaxLeaf.childs[0])
 
 def PrintOutput(syntaxLeaf, identation):
-    if(syntaxLeaf.value == "Print"):
+    if(syntaxLeaf.value == "print"):
         printer(identation, "Print")
         identation = identation + TAB
-    elif(syntaxLeaf.value == "Println"):
+    elif(syntaxLeaf.value == "println"):
         printer(identation, "Println")
         identation = identation + TAB
     
     for leaf in syntaxLeaf.childs:
         if(leaf._type == "Expression"):
-            PrintExpression(leaf, identation)
+            PrintExpression(leaf, identation + TAB)
         else:
-            PrintConcatExp(leaf, identation)
+            PrintConcatExp(leaf, identation + TAB)
 
 def PrintConcatExp(syntaxLeaf, identation):
     printer(identation, "Concat")
@@ -194,7 +195,7 @@ def PrintConcatExp(syntaxLeaf, identation):
 
     for leaf in syntaxLeaf.childs:
         if(leaf._type == "Expression"):
-            PrintExpression(leaf, identation)
+            PrintExpression(leaf, identation + TAB)
         else:
             PrintConcatExp(leaf, identation)
 
@@ -230,13 +231,57 @@ def PrintExpression(syntaxLeaf, identation):
         print(identation, "Exp")
         identation = identation + TAB
         PrintStrOp(child, identation)
-    #elif (child._type == "ArrayOperator"):
-        #PrintArrayOp
-    #elif(child._type == "ArrayExpression"):
-        #PrintArrayExp
+    elif (child._type == "ArrayOperator"):
+        PrintArrayOp(child, identation)
+    elif(child._type == "ArrayExpression"):
+        print(identation, "Exp")
+        identation = identation + TAB
+        PrintArrayExp(child, identation)
 
-# TO DO: Tal vez unir todas las funciones que son de esta forma en una sola
-#        que se llame PrintOperations o algo asi
+
+def PrintArrayExp(syntaxLeaf, identation):
+
+    if(syntaxLeaf.value is not None):
+        if(len(syntaxLeaf.childs) == 1):
+            printer(identation, "EvalArray")
+            identation = identation + TAB
+            print(identation, "Ident:", syntaxLeaf.value)
+            PrintExpression(syntaxLeaf, identation)
+        else:
+            printer(identation, "ArrayAsig")
+            identation = identation + TAB
+            print(identation, "Ident:", syntaxLeaf.value)
+            for leaf in syntaxLeaf.childs:
+                PrintTerminal(leaf, identation)
+    else:
+        for leaf in syntaxLeaf.childs:
+            if(leaf._type == "ArrayExpression"):
+                PrintArrayExp(leaf, identation)
+            else:
+                PrintTerminal(leaf, identation)
+
+
+def PrintArrayOp(syntaxLeaf, identation):
+    if(syntaxLeaf.value == "size"):
+        printer(identation, "Size")
+        identation = identation + TAB
+    elif(syntaxLeaf.value == "max"):
+        printer(identation, "Max")
+        identation = identation + TAB
+    elif(syntaxLeaf.value == "min"):
+        printer(identation, "Min")
+        identation = identation + TAB
+    elif(syntaxLeaf.value == "atoi"):
+        printer(identation, "Atoi")
+        identation = identation + TAB
+    
+    child = syntaxLeaf.childs[0]
+
+    if(isinstance(child, SyntaxLeaf)):
+        print(identation, "Placeholder")
+    else:
+        print(identation, "Ident:", child)
+
 def PrintAritmeticOp(syntaxLeaf, identation):
     print(identation, symbols[syntaxLeaf.value])
     identation = identation + TAB
@@ -253,6 +298,9 @@ def PrintTerminal(syntaxLeaf, identation):
         elif(syntaxLeaf.value.isalpha() and len(syntaxLeaf.value) == 1):
             print(identation, "Ident:", syntaxLeaf.value)
             identation = identation + TAB
+        elif(syntaxLeaf.value != "True" and syntaxLeaf.value != "False"):
+            print(identation + '"%s"' % syntaxLeaf.value)
+            identation = identation + TAB
         else:
             print(identation, syntaxLeaf.value)
             identation = identation + TAB
@@ -261,7 +309,7 @@ def PrintTerminal(syntaxLeaf, identation):
 
 
 def PrintRelationalOp(syntaxLeaf, identation):
-    print(identation, syntaxLeaf.value)
+    print(identation, symbols[syntaxLeaf.value])
     identation = identation + TAB
 
     for leaf in syntaxLeaf.childs:
@@ -269,7 +317,7 @@ def PrintRelationalOp(syntaxLeaf, identation):
 
 
 def PrintBooleanOp(syntaxLeaf, identation):
-    print(identation, syntaxLeaf.value)
+    print(identation, symbols[syntaxLeaf.value])
     identation = identation + TAB
 
     for leaf in syntaxLeaf.childs:

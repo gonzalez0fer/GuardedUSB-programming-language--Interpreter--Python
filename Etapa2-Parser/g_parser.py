@@ -180,9 +180,9 @@ def p_doloop(p):
                 |   TkDo Expression TkArrow Content Guard TkOd 
     '''
     if(len(p)== 6):
-        p[0] = SyntaxLeaf('Doloop', p[2], [p[4]])
+        p[0] = SyntaxLeaf('Doloop', None, [p[2], p[4]])
     else:
-        p[0] = SyntaxLeaf('Doloop', p[2], [p[4], p[5]])
+        p[0] = SyntaxLeaf('Doloop', None, [p[2], p[4], p[5]])
 
 
 
@@ -210,21 +210,21 @@ def p_expression(p):
 
 
 def p_arrayexpres(p):
-    ''' ArrayExpression :   TkId TkOpenPar Terminal TkTwoPoints Terminal TkClosePar
-                        |   ArrayExpression TkOpenPar Terminal TkTwoPoints Terminal TkClosePar
-                        |   TkId TkOBracket Terminal TkCBracket
+    ''' ArrayExpression :   ArrayExpression TkOpenPar Terminal TkTwoPoints Terminal TkClosePar
+                        |   TkId TkOpenPar Terminal TkTwoPoints Terminal TkClosePar
                         |   ArrayExpression TkOBracket Terminal TkCBracket
+                        |   TkId TkOBracket Terminal TkCBracket
     '''
     if (len(p)==7):
-        if p[1] == 'TkId':
-            p[0] = SyntaxLeaf('ArrayExpression', p[1], [p[3],p[5]])
-        else:
+        if p[1] == 'ArrayExpression':
             p[0] = SyntaxLeaf('ArrayExpression', None, [p[1],p[3],p[5]])
-    else:
-        if p[1] == 'TkId':
-            p[0] = SyntaxLeaf('ArrayExpression', p[1], [p[3]])
         else:
-            p[0] = SyntaxLeaf('ArrayExpression', None, [p[1],p[3]])
+            p[0] = SyntaxLeaf('ArrayExpression', p[1], [p[3],p[5]])
+    else:
+        if p[1] == 'ArrayExpression':
+            p[0] = SyntaxLeaf('ArrayExpression', None, [p[1], p[3]])
+        else:
+            p[0] = SyntaxLeaf('ArrayExpression', p[1], [p[3]])
 
 
 
@@ -274,7 +274,7 @@ def p_arrayoper(p):
                     | TkMin TkOpenPar Array TkClosePar
                     | TkAtoi TkOpenPar Array TkClosePar
     '''
-    p[0] = SyntaxLeaf('ArrayOperator',p[4])
+    p[0] = SyntaxLeaf('ArrayOperator', p[1], [p[3]])
 
 
 
