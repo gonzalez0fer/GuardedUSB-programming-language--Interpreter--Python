@@ -169,9 +169,6 @@ def t_error(t):
     error.append(t)
     t.lexer.skip(1)
 
-
-
-
 # Variable global de los errores del lexer si existen.
 global error
 error = []
