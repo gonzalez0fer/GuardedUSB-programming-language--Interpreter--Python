@@ -187,10 +187,7 @@ def p_doloop(p):
 
 
 def p_forloop(p):
-    ''' Forloop : TkFor TkId TkIn ArrayOperator TkTo ArrayOperator TkArrow Content TkRof
-                | TkFor TkId TkIn ArrayOperator TkTo Terminal TkArrow Content TkRof
-                | TkFor TkId TkIn Terminal TkTo ArrayOperator TkArrow Content TkRof
-                | TkFor TkId TkIn Terminal TkTo Terminal TkArrow Content TkRof
+    ''' Forloop : TkFor TkId TkIn Expression TkTo Expression TkArrow Content TkRof
     ''' 
     p[0] = SyntaxLeaf('Forloop', p[2], [p[4],p[6],p[8]])
 
