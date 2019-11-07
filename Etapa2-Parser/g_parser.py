@@ -37,7 +37,7 @@ precedence = (
 	('nonassoc', 'TkNum', 'TkId')
 )
 
-
+# Reglas que definen al elemento [Block]
 def p_program(p):
     ''' Block   :   TkOBlock Content TkCBlock
                 |   TkOBlock TkDeclare Declaration Content TkCBlock
@@ -51,7 +51,7 @@ def p_program(p):
         p[0] = SyntaxLeaf('Block', None, [p[3]])
 
    
-
+# Reglas que definen al elemento [Declare]
 def p_declaration(p):
     ''' Declaration :   Variables TkTwoPoints Datatype
                     |   Variables TkTwoPoints Datatype TkSemicolon Declaration
@@ -62,7 +62,7 @@ def p_declaration(p):
         p[0] = SyntaxLeaf('Declare', None, [p[1],p[3],p[4],p[5]])      
 
 
-
+# Reglas que definen al elemento [Array]
 def p_array(p):
     ''' Array   :   TkArray TkOBracket Terminal TkSoForth Terminal TkCBracket
                 |   TkArray TkOBracket AritmeticOperator TkSoForth AritmeticOperator TkCBracket
@@ -70,7 +70,7 @@ def p_array(p):
     p[0] = SyntaxLeaf('Array', None, [p[3],p[5]])
 
 
-
+# Reglas que definen al elemento [Terminal]
 def p_terminal(p):
 	'''
 	Terminal :  TkId
@@ -87,21 +87,20 @@ def p_terminal(p):
 		p[0] = SyntaxLeaf('Terminal', p[1])
 
 
-
+# Reglas que definen al elemento [Content]
 def p_content(p):
 	''' Content :   Instruction
                 |   Instruction TkSemicolon Content
                 |   Block TkSemicolon Content
                 |   Block
 	'''
-	
 	if (len(p) == 2):
 		p[0] = SyntaxLeaf('Content', None, [p[1]])
 	else:
 		p[0] = SyntaxLeaf('Content', None, [p[1], p[2], p[3]])
     
 
-
+# Reglas que definen al elemento [Instruction]
 def p_instruction(p):
     ''' Instruction :   Conditional
                     |   Forloop
@@ -113,7 +112,7 @@ def p_instruction(p):
     p[0] = SyntaxLeaf('Instruction', None, [p[1]])
 
 
-
+# Reglas que definen al elemento [Conditional]
 def p_conditional(p):
     ''' Conditional :   TkIf Expression TkArrow Content TkFi
                     |   TkIf Expression TkArrow Content Guard TkFi
@@ -124,7 +123,7 @@ def p_conditional(p):
         p[0] = SyntaxLeaf('Conditional', None, [p[2],p[4],p[5]])
 
 
-
+# Reglas que definen al elemento [Guard]
 def p_guard(p):
     ''' Guard   :   TkGuard Expression TkArrow Content
                 |   TkGuard Expression TkArrow Content Guard
@@ -135,22 +134,21 @@ def p_guard(p):
         p[0] = SyntaxLeaf('Guard', None, [p[2],p[4],p[5]])
 
 
-
-
+# Reglas que definen al elemento [Asign]
 def p_asign(p):
     ''' Asign    :   TkId TkAsig Expression
     '''
     p[0] = SyntaxLeaf('Asign', p[1], [p[3]])
 
 
-
+# Reglas que definen al elemento [Asign]
 def p_input(p):
     ''' Input   :   TkRead TkId
     '''
     p[0] = SyntaxLeaf('Input', p[1], [p[2]])
 
 
-
+# Reglas que definen al elemento [Output]
 def p_output(p):
     '''Output   :   TkPrint Expression
                 |   TkPrint Expression ConcatExpression
@@ -163,7 +161,7 @@ def p_output(p):
         p[0] = SyntaxLeaf('Output', p[1], [p[2]])
 
 
-
+# Reglas que definen al elemento [ConcatExpression]
 def p_concatexp(p):
     ''' ConcatExpression : TkConcat Expression
                         |   TkConcat Expression ConcatExpression
@@ -174,7 +172,7 @@ def p_concatexp(p):
         p[0] = SyntaxLeaf('ConcatExpression', None, [p[2]])
 
 
-
+# Reglas que definen al elemento [Doloop]
 def p_doloop(p):
     ''' Doloop :   TkDo Expression TkArrow Content TkOd
                 |   TkDo Expression TkArrow Content Guard TkOd 
@@ -185,14 +183,14 @@ def p_doloop(p):
         p[0] = SyntaxLeaf('Doloop', None, [p[2], p[4], p[5]])
 
 
-
+# Reglas que definen al elemento [Forloop]
 def p_forloop(p):
     ''' Forloop : TkFor TkId TkIn Expression TkTo Expression TkArrow Content TkRof
     ''' 
     p[0] = SyntaxLeaf('Forloop', p[2], [p[4],p[6],p[8]])
 
 
-
+# Reglas que definen al elemento [Forloop]
 def p_expression(p):
     ''' Expression  :   AritmeticOperator
                     |   Terminal
@@ -205,7 +203,7 @@ def p_expression(p):
     p[0] = SyntaxLeaf('Expression', None, [p[1]])
 
 
-
+# Reglas que definen al elemento [ArrayExpression]
 def p_arrayexpres(p):
     ''' ArrayExpression :   ArrayExpression TkOpenPar Terminal TkTwoPoints Terminal TkClosePar
                         |   TkId TkOpenPar Terminal TkTwoPoints Terminal TkClosePar
@@ -218,7 +216,7 @@ def p_arrayexpres(p):
         p[0] = SyntaxLeaf('ArrayExpression', p[1], [p[3]])
 
 
-
+# Reglas que definen al elemento [AritmeticOperator]
 def p_aritmoper(p):
     ''' AritmeticOperator : Expression TkMinus Expression
         |   Expression TkPlus Expression
@@ -243,7 +241,7 @@ def p_aritmoper(p):
         p[0] = SyntaxLeaf('UnaryAritmeticOperator', p[2], [p[3]])
 	
 		
-
+# Reglas que definen al elemento [StrOperator]
 def p_Stroper(p):
     ''' StrOperator : TkId TkConcat TkId
         | TkOpenPar TkId TkConcat TkId TkClosePar
@@ -254,6 +252,7 @@ def p_Stroper(p):
         p[0] = SyntaxLeaf('StrOperator',[p[1],p[3]])
 
 
+# Reglas que definen al elemento [ArrayOperator]
 def p_arrayoper(p):
     ''' ArrayOperator   :   TkSize TkOpenPar TkId TkClosePar
                     | TkMax TkOpenPar TkId TkClosePar
@@ -267,7 +266,7 @@ def p_arrayoper(p):
     p[0] = SyntaxLeaf('ArrayOperator', p[1], [p[3]])
 
 
-
+# Reglas que definen al elemento [RelationalOperator]
 def p_opRel(p):
 	'''RelationalOperator : Expression TkLess Expression
                 |   Expression TkLeq Expression
@@ -288,7 +287,7 @@ def p_opRel(p):
 		p[0] = SyntaxLeaf('RelationalOperator', p[2], [p[1], p[3]])
 
 
-
+# Reglas que definen al elemento [Variables]
 def p_variables(p):
     ''' Variables : TkId TkComma Variables
                 | TkId 
@@ -299,7 +298,7 @@ def p_variables(p):
         p[0] = SyntaxLeaf('Variable', p[1])    
 
 
-
+# Reglas que definen al elemento [BooleanOperator]
 def p_boolop(p):
 	'''BooleanOperator : Expression TkAnd Expression
                 |   Expression TkOr Expression
@@ -318,7 +317,7 @@ def p_boolop(p):
 		p[0] = SyntaxLeaf('BooleanOperator', p[3], [p[2], p[4]])
 
 
-
+# Reglas que definen al elemento [Datatype]
 def p_datatype(p):
     ''' Datatype : TkInt
                 |   Array
@@ -333,7 +332,7 @@ def p_datatype(p):
         p[0] = SyntaxLeaf('Datatype', p[1])    
 
 
-
+# Reglas que definen el formato de impresion del error
 def p_error(p):
     global parser_error
     if (p is not None):
