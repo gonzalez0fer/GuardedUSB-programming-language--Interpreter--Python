@@ -191,7 +191,7 @@ def lexer_builder(meta_program):
     # Impresion de errores del lexer, en caso de existir.
     if (len(error) != 0):
         for aux in error :
-            print('Error: Unexpected character "' + str(aux.value[0]) +'" in row ' + str(aux.lineno) +' ,column '+ str(find_column(lexer.lexdata,aux)))
+            print('[Lexic Error]: Unexpected character "' + str(aux.value[0]) +'" in row ' + str(aux.lineno) +' ,column '+ str(find_column(lexer.lexdata,aux)))
         sys.exit()
     else:
         pass
