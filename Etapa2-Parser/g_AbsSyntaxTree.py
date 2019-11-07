@@ -213,7 +213,7 @@ def PrintVariable(syntaxLeaf, identation):
 def PrintExpression(syntaxLeaf, identation):
     child = syntaxLeaf.childs[0]
 
-    if (child._type == "AritmeticOperator"):
+    if (child._type == "AritmeticOperator" or child._type == "UnaryAritmeticOperator"):
         print(identation, "Exp")
         identation = identation + TAB
         PrintAritmeticOp(child, identation) 
