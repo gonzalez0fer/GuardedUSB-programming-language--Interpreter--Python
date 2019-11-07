@@ -129,8 +129,8 @@ def PrintForLoop(syntaxLeaf, identation):
     for leaf in syntaxLeaf.childs:
         if(leaf._type == "Content"):
             PrintContent(leaf, identation)
-        elif (leaf._type == "Terminal"):
-            PrintTerminal(leaf, identation)
+        elif (leaf._type == "Expression"):
+            PrintExpression(leaf, identation)
 
 
 def PrintDoLoop(syntaxLeaf, identation):
