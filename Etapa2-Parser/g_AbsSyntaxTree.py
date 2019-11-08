@@ -237,7 +237,6 @@ def PrintConcatExp(syntaxLeaf, identation, to_do):
             identation : numero de tabs para margen izquierdo.
     """
     for leaf in syntaxLeaf.childs:
-        #print(leaf._type)
         if(leaf._type == "Expression"):
             printer(identation, "Concat")
             to_do.append([leaf,identation])
