@@ -33,6 +33,8 @@ def printer(*args):
     print(color.RED,*args,color.END)
 def printseq(identation):
     print(color.BLUE,identation,'Sequencing',color.END)
+def printExp(identation):
+    print(color.PURPLE,identation,'Exp',color.END)
 
 # Diccionario de simbolos
 symbols = {

@@ -132,7 +132,8 @@ def PrintForLoop(syntaxLeaf, identation):
         if(leaf._type == "Content"):
             PrintContent(leaf, identation)
         elif (leaf._type == "Expression"):
-            PrintExpression(leaf, identation)
+            printExp(identation)
+            PrintExpression(leaf, identation+TAB)
 
 
 def PrintDoLoop(syntaxLeaf, identation):
@@ -144,6 +145,7 @@ def PrintDoLoop(syntaxLeaf, identation):
     """
     for leaf in syntaxLeaf.childs:
         if(leaf._type == "Expression"):
+            printExp(identation)
             PrintExpression(leaf, identation)
         elif(leaf._type == "Content"):
             PrintContent(leaf, identation)
@@ -181,6 +183,7 @@ def PrintAsign(syntaxLeaf, identation):
     identation = identation + TAB
     print(identation, "Ident:", syntaxLeaf.value)
     identation = identation + TAB
+    printExp(identation)
     PrintExpression(syntaxLeaf.childs[0], identation)
 
 
@@ -210,29 +213,39 @@ def PrintOutput(syntaxLeaf, identation):
         printer(identation, "Println")
         identation = identation + TAB
     
+    to_do = []
+
     for leaf in syntaxLeaf.childs:
         if(leaf._type == "Expression"):
-            PrintExpression(leaf, identation + TAB)
+            to_do.append((leaf,identation))
         else:
-            PrintConcatExp(leaf, identation + TAB)
+            PrintConcatExp(leaf, identation + TAB, to_do)
 
+    for sleaf in to_do:
+        if(sleaf[0]._type == "Expression"):
+            PrintExpression(sleaf[0],sleaf[1]+TAB*len(to_do))
+        elif(sleaf[0]._type == "Terminal"):
+            PrintTerminal(sleaf[0],sleaf[1]+TAB*len(to_do)) 
+        else:
+            pass
 
-def PrintConcatExp(syntaxLeaf, identation):
+def PrintConcatExp(syntaxLeaf, identation, to_do):
     """ Definicion del metodo [PrintConcatExp], el cual se encarga de imprimir
     la estructura [Concat] del arbol sintactico.
     
     recibe: syntaxLeaf : objeto sintactico a ser analizado.
             identation : numero de tabs para margen izquierdo.
     """
-    printer(identation, "Concat")
-    identation = identation + TAB
-
     for leaf in syntaxLeaf.childs:
         if(leaf._type == "Expression"):
-            PrintExpression(leaf, identation + TAB)
+            printer(identation, "Concat")
+            to_do.append([leaf,identation])
+        elif(leaf._type == "Terminal"):
+            to_do.append([leaf,identation])
         else:
-            PrintConcatExp(leaf, identation)
-
+            identation = identation + TAB
+            PrintConcatExp(leaf, identation,to_do)        
+      
 
 def PrintVariable(syntaxLeaf, identation):
     """ Definicion del metodo [PrintVariable], el cual se encarga de imprimir
@@ -250,7 +263,7 @@ def PrintVariable(syntaxLeaf, identation):
         identation = identation + TAB
 
 
-def PrintExpression(syntaxLeaf, identation):
+def PrintExpression(syntaxLeaf, identation, uminus = False):
     """ Definicion del metodo [PrintExpression], el cual se encarga de imprimir
     la estructura [Expression] del arbol sintactico.
     
@@ -259,30 +272,33 @@ def PrintExpression(syntaxLeaf, identation):
     """
     child = syntaxLeaf.childs[0]
 
-    if (child._type == "AritmeticOperator" or child._type == "UnaryAritmeticOperator"):
-        print(identation, "Exp")
+    if (child._type == "AritmeticOperator"):
         identation = identation + TAB
         PrintAritmeticOp(child, identation) 
     elif (child._type == "Terminal"):
         PrintTerminal(child, identation)
     elif (child._type == "RelationalOperator"):
-        print(identation, "Exp")
+        #printExp(identation)
         identation = identation + TAB
         PrintRelationalOp(child, identation)
     elif (child._type == "BooleanOperator"):
-        print(identation, "Exp")
+        printExp(identation)
         identation = identation + TAB
         PrintBooleanOp(child, identation)
     elif (child._type == "StrOperator"):
-        print(identation, "Exp")
+        printExp(identation)
         identation = identation + TAB
         PrintStrOp(child, identation)
     elif (child._type == "ArrayOperator"):
         PrintArrayOp(child, identation)
     elif(child._type == "ArrayExpression"):
-        print(identation, "Exp")
+        #printExp(identation)
         identation = identation + TAB
         PrintArrayExp(child, identation)
+    elif(child._type == "UnaryAritmeticOperator"):
+        identation = identation + TAB
+        PrintTerminal(child, identation, True)   
+
 
 
 def PrintArrayExp(syntaxLeaf, identation):
@@ -311,7 +327,8 @@ def PrintArrayExp(syntaxLeaf, identation):
             print(identation, "Ident:", syntaxLeaf.value)
 
         for leaf in syntaxLeaf.childs:
-                PrintTerminal(leaf, identation)
+                printExp(identation)
+                PrintTerminal(leaf, identation+TAB)
 
 
 def PrintArrayOp(syntaxLeaf, identation):
@@ -341,6 +358,19 @@ def PrintArrayOp(syntaxLeaf, identation):
         print(identation, "Ident:", child)
 
 
+def PrintUnaryAritmeticOp(syntaxLeaf, identation, uminus = False):
+    """ Definicion del metodo [PrintUnaryAritmeticOp], el cual se encarga de imprimir
+    la estructura [UnaryAritmeticOp] de los operadores aritmeticos del arbol sintactico.
+    
+    recibe: syntaxLeaf : objeto sintactico a ser analizado.
+            identation : numero de tabs para margen izquierdo.
+    """
+    identation = identation + TAB
+
+    for leaf in syntaxLeaf.childs:
+        PrintExpression(leaf, identation, True)
+
+
 def PrintAritmeticOp(syntaxLeaf, identation):
     """ Definicion del metodo [PrintAritmeticOp], el cual se encarga de imprimir
     la estructura [AricmeticOperator] de los operadores aritmeticos del arbol sintactico.
@@ -355,7 +385,7 @@ def PrintAritmeticOp(syntaxLeaf, identation):
         PrintExpression(leaf, identation)
 
 
-def PrintTerminal(syntaxLeaf, identation):
+def PrintTerminal(syntaxLeaf, identation, uminus = False):
     """ Definicion del metodo [PrintTerminal], el cual se encarga de imprimir
     la estructura [Terminal] del arbol sintactico.
     
@@ -363,7 +393,10 @@ def PrintTerminal(syntaxLeaf, identation):
             identation : numero de tabs para margen izquierdo.
     """
     if (len(syntaxLeaf.childs) == 0):
-        if(isinstance(syntaxLeaf.value, int)):
+        if(isinstance(syntaxLeaf.value, int) and uminus==True):
+            print(identation, "Literal:", '-'+str(syntaxLeaf.value))
+            identation = identation + TAB
+        elif(isinstance(syntaxLeaf.value, int)):
             print(identation, "Literal:", syntaxLeaf.value)
             identation = identation + TAB
         elif(syntaxLeaf.value.isalpha() and len(syntaxLeaf.value) == 1):
@@ -376,7 +409,7 @@ def PrintTerminal(syntaxLeaf, identation):
             print(identation, syntaxLeaf.value)
             identation = identation + TAB
     else:
-        PrintTerminal(syntaxLeaf.childs[0], identation)
+        PrintTerminal(syntaxLeaf.childs[0], identation, uminus)
 
 
 def PrintRelationalOp(syntaxLeaf, identation):
