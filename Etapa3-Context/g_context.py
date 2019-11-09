@@ -76,6 +76,7 @@ class SyntaxTreeContext:
 					else:
 						top[leaf.c_value].s_asignvalue = i
 
+
     def CreateContextSlot(self, leaf):
         """ Definicion del metodo [CreateContextSlot], el cual se encarga de hacer el manejo del
         metodo de creacion de simbolos en la tabla.
@@ -117,13 +118,32 @@ class SyntaxTreeContext:
                         self.c_auxSlots.append(self.c_slots[0])
 
 
-
-
-
-
-
-
-
-
         else:
             print([Error]: No SyntaxTreeStructure)
+
+
+	def PrintSymbolTable(self):
+        values =[]
+        types =[]
+		for slot in self.c_auxSlots:
+			for var in slot:        
+                values.append(var.s_value)
+                types.append(var.s_type)
+        
+        sortpre =sorted(values, key=len)
+        sorttyp = sorted(types, key=len)
+        longest_val = len(sortpre[-1])
+        longest_type = len(sorttyp[-1])
+        margin_table = ' '*(((longest_val+longest_type)//2)+4)
+
+        print(BLUWHITE +margin_table+ "SYMBOL TABLE"+margin_table+ END)
+		for slot in self.c_auxSlots:
+			for i in scope:
+                if len(i.s_value) < longest_val:
+                    if len(i.s_value) % 2 == 0:
+                        print(BLUE+'Variable '+END+' '*((longest_val-len(i.s_value)))+i.s_value+' '+BLUE+'|'+END+ ' '+ BLUE+'Type '+END+i.s_type)
+                    else:
+                        print(BLUE+'Variable '+END+' '*((longest_val-len(i.s_value)))+i.s_value+' '+BLUE+'|'+END+ ' '+ BLUE+'Type '+END+i.s_type)
+
+                else:
+                    print(BLUE+'Variable '+END+i.s_value+' ' +BLUE+'|'+END+ ' '+ BLUE+'Type '+END+i.s_type)
