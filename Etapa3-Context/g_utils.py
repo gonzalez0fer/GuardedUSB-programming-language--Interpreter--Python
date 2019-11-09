@@ -1,6 +1,6 @@
 #######################################
 # CI3715 Traductores e Interpretadores
-# Entrega 2. 
+# Entrega 3. 
 # Fernando Gonzalez 08-10464
 # Kevin Mena 13-10869
 #######################################
@@ -26,6 +26,7 @@ class color:
    RED = '\033[91m'
    BOLD = '\033[1m'
    UNDERLINE = '\033[4m'
+   BLUWHITE = '\033[44m'
    END = '\033[0m'
 # Metodos para las impresiones de Tokens reservados
 # y secuenciadores
