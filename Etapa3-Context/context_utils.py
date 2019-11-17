@@ -27,5 +27,5 @@ def variableAnalizer(self, var):
         for i in range(len(self.c_scopes)):
             if var in self.c_scopes[i]:
                 return self.c_scopes[i][var]
-        print("[Context Error] line " + str(self.c_currentline) +'. Undeclares variable ' + var + ' found.')
+        print("[Context Error] line " + str(self.c_currentline) +'. Undeclare variable ' + var + ' found.')
     sys.exit(0)

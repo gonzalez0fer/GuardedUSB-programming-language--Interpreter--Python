@@ -377,7 +377,7 @@ def parser_builder(meta_program):
     log = logging.getLogger()
     parsed_program = parser.parse(meta_program, debug=log)
 
-    #context = SyntaxTreeContext()
+    context = SyntaxTreeContext()
     #context.ContextAnalyzer(parsed_program)
     #context.PrintSymbolTable()
 
