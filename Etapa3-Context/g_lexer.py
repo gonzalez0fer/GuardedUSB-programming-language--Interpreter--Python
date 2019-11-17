@@ -175,7 +175,7 @@ error = []
 token_list = []
 
 # Funcion que imprime la lista de tokens
-def lexerPrint(token_list):
+def TokenPrinter(token_list):
     for aux in token_list:
         if (aux.type == 'TkId') or (aux.type == 'TkString') or (aux.type == 'TkNum'):
             print (str(aux.type) +'("' +str(aux.value)+'") '+\
@@ -200,7 +200,7 @@ def lexer_builder(meta_program):
             print('[Lexic Error]: Unexpected character "' + str(aux.value[0]) +'" in row ' + str(aux.lineno) +' ,column '+ str(find_column(lexer.lexdata,aux)))
         sys.exit()
     else:
-        lexerPrint(token_list)
+        #TokenPrinter(token_list)
         pass
 
 lex.lex()

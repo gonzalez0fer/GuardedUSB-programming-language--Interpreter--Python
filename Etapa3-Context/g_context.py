@@ -66,16 +66,16 @@ class SyntaxTreeContext:
         stack_top[leaf.p_value] = new_symbol
 
         if ((len(leaf.childs))>0):
-            for i in leaf.childs:
-                if (i.p_type == 'Variable'):
-                    self.AppendContextSymbol(i, s_type, is_array)
-                elif (i.p_type == 'Expression'):
+            for leaf in leaf.childs:
+                if (leaf.p_type == 'Variable'):
+                    self.AppendContextSymbol(leaf, s_type, is_array)
+                elif (leaf.p_type == 'Expression'):
                     #t = self.checkExp(i)
                     if (t != p_type):
-                        print("[Context Error] line " + str(self.linea) + 'Variable types does not match.')
+                        print("[Context Error] line " + str(self.c_currentLine) + 'Variable types does not match.')
                         sys.exit(0)
                     else:
-                        top[leaf.c_value].s_asignvalue = i
+                        stack_top[leaf.c_value].s_asignvalue = leaf
 
 
     def CreateContextScope(self, leaf):
