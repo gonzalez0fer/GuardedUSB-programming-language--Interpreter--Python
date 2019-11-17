@@ -48,6 +48,19 @@ class SyntaxTreeContext:
         self.c_currentLine = 1
 
 
+    def ExpressionAnalizer(self, expression):
+        for child in expression.childs:
+            if (child.p_type == 'BooleanOperator'):
+                oprator1 = child.childs[0]
+                oprator2 = child.childs[1]
+                type1 = self.ExpressionAnalizer(oprator1)
+                type2 = self.ExpressionAnalizer(oprator2)
+                if (type1 != type2 != 'bool'):
+                    print("[Context Error] line " + str(self.c_currentLine) + '. Boolean operator wrong type.')
+                    sys.exit(0)
+                else:
+                    return 'bool'       
+
     def AppendContextSymbol(self, leaf, s_type, is_array):
         """ Definicion del metodo [AppendContextSymbol], el cual se encarga de la creacion del
         objeto simbolo el cual sera insertado en la tabla de hash (diccionario) que se encuentra
@@ -70,12 +83,12 @@ class SyntaxTreeContext:
                 if (leaf.p_type == 'Variable'):
                     self.AppendContextSymbol(leaf, s_type, is_array)
                 elif (leaf.p_type == 'Expression'):
-                    #t = self.checkExp(i)
+                    #t = self.ExpressionAnalizer(leaf)
                     if (t != p_type):
                         print("[Context Error] line " + str(self.c_currentLine) + 'Variable types does not match.')
                         sys.exit(0)
                     else:
-                        stack_top[leaf.c_value].s_asignvalue = leaf
+                        stack_top[leaf.p_value].s_asignvalue = leaf
 
 
     def CreateContextScope(self, leaf):
@@ -96,9 +109,9 @@ class SyntaxTreeContext:
                 self.CreateContextScope(child)
             elif (child.p_type == 'Variable'):
                 self.AppendSymbol(child, leaf_type, is_array)
-            elif child.p_type == 'Array':
-                p_type = self.getType(child)
-                self.getArrayType(child)
+            # elif child.p_type == 'Array':
+            #     p_type = self.getType(child)
+            #     self.getArrayType(child)
 
 
 
@@ -136,7 +149,7 @@ class SyntaxTreeContext:
                     #     else:
                     #         var = self.getTipoId(leaf.p_value)
 
-                    #     _type = self.checkExp(leaf.childs[0])
+                    #     _type = self.ExpressionAnalizer(leaf.childs[0])
 
                     #     if (var != _type):
                     #         print("[Context Error] line " + str(self.c_currentLine) + ". Different variable types.")
