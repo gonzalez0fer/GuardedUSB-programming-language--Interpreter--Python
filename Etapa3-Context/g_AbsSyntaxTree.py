@@ -399,14 +399,14 @@ def PrintTerminal(syntaxLeaf, identation, uminus = False):
     recibe: syntaxLeaf : objeto sintactico a ser analizado.
             identation : numero de tabs para margen izquierdo.
     """
-    if (len(syntaxLeaf.childs) == 0):
-        if(isinstance(syntaxLeaf.p_value, int) and uminus==True):
+    if (syntaxLeaf.p_value is not None):
+        if(syntaxLeaf.c_type == "int" and uminus==True):
             print(identation, "Literal:", '-'+str(syntaxLeaf.p_value))
             identation = identation + TAB
-        elif(isinstance(syntaxLeaf.p_value, int)):
+        elif(syntaxLeaf.c_type == "int"):
             print(identation, "Literal:", syntaxLeaf.p_value)
             identation = identation + TAB
-        elif(syntaxLeaf.p_value.isalpha() and len(syntaxLeaf.p_value) == 1):
+        elif(syntaxLeaf.c_type == "var"):
             print(identation, "Ident:", syntaxLeaf.p_value)
             identation = identation + TAB
         elif(syntaxLeaf.p_value != "True" and syntaxLeaf.p_value != "False"):
@@ -415,7 +415,7 @@ def PrintTerminal(syntaxLeaf, identation, uminus = False):
         else:
             print(identation, syntaxLeaf.p_value)
             identation = identation + TAB
-    else:
+    if(len(syntaxLeaf.childs) > 0 ):
         PrintTerminal(syntaxLeaf.childs[0], identation, uminus)
 
 

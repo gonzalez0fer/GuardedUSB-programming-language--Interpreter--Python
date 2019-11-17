@@ -81,31 +81,49 @@ def p_terminal(p):
                 | TkFalse
                 | TkQuote
                 | TkOpenPar Terminal TkClosePar
+                | TkId TkComma Terminal
+                | TkString TkComma Terminal
+                | TkNum TkComma Terminal
+                | TkTrue TkComma Terminal
+                | TkFalse TkComma Terminal
     '''
     if (len(p) == 4):
-        p[0] = SyntaxLeaf('Terminal', None, [p[2]])
-        if (str(p[2].lexeme)).isdigit():
-            p[0].c_type = 'int'
-            p[0].lexeme = str(p[2].lexeme)
-        elif (p[2].lexeme == "True" \
-            or p[2].lexeme == "False"):
-            p[0].c_type = 'bool'
-            p[0].lexeme = str(p[2].lexeme)
+        if(p[2] == ","):
+            p[0] = SyntaxLeaf('Terminal', p[1], [p[3]])
+            if (str(p[1])).isdigit():
+                p[0].c_type = 'int'
+                p[0].lexeme = str(p[1])
+            elif (p[1] == "True" \
+                or p[1] == "False"):
+                p[0].c_type = 'bool'
+                p[0].lexeme = str(p[1])
+            else:
+                p[0].type = "var"
+                p[0].lexeme = p[1]
         else:
-            p[0].type = "var"
-            p[0].lexeme = p[2].lexeme           
+            p[0] = SyntaxLeaf('Terminal', None, [p[2]])
+            if (str(p[2].lexeme)).isdigit():
+                p[0].c_type = 'int'
+                p[0].lexeme = str(p[2].lexeme)
+            elif (p[2].lexeme == "True" \
+                or p[2].lexeme == "False"):
+                p[0].c_type = 'bool'
+                p[0].lexeme = str(p[2].lexeme)
+            else:
+                p[0].type = "var"
+                p[0].lexeme = p[2].lexeme           
 
     else:
         p[0] = SyntaxLeaf('Terminal', p[1])
         if ((str(p[1])).isdigit()):
-            p[0].type = "int"
+            p[0].c_type = "int"
             p[0].lexeme = p[1]
         elif (p[1] == "True" \
             or p[1] == "False"):
-            p[0].type = "bool"
+            p[0].c_type = "bool"
             p[0].lexeme = p[1]
         else:
-            p[0].type = "var"
+            p[0].c_type = "var"
             p[0].lexeme = p[1]
 
 
