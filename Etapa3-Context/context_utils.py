@@ -20,3 +20,12 @@ def getType(self, arr):
             return p_type
     else:
         return arr.p_value
+
+
+def variableAnalizer(self, var):
+    if (len(self.c_scopes) > 0):
+        for i in range(len(self.c_scopes)):
+            if var in self.c_scopes[i]:
+                return self.c_scopes[i][var]
+        print("[Context Error] line " + str(self.c_currentline) +'. Undeclares variable ' + var + ' found.')
+    sys.exit(0)
