@@ -20,14 +20,14 @@ class ContextSymbol():
             s_value : identificador o valor de la hoja que generara el simbolo.
             s_asignvalue : valor del simbolo si la hoja es de tipo Variable.
             is_index : almacena si el valor de la hoja es usado como contador de un loop.
-            is_arreglo : almacena si la hoja es de tipo arreglo.
+            is_array : almacena si la hoja es de tipo arreglo.
     """
 	def __init__(self, s_value, s_type):
 		self.s_type = s_type 
 		self.s_value = s_value 
 		self.s_asignvalue = None 
 		self.is_index = None 
-		self.is_arreglo = False
+		self.is_array = False
 
 
 class SyntaxTreeContext:
@@ -66,12 +66,12 @@ class SyntaxTreeContext:
 
 		if ((len(leaf.childs))>0):
 			for i in leaf.childs:
-				if (i.tipo == 'Variable'):
+				if (i.p_type == 'Variable'):
 					self.agregarSimbolo(i, s_type, is_array)
-				elif (i.tipo == 'Expression'):
+				elif (i.p_type == 'Expression'):
 					#t = self.checkExp(i)
-					if (t != tipo):
-						print("Error linea " + str(self.linea) + 'Los tipos de la variables y la asignacion no coinciden.')
+					if (t != p_type):
+						print("[Context Error] line " + str(self.linea) + 'Variable types does not match.')
 						sys.exit(0)
 					else:
 						top[leaf.c_value].s_asignvalue = i
@@ -84,13 +84,20 @@ class SyntaxTreeContext:
         recibe: leaf : hoja a analizar.
         """
         leaf_type = leaf.p_value
-        is_array = False
+        if leaf_type == 'Array':
+            is_array = True
+        else:
+            is_array = False
+
         for child in leaf.childs:
 			if (child.p_type == 'Declare'):
 				self.c_currentLine += 1
 				self.CreateContextSlot(child)
             elif (child.p_type == 'Variable'):
-                self.AppendSymbol(child, leaf_type, is_array)         
+                self.AppendSymbol(child, leaf_type, is_array)
+            elif child.p_type == 'Array':
+                p_type = self.getType(child)
+                self.getArrayType(child)
 
 
 
