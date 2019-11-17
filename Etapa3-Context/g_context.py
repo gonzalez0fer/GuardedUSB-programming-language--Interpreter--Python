@@ -23,12 +23,12 @@ class ContextSymbol():
             is_index : almacena si el valor de la hoja es usado como contador de un loop.
             is_array : almacena si la hoja es de tipo arreglo.
     """
-	def __init__(self, s_value, s_type):
-		self.s_type = s_type 
-		self.s_value = s_value 
-		self.s_asignvalue = None 
-		self.is_index = None 
-		self.is_array = False
+    def __init__(self, s_value, s_type):
+        self.s_type = s_type 
+        self.s_value = s_value 
+        self.s_asignvalue = None 
+        self.is_index = None 
+        self.is_array = False
 
 
 class SyntaxTreeContext:
@@ -58,24 +58,24 @@ class SyntaxTreeContext:
                 is_array : booleano si es un arreglo.
         """
         stack_top = self.c_scopes[0]
-		if leaf.p_value in stack_top:
-			print("[Context Error] Line " + str(self.c_currentLine) +'. Variable has been declared before.')
-			sys.exit(0)
-		new_symbol = ContextSymbol(leaf.p_value, s_type)
-		new_symbol.is_array = is_array
-		stack_top[leaf.p_value] = new_symbol
+        if leaf.p_value in stack_top:
+            print("[Context Error] Line " + str(self.c_currentLine) +'. Variable has been declared before.')
+            sys.exit(0)
+        new_symbol = ContextSymbol(leaf.p_value, s_type)
+        new_symbol.is_array = is_array
+        stack_top[leaf.p_value] = new_symbol
 
-		if ((len(leaf.childs))>0):
-			for i in leaf.childs:
-				if (i.p_type == 'Variable'):
-					self.agregarSimbolo(i, s_type, is_array)
-				elif (i.p_type == 'Expression'):
-					#t = self.checkExp(i)
-					if (t != p_type):
-						print("[Context Error] line " + str(self.linea) + 'Variable types does not match.')
-						sys.exit(0)
-					else:
-						top[leaf.c_value].s_asignvalue = i
+        if ((len(leaf.childs))>0):
+            for i in leaf.childs:
+                if (i.p_type == 'Variable'):
+                    self.AppendContextSymbol(i, s_type, is_array)
+                elif (i.p_type == 'Expression'):
+                    #t = self.checkExp(i)
+                    if (t != p_type):
+                        print("[Context Error] line " + str(self.linea) + 'Variable types does not match.')
+                        sys.exit(0)
+                    else:
+                        top[leaf.c_value].s_asignvalue = i
 
 
     def CreateContextScope(self, leaf):
@@ -91,9 +91,9 @@ class SyntaxTreeContext:
             is_array = False
 
         for child in leaf.childs:
-			if (child.p_type == 'Declare'):
-				self.c_currentLine += 1
-				self.CreateContextScope(child)
+            if (child.p_type == 'Declare'):
+                self.c_currentLine += 1
+                self.CreateContextScope(child)
             elif (child.p_type == 'Variable'):
                 self.AppendSymbol(child, leaf_type, is_array)
             elif child.p_type == 'Array':
@@ -120,38 +120,38 @@ class SyntaxTreeContext:
 
                     elif (leaf.p_type == 'Declare'):
                         self.c_currentLine+=1
-                        new_slot ={}
-                        self.c_scopes.insert(0,slot)
+                        new_scope ={}
+                        self.c_scopes.insert(0,new_scope)
                         self.CreateContextScope(leaf)
                         self.c_secScopes.append(self.c_scopes[0])
 
-					# elif (leaf.p_type  == 'Asign'):
-					# 	self.c_currentLine += 1
-					# 	if (isinstance(leaf.p_value, str)):
-					# 		var = self.variableAnalizer(leaf.p_value)
-					# 		if (var.contador):
-					# 			print("[Context Error] line " + str(self.c_currentLine) + ". tries to modify varible" + leaf.p_value + "of iteration.")
-					# 			sys.exit(0)
-					# 		var = var.tipo
-					# 	else:
-					# 		var = self.getTipoId(leaf.p_value)
+                    # elif (leaf.p_type  == 'Asign'):
+                    #     self.c_currentLine += 1
+                    #     if (isinstance(leaf.p_value, str)):
+                    #         var = self.variableAnalizer(leaf.p_value)
+                    #         if (var.contador):
+                    #             print("[Context Error] line " + str(self.c_currentLine) + ". tries to modify varible" + leaf.p_value + "of iteration.")
+                    #             sys.exit(0)
+                    #         var = var.tipo
+                    #     else:
+                    #         var = self.getTipoId(leaf.p_value)
 
-					# 	_type = self.checkExp(leaf.childs[0])
+                    #     _type = self.checkExp(leaf.childs[0])
 
-					# 	if (var != _type):
-					# 		print("[Context Error] line " + str(self.c_currentLine) + ". Different variable types.")
-					# 		sys.exit(0)
+                    #     if (var != _type):
+                    #         print("[Context Error] line " + str(self.c_currentLine) + ". Different variable types.")
+                    #         sys.exit(0)
 
 
         else:
             print('[Error]: No SyntaxTreeStructure')
 
 
-	# def PrintSymbolTable(self):
+    # def PrintSymbolTable(self):
     #     values =[]
     #     types =[]
-	# 	for slot in self.c_secScopes:
-	# 		for var in slot:        
+    #     for slot in self.c_secScopes:
+    #         for var in slot:        
     #             values.append(var.s_value)
     #             types.append(var.s_type)
         
@@ -162,8 +162,8 @@ class SyntaxTreeContext:
     #     margin_table = ' '*(((longest_val+longest_type)//2)+4)
 
     #     print(BLUWHITE +margin_table+ "SYMBOL TABLE"+margin_table+ END)
-	# 	for slot in self.c_secScopes:
-	# 		for i in scope:
+    #     for slot in self.c_secScopes:
+    #         for i in scope:
     #             if len(i.s_value) < longest_val:
     #                 if len(i.s_value) % 2 == 0:
     #                     print(BLUE+'Variable '+END+' '*((longest_val-len(i.s_value)))+i.s_value+' '+BLUE+'|'+END+ ' '+ BLUE+'Type '+END+i.s_type)

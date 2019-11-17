@@ -9,6 +9,7 @@
 import ply.yacc as yacc
 from g_lexer import *
 from g_AbsSyntaxTree import *
+from g_context import *
 
 import logging
 logging.basicConfig(
@@ -25,16 +26,16 @@ logging.basicConfig(
 # Reglas de precedencia para el parser        
 precedence = (
     ('left', 'TkAnd', 'TkOr'),
-	('nonassoc', 'TkGreater', 'TkLess', 'TkGeq', 'TkLeq'),
-	('left', 'TkPlus', 'TkMinus'),
-	('left', 'TkMult', 'TkDiv', 'TkMod'),
-	('right', 'uminus'),
-	('left', 'TkConcat'),
-	('left', 'TkOBracket', 'TkCBracket'),
-	('left', 'TkOpenPar', 'TkClosePar'),
-	('left', 'TkEqual', 'TkNEqual'),
-	('right', 'TkNot'),
-	('nonassoc', 'TkNum', 'TkId')
+    ('nonassoc', 'TkGreater', 'TkLess', 'TkGeq', 'TkLeq'),
+    ('left', 'TkPlus', 'TkMinus'),
+    ('left', 'TkMult', 'TkDiv', 'TkMod'),
+    ('right', 'uminus'),
+    ('left', 'TkConcat'),
+    ('left', 'TkOBracket', 'TkCBracket'),
+    ('left', 'TkOpenPar', 'TkClosePar'),
+    ('left', 'TkEqual', 'TkNEqual'),
+    ('right', 'TkNot'),
+    ('nonassoc', 'TkNum', 'TkId')
 )
 
 # Reglas que definen al elemento [Block]
@@ -112,15 +113,15 @@ def p_terminal(p):
 
 # Reglas que definen al elemento [Content]
 def p_content(p):
-	''' Content :   Instruction
+    ''' Content :   Instruction
                 |   Instruction TkSemicolon Content
                 |   Block TkSemicolon Content
                 |   Block
-	'''
-	if (len(p) == 2):
-		p[0] = SyntaxLeaf('Content', None, [p[1]])
-	else:
-		p[0] = SyntaxLeaf('Content', None, [p[1], p[2], p[3]])
+    '''
+    if (len(p) == 2):
+        p[0] = SyntaxLeaf('Content', None, [p[1]])
+    else:
+        p[0] = SyntaxLeaf('Content', None, [p[1], p[2], p[3]])
     
 
 # Reglas que definen al elemento [Instruction]
@@ -262,8 +263,8 @@ def p_aritmoper(p):
         p[0] = SyntaxLeaf('UnaryAritmeticOperator', p[1], [p[2]])
     else:
         p[0] = SyntaxLeaf('UnaryAritmeticOperator', p[2], [p[3]])
-	
-		
+    
+        
 # Reglas que definen al elemento [StrOperator]
 def p_Stroper(p):
     ''' StrOperator : TkId TkConcat TkId
@@ -291,7 +292,7 @@ def p_arrayoper(p):
 
 # Reglas que definen al elemento [RelationalOperator]
 def p_opRel(p):
-	'''RelationalOperator : Expression TkLess Expression
+    '''RelationalOperator : Expression TkLess Expression
                 |   Expression TkLeq Expression
                 |   Expression TkGreater Expression
                 |   Expression TkGeq Expression
@@ -303,11 +304,11 @@ def p_opRel(p):
                 |   TkOpenPar Expression TkLeq Expression TkClosePar
                 |   TkOpenPar Expression TkEqual Expression TkClosePar
                 |   TkOpenPar Expression TkNEqual Expression TkClosePar
-	'''
-	if (len(p) == 6):
-		p[0] = SyntaxLeaf('RelationalOperator', p[3], [p[2], p[4]])
-	else:
-		p[0] = SyntaxLeaf('RelationalOperator', p[2], [p[1], p[3]])
+    '''
+    if (len(p) == 6):
+        p[0] = SyntaxLeaf('RelationalOperator', p[3], [p[2], p[4]])
+    else:
+        p[0] = SyntaxLeaf('RelationalOperator', p[2], [p[1], p[3]])
 
 
 # Reglas que definen al elemento [Variables]
@@ -323,21 +324,21 @@ def p_variables(p):
 
 # Reglas que definen al elemento [BooleanOperator]
 def p_boolop(p):
-	'''BooleanOperator : Expression TkAnd Expression
+    '''BooleanOperator : Expression TkAnd Expression
                 |   Expression TkOr Expression
                 |   TkOpenPar Expression TkAnd Expression TkClosePar
                 |   TkOpenPar Expression TkOr Expression TkClosePar
                 |   TkNot Expression
                 |   TkOpenPar TkNot Expression TkClosePar
-	'''
-	if (len(p) == 4):
-		p[0] = SyntaxLeaf('BooleanOperator', p[2], [p[1], p[3]])
-	elif (len(p) == 3):
-		p[0] = SyntaxLeaf('UnaryBooleanOperator', p[1], [p[2]])
-	elif (len(p) == 5):
-		p[0] = SyntaxLeaf('UnaryBooleanOperator', p[2], [p[3]])
-	else:
-		p[0] = SyntaxLeaf('BooleanOperator', p[3], [p[2], p[4]])
+    '''
+    if (len(p) == 4):
+        p[0] = SyntaxLeaf('BooleanOperator', p[2], [p[1], p[3]])
+    elif (len(p) == 3):
+        p[0] = SyntaxLeaf('UnaryBooleanOperator', p[1], [p[2]])
+    elif (len(p) == 5):
+        p[0] = SyntaxLeaf('UnaryBooleanOperator', p[2], [p[3]])
+    else:
+        p[0] = SyntaxLeaf('BooleanOperator', p[3], [p[2], p[4]])
 
 
 # Reglas que definen al elemento [Datatype]
@@ -374,7 +375,11 @@ parser_error = False
 def parser_builder(meta_program):
     parser = yacc.yacc(debug=True)
     log = logging.getLogger()
-    out = parser.parse(meta_program, debug=log)
+    parsed_program = parser.parse(meta_program, debug=log)
+
+    #context = SyntaxTreeContext()
+    #context.ContextAnalyzer(parsed_program)
+    #context.PrintSymbolTable()
 
     if not(parser_error):
-        SyntaxTreePrinter(out, "")
+        SyntaxTreePrinter(parsed_program, "")
