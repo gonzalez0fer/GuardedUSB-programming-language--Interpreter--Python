@@ -28,7 +28,7 @@ class SyntaxLeaf:
         self.c_type = None
         self.c_array = None
         self.c_lexeme = None
-        self.visited = False
+        #self.visited = False
         if childs:
             self.childs = childs
         else:
