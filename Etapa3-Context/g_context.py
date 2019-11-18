@@ -7,6 +7,7 @@
 
 from sys import exit
 from context_utils import *
+from g_AbsSyntaxTree import *
 
 
 
@@ -80,14 +81,18 @@ class SyntaxTreeContext:
         if leaf.p_value in stack_top:
             print("[Context Error] Line " + str(self.c_currentLine) +'. Variable has been declared before.')
             sys.exit(0)
-        new_symbol = ContextSymbol(leaf.p_value, s_type)
+        
+        if(isinstance(s_type.p_value, SyntaxLeaf)):
+            s_type.p_value = "array[" + str(s_type.p_value.childs[0].p_value) + ".." + str(s_type.p_value.childs[1].p_value) + "]"
+        
+        new_symbol = ContextSymbol(leaf.p_value, s_type.p_value)
         new_symbol.is_array = is_array
         stack_top[leaf.p_value] = new_symbol
 
         if ((len(leaf.childs))>0):
             for leaf in leaf.childs:
                 if (leaf.p_type == 'Variable'):
-                    self.AppendContextSymbol(leaf, s_type, is_array)
+                    self.AppendContextSymbol(leaf, s_type.childs[0], is_array)
                 elif (leaf.p_type == 'Expression'):
                     #t = self.ExpressionAnalizer(leaf)
                     if (t != p_type):
@@ -96,7 +101,6 @@ class SyntaxTreeContext:
                     else:
                         stack_top[leaf.p_value].s_asignvalue = leaf
 
-
     def CreateContextScope(self, leaf):
         """ Definicion del metodo [CreateContextScope], el cual se encarga de hacer el manejo del
         metodo de creacion de simbolos en la tabla.
@@ -104,6 +108,7 @@ class SyntaxTreeContext:
         recibe: leaf : hoja a analizar.
         """
         leaf_type = leaf.p_value
+        
         if leaf_type == 'Array':
             is_array = True
         else:
@@ -115,11 +120,10 @@ class SyntaxTreeContext:
                 self.CreateContextScope(child)
             elif (child.p_type == 'Variable'):
                 print(leaf)
-                self.AppendContextSymbol(child, leaf.p_type, is_array)
+                self.AppendContextSymbol(child, leaf_type, is_array)
             # elif child.p_type == 'Array':
             #     p_type = self.getType(child)
             #     self.getArrayType(child)
-
 
 
     def ContextAnalyzer(self, SyntaxTreeStructure):

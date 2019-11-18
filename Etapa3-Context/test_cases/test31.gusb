@@ -1,4 +1,4 @@
 |[
     declare
-        x, y, z, p : int, int, array[0..2], int
+        x, y, z, p : int, bool, array[0..2], int
 ]|
