@@ -1,0 +1,4 @@
+|[
+    declare
+        x, y, z, p : int, int, array[0..2], int
+]|

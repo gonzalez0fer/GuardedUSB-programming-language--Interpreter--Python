@@ -396,8 +396,8 @@ def parser_builder(meta_program):
     parsed_program = parser.parse(meta_program, debug=log)
 
     context = SyntaxTreeContext()
-    #context.ContextAnalyzer(parsed_program)
-    #context.PrintSymbolTable()
+    context.ContextAnalyzer(parsed_program)
+    context.PrintSymbolTable()
 
     if not(parser_error):
         SyntaxTreePrinter(parsed_program, "")

@@ -8,6 +8,12 @@
 from sys import exit
 from context_utils import *
 
+
+
+BLUE = '\033[94m'
+BLUWHITE = '\033[44m'
+END = '\033[0m'
+
 # En este File reposa las clases y metodos relativos a
 # aumentar y enriquecer Arbol Sintactico de nuestro programa
 # con informacion de contexto y tabla de simbolos.
@@ -108,7 +114,8 @@ class SyntaxTreeContext:
                 self.c_currentLine += 1
                 self.CreateContextScope(child)
             elif (child.p_type == 'Variable'):
-                self.AppendSymbol(child, leaf_type, is_array)
+                print(leaf)
+                self.AppendContextSymbol(child, leaf.p_type, is_array)
             # elif child.p_type == 'Array':
             #     p_type = self.getType(child)
             #     self.getArrayType(child)
@@ -160,28 +167,30 @@ class SyntaxTreeContext:
             print('[Error]: No SyntaxTreeStructure')
 
 
-    # def PrintSymbolTable(self):
-    #     values =[]
-    #     types =[]
-    #     for slot in self.c_secScopes:
-    #         for var in slot:        
-    #             values.append(var.s_value)
-    #             types.append(var.s_type)
-        
-    #     sortpre =sorted(values, key=len)
-    #     sorttyp = sorted(types, key=len)
-    #     longest_val = len(sortpre[-1])
-    #     longest_type = len(sorttyp[-1])
-    #     margin_table = ' '*(((longest_val+longest_type)//2)+4)
+    def PrintSymbolTable(self):
+        values =[]
+        types =[]
+        for scope in self.c_secScopes:
+            for var in scope:
+                print('hey',var)        
+                print('hey',scope[var].s_value,scope[var].s_type)        
+                values.append(scope[var].s_value)
+                types.append(scope[var].s_type)
+            
+        sortpre =sorted(values, key=len)
+        sorttyp = sorted(types, key=len)
+        longest_val = len(sortpre[-1])
+        longest_type = len(sorttyp[-1])
+        margin_table = ' '*(((longest_val+longest_type)//2)+4)
 
-    #     print(BLUWHITE +margin_table+ "SYMBOL TABLE"+margin_table+ END)
-    #     for slot in self.c_secScopes:
-    #         for i in scope:
-    #             if len(i.s_value) < longest_val:
-    #                 if len(i.s_value) % 2 == 0:
-    #                     print(BLUE+'Variable '+END+' '*((longest_val-len(i.s_value)))+i.s_value+' '+BLUE+'|'+END+ ' '+ BLUE+'Type '+END+i.s_type)
-    #                 else:
-    #                     print(BLUE+'Variable '+END+' '*((longest_val-len(i.s_value)))+i.s_value+' '+BLUE+'|'+END+ ' '+ BLUE+'Type '+END+i.s_type)
+        print(BLUWHITE +margin_table+ "SYMBOL TABLE"+margin_table+ END)
+        for scope in self.c_secScopes:
+            for i in scope:
+                if len(scope[i].s_value) < longest_val:
+                    if len(scope[i].s_value) % 2 == 0:
+                        print(BLUE+'Variable '+END+' '*((longest_val-len(scope[i].s_value)))+scope[i].s_value+' '+BLUE+'|'+END+ ' '+ BLUE+'Type '+END+scope[i].s_type)
+                    else:
+                        print(BLUE+'Variable '+END+' '*((longest_val-len(scope[i].s_value)))+scope[i].s_value+' '+BLUE+'|'+END+ ' '+ BLUE+'Type '+END+scope[i].s_type)
 
-    #             else:
-    #                 print(BLUE+'Variable '+END+i.s_value+' ' +BLUE+'|'+END+ ' '+ BLUE+'Type '+END+i.s_type)
+                else:
+                    print(BLUE+'Variable '+END+scope[i].s_value+' ' +BLUE+'|'+END+ ' '+ BLUE+'Type '+END+scope[i].s_type)
