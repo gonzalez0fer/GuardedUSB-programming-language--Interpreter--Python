@@ -66,7 +66,47 @@ class SyntaxTreeContext:
                     print("[Context Error] line " + str(self.c_currentLine) + '. Boolean operator wrong type.')
                     sys.exit(0)
                 else:
-                    return 'bool'       
+                    return 'bool'
+
+            elif (child.p_type == 'RelationalOperator'):
+                oprator1 = child.childs[0]
+                oprator2 = child.childs[1]
+                type1 = self.ExpressionAnalizer(oprator1)
+                type2 = self.ExpressionAnalizer(oprator2)
+                if (hijo.valor != '!=' and hijo.valor != '=='):
+                    if (type1 != 'int' or type2 != 'int'):
+                        print("[Context Error] line " + str(self.c_currentLine) +'. Relational operator wrong type.')
+                        sys.exit(0)
+                if (tipo1 != type2):
+                    print("[Context Error] line " + str(self.c_currentLine) +'. Relational operator wrong type.')
+                    sys.exit(0)
+                else:
+                    return "bool"
+
+            elif(child.p_type == 'AritmeticOperator'):
+                oprator1 = child.childs[0]
+                oprator2 = child.childs[1]
+                type1 = self.ExpressionAnalizer(oprator1)
+                type2 = self.ExpressionAnalizer(oprator2)
+                ############################# aqui debo hacer condicion para operacion unaria
+                if (type1 != type2 != 'int'):
+                    print("[Context Error] line " + str(self.c_currentLine) +'. Aritmetic operator wrong type.')
+                    sys.exit(0)
+                else:
+                    return 'int'
+
+            elif(child.p_type == 'Terminal'):
+                if (len(child.childs)>0):
+                    for h in child.childs:
+                        t = self.ExpressionAnalizer(h)
+                        return t
+                else:
+                    if (child.p_type == 'TkId'):
+                        #t = self.checkId(hijo.lexeme)
+                        return t.p_type
+                    else:
+                        return child.p_type
+       
 
     def AppendContextSymbol(self, leaf, s_type, is_array):
         """ Definicion del metodo [AppendContextSymbol], el cual se encarga de la creacion del
