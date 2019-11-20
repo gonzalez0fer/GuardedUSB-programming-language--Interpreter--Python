@@ -67,17 +67,29 @@ class SyntaxTreeContext:
                     sys.exit(0)
                 else:
                     return 'bool'
+            
+            elif(child.p_type == 'UnaryBooleanOperator'):
+                operator0 = child.childs[0]
+                type0 = self.ExpressionAnalizer(operator0)
+
+                if(type0 != 'bool'):
+                    print("[Context Error] line " + str(self.c_currentLine) +'. Boolean operator wrong type.')
+                    sys.exit(0)
+                else:
+                    return 'bool'
 
             elif (child.p_type == 'RelationalOperator'):
                 oprator1 = child.childs[0]
                 oprator2 = child.childs[1]
                 type1 = self.ExpressionAnalizer(oprator1)
                 type2 = self.ExpressionAnalizer(oprator2)
-                if (hijo.valor != '!=' and hijo.valor != '=='):
+                if (child.p_value != '!=' and child.p_value != '==' and \
+                    child.p_value != '<' and child.p_value != '>' and \
+                    child.p_value != '<=' and child.p_value != '>='):
                     if (type1 != 'int' or type2 != 'int'):
                         print("[Context Error] line " + str(self.c_currentLine) +'. Relational operator wrong type.')
                         sys.exit(0)
-                if (tipo1 != type2):
+                if (type1 != type2):
                     print("[Context Error] line " + str(self.c_currentLine) +'. Relational operator wrong type.')
                     sys.exit(0)
                 else:
@@ -94,6 +106,49 @@ class SyntaxTreeContext:
                     sys.exit(0)
                 else:
                     return 'int'
+            
+            elif(child.p_type == 'UnaryAritmeticOperator'):
+                operator0 = child.childs[0]
+                type0 = self.ExpressionAnalizer(operator0)
+
+                if(type0 != 'int'):
+                    print("[Context Error] line " + str(self.c_currentLine) +'. Aritmetic operator wrong type.')
+                    sys.exit(0)
+                else:
+                    return 'int'
+
+            elif(child.p_type == 'ArrayExpression'):
+                if(len(child.childs) > 1):
+                    operator1 = child.childs[0]
+                    type1 = self.ExpressionAnalizer(operator1)
+
+                    if(type1 != 'int'):
+                        print("[Context Error] line " + str(self.c_currentLine) +'. Array expression wrong type.')
+                        sys.exit(0)
+                    else:
+                        return child.c_type
+                    ##### FALTA VER SI EL ELEMENTO ESTA DENTRO DEL RANGO DEL ARREGLO
+                else:
+                    operator1 = child.childs[0]
+                    operator2 = child.childs[1]
+                    type1 = self.ExpressionAnalizer(operator1)
+                    type2 = self.ExpressionAnalizer(operator2)
+
+                    if(type1 != type2 != 'int'):
+                        print("[Context Error] line " + str(self.c_currentLine) +'. Array expression wrong type.')
+                        sys.exit(0)
+                    else:
+                        return child.c_type
+                    ##### FALTA VER SI EL ELEMENTO 1 ESTA DENTRO DEL RANGO DEL ARREGLO
+
+            elif(child.p_type == 'ArrayOperator'):
+                operator1 = child.childs[0]
+                type1 = self.CheckId(operator1)
+
+                if(not type1.c_array):
+                    print("[Context Error] line " + str(self.c_currentLine) +'. Array operation invalid or variable not array.')
+                    sys.exit(0)
+                return type1.c_type
 
             elif(child.p_type == 'Terminal'):
                 if (len(child.childs)>0):
@@ -101,8 +156,8 @@ class SyntaxTreeContext:
                         t = self.ExpressionAnalizer(h)
                         return t
                 else:
-                    if (child.p_type == 'TkId'):
-                        #t = self.checkId(hijo.lexeme)
+                    if (child.c_type == 'var'):
+                        t = self.CheckId(child.lexeme)
                         return t.p_type
                     else:
                         return child.p_type
@@ -123,7 +178,7 @@ class SyntaxTreeContext:
             sys.exit(0)
         
         if(isinstance(s_type.p_value, SyntaxLeaf)):
-            s_type.p_value = "array[" + str(s_type.p_value.childs[0].p_value) + ".." + str(s_type.p_value.childs[1].p_value) + "]"
+            s_type.p_value = "array[" + str(s_type.p_value.childs[0]) + ".." + str(s_type.p_value.childs[1]) + "]"
         
         new_symbol = ContextSymbol(leaf.p_value, s_type.p_value)
         new_symbol.is_array = is_array
@@ -134,8 +189,8 @@ class SyntaxTreeContext:
                 if (leaf.p_type == 'Variable'):
                     self.AppendContextSymbol(leaf, s_type.childs[0], is_array)
                 elif (leaf.p_type == 'Expression'):
-                    #t = self.ExpressionAnalizer(leaf)
-                    if (t != p_type):
+                    t = self.ExpressionAnalizer(leaf)
+                    if (t != s_type.p_value):
                         print("[Context Error] line " + str(self.c_currentLine) + 'Variable types does not match.')
                         sys.exit(0)
                     else:
@@ -210,6 +265,14 @@ class SyntaxTreeContext:
         else:
             print('[Error]: No SyntaxTreeStructure')
 
+    def CheckId(self, id_var):
+        if (len(self.c_scopes) > 0):
+            for x in range(len(self.c_scopes)):
+                if id_var in self.c_scopes[x]:
+                    return self.c_scopes[x][id_var]
+        
+        print("[Context Error] line " + str(self.c_currentLine) +'. Variable ' + id_var + ' has not been declared before.')
+        sys.exit(0)
 
     def PrintSymbolTable(self):
         values =[]

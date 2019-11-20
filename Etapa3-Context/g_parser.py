@@ -65,8 +65,7 @@ def p_declaration(p):
 
 # Reglas que definen al elemento [Array]
 def p_array(p):
-    ''' Array   :   TkArray TkOBracket Terminal TkSoForth Terminal TkCBracket
-                |   TkArray TkOBracket AritmeticOperator TkSoForth AritmeticOperator TkCBracket
+    ''' Array   :   TkArray TkOBracket TkNum TkSoForth TkNum TkCBracket
     '''
     p[0] = SyntaxLeaf('Array', None, [p[3],p[5]])
 
@@ -98,7 +97,7 @@ def p_terminal(p):
                 p[0].c_type = 'bool'
                 p[0].lexeme = str(p[1])
             else:
-                p[0].type = "var"
+                p[0].c_type = "var"
                 p[0].lexeme = p[1]
         else:
             p[0] = SyntaxLeaf('Terminal', None, [p[2]])
@@ -110,7 +109,7 @@ def p_terminal(p):
                 p[0].c_type = 'bool'
                 p[0].lexeme = str(p[2].lexeme)
             else:
-                p[0].type = "var"
+                p[0].c_type = "var"
                 p[0].lexeme = p[2].lexeme           
 
     else:
@@ -232,7 +231,7 @@ def p_forloop(p):
     p[0] = SyntaxLeaf('Forloop', p[2], [p[4],p[6],p[8]])
 
 
-# Reglas que definen al elemento [Forloop]
+# Reglas que definen al elemento [Expression]
 def p_expression(p):
     ''' Expression  :   AritmeticOperator
                     |   Terminal
