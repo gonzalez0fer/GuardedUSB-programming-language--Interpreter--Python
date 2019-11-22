@@ -172,16 +172,19 @@ class SyntaxTreeContext:
             print("[Context Error] Line " + str(self.c_currentLine) +'. Variable has been declared before.')
             sys.exit(0)
         
+        new_type = s_type.p_value
+
         if(isinstance(s_type.p_value, SyntaxLeaf)):
-            s_type.p_value = "array[" + str(s_type.p_value.childs[0]) + ".." + str(s_type.p_value.childs[1]) + "]"
+            new_type = "array[" + str(s_type.p_value.childs[0]) + ".." + str(s_type.p_value.childs[1]) + "]"
         
-        new_symbol = ContextSymbol(leaf.p_value, s_type.p_value)
+        new_symbol = ContextSymbol(leaf.p_value, new_type)
         new_symbol.is_array = is_array
         stack_top[leaf.p_value] = new_symbol
 
         if ((len(leaf.childs))>0):
             for leaf in leaf.childs:
                 if (leaf.p_type == 'Variable'):
+                    is_array = self.CheckIfArray(s_type.p_value)
                     self.AppendContextSymbol(leaf, s_type.childs[0], is_array)
                 elif (leaf.p_type == 'Expression'):
                     t = self.ExpressionAnalizer(leaf)
@@ -198,18 +201,14 @@ class SyntaxTreeContext:
         recibe: leaf : hoja a analizar.
         """
         leaf_type = leaf.p_value
-        
-        if leaf_type == 'Array':
-            is_array = True
-        else:
-            is_array = False
 
         for child in leaf.childs:
             if (child.p_type == 'Declare'):
                 self.c_currentLine += 1
                 self.CreateContextScope(child)
             elif (child.p_type == 'Variable'):
-                #print(leaf)
+                # Verificar si la variable es arreglo o no
+                is_array = self.CheckIfArray(leaf_type.p_value)
                 self.AppendContextSymbol(child, leaf_type, is_array)
             # elif child.p_type == 'Array':
             #     p_type = self.getType(child)
@@ -259,6 +258,12 @@ class SyntaxTreeContext:
 
         else:
             print('[Error]: No SyntaxTreeStructure')
+
+    def CheckIfArray(self, id_type):
+        if(isinstance(id_type, SyntaxLeaf)):
+            return True
+        else:
+            return False
 
     def CheckId(self, id_var):
         if (len(self.c_scopes) > 0):
