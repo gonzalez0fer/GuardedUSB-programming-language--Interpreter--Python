@@ -95,7 +95,6 @@ class SyntaxTreeContext:
                 oprator2 = child.childs[1]
                 type1 = self.ExpressionAnalizer(oprator1)
                 type2 = self.ExpressionAnalizer(oprator2)
-                ############################# aqui debo hacer condicion para operacion unaria
                 if (type1 != type2 != 'int'):
                     print("[Context Error] line " + str(self.c_currentLine) +'. Aritmetic operator wrong type.')
                     sys.exit(0)
@@ -242,7 +241,7 @@ class SyntaxTreeContext:
                     #     self.c_currentLine += 1
                     #     if (isinstance(leaf.p_value, str)):
                     #         var = self.variableAnalizer(leaf.p_value)
-                    #         if (var.contador):
+                    #         if (var.is_index):
                     #             print("[Context Error] line " + str(self.c_currentLine) + ". tries to modify varible" + leaf.p_value + "of iteration.")
                     #             sys.exit(0)
                     #         var = var.tipo
@@ -254,10 +253,47 @@ class SyntaxTreeContext:
                     #     if (var != _type):
                     #         print("[Context Error] line " + str(self.c_currentLine) + ". Different variable types.")
                     #         sys.exit(0)
+                    elif(leaf.p_type == 'Conditional'):
+                        self.c_currentLine += 1
+                        for child in leaf.childs:
+                            if (child.p_type == 'Content'):
+                                self.ContextAnalyzer(child)
+                            else:
+                                t = self.ExpressionAnalizer(child)
+                                if (t != 'bool'):
+                                    print("[Context Error] line " + str(self.c_currentLine) + ". Conditional variables are of a different types.")
+                                    sys.exit(0) 
 
+                    elif (leaf.p_type == 'DooLoop'):
+                        self.c_currentLine += 1
+                        child = leaf.p_value
+                        oprator1 = child.childs[0]
+                        oprator2 = child.childs[1]
+                        type1 = self.ExpressionAnalizer(oprator1)
+                        type2 = self.ExpressionAnalizer(oprator2)
+                        if (child.p_value != '!=' and child.p_value != '==' and \
+                            child.p_value != '<' and child.p_value != '>' and \
+                                child.p_value != '<=' and child.p_value != '>='):
+                            if (type1 != 'int' or type2 != 'int'):
+                                print("[Context Error] line " + str(self.c_currentLine) + ". Do variables are of a different types.")
+                                sys.exit(0)
+                        if (type1 != type2):
+                            print("[Context Error] line " + str(self.c_currentLine) + ". Do variables are of a different types.")
+                            sys.exit(0)
+                        else:
+                            t = 'bool'
+                        if (t != 'bool'):
+                            print("[Context Error] line " + str(self.c_currentLine) + ". Do variables are of a different types.")
+                            sys.exit(0)
+                        self.ContextAnalyzer(leaf.childs[0])
+
+                    else:
+                        if (leaf.p_type =='Input' or leaf.p_type =='Output'):
+                            self.c_currentLine += 1
+                        self.ContextAnalyzer(leaf)                    
 
         else:
-            print('[Error]: No SyntaxTreeStructure')
+            print('[Context Error]: No SyntaxTreeStructure')
 
     def CheckIfArray(self, id_type):
         if(isinstance(id_type, SyntaxLeaf)):
