@@ -190,8 +190,22 @@ def PrintAsign(syntaxLeaf, identation):
     print(identation, "Ident:", syntaxLeaf.p_value)
     identation = identation + TAB
     printExp(identation)
-    PrintExpression(syntaxLeaf.childs[0], identation)
+    PrintAssignation(syntaxLeaf.childs[0], identation)
 
+def PrintAssignation(syntaxLeaf, identation):
+    """ Definicion del metodo [PrintAssignation], el cual se encarga de imprimir
+    las/la [Expression] del arbol sintactico.
+    
+    recibe: syntaxLeaf : objeto sintactico a ser analizado.
+            identation : numero de tabs para margen izquierdo.
+    """
+
+    if(len(syntaxLeaf.childs) == 1):
+        PrintExpression(syntaxLeaf.childs[0], identation)
+    else:
+        PrintExpression(syntaxLeaf.childs[0], identation)
+        printExp(identation)
+        PrintAssignation(syntaxLeaf.childs[1], identation)
 
 def PrintInput(syntaxLeaf, identation):
     """ Definicion del metodo [PrintInput], el cual se encarga de imprimir
@@ -408,7 +422,7 @@ def PrintTerminal(syntaxLeaf, identation, uminus = False):
         elif(syntaxLeaf.c_type == "var"):
             print(identation, "Ident:", syntaxLeaf.p_value)
             identation = identation + TAB
-        elif(syntaxLeaf.p_value != "True" and syntaxLeaf.p_value != "False"):
+        elif(syntaxLeaf.p_value != "true" and syntaxLeaf.p_value != "false"):
             print(identation + '"%s"' % syntaxLeaf.p_value)
             identation = identation + TAB
         else:

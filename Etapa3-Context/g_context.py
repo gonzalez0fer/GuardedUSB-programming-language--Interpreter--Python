@@ -31,6 +31,7 @@ class ContextSymbol():
         self.s_asignvalue = None 
         self.is_index = None 
         self.is_array = False
+        self.array_indexes = []
 
 
 class SyntaxTreeContext:
@@ -152,9 +153,9 @@ class SyntaxTreeContext:
                 else:
                     if (child.c_type == 'var'):
                         t = self.CheckId(child.lexeme)
-                        return t.p_type
+                        return t.c_type
                     else:
-                        return child.p_type
+                        return child.c_type
        
 
     def AppendContextSymbol(self, leaf, s_type, is_array):
@@ -173,17 +174,22 @@ class SyntaxTreeContext:
         
         new_type = s_type.p_value
 
-        if(isinstance(s_type.p_value, SyntaxLeaf)):
+        if(isinstance(new_type, SyntaxLeaf)):
             new_type = "array[" + str(s_type.p_value.childs[0]) + ".." + str(s_type.p_value.childs[1]) + "]"
         
         new_symbol = ContextSymbol(leaf.p_value, new_type)
         new_symbol.is_array = is_array
+
+        if(is_array):
+            new_symbol.array_indexes.append(s_type.p_value.childs[0])
+            new_symbol.array_indexes.append(s_type.p_value.childs[1])
+        
         stack_top[leaf.p_value] = new_symbol
 
         if ((len(leaf.childs))>0):
             for leaf in leaf.childs:
                 if (leaf.p_type == 'Variable'):
-                    is_array = self.CheckIfArray(s_type.p_value)
+                    is_array = self.CheckIfArray(s_type.childs[0].p_value)
                     self.AppendContextSymbol(leaf, s_type.childs[0], is_array)
                 elif (leaf.p_type == 'Expression'):
                     t = self.ExpressionAnalizer(leaf)
@@ -237,22 +243,36 @@ class SyntaxTreeContext:
                         self.CreateContextScope(leaf)
                         self.c_secScopes.append(self.c_scopes[0])
 
-                    # elif (leaf.p_type  == 'Asign'):
-                    #     self.c_currentLine += 1
-                    #     if (isinstance(leaf.p_value, str)):
-                    #         var = self.variableAnalizer(leaf.p_value)
-                    #         if (var.is_index):
-                    #             print("[Context Error] line " + str(self.c_currentLine) + ". tries to modify varible" + leaf.p_value + "of iteration.")
-                    #             sys.exit(0)
-                    #         var = var.tipo
-                    #     else:
-                    #         var = self.getTipoId(leaf.p_value)
+                    elif (leaf.p_type  == 'Asign'):
+                        self.c_currentLine += 1
 
-                    #     _type = self.ExpressionAnalizer(leaf.childs[0])
+                        # Verificar que la variable este declarada
+                        var = self.CheckId(leaf.p_value)
 
-                    #     if (var != _type):
-                    #         print("[Context Error] line " + str(self.c_currentLine) + ". Different variable types.")
-                    #         sys.exit(0)
+                        if (var.is_index):
+                            print("[Context Error] line " + str(self.c_currentLine) + ". tries to modify varible" + leaf.p_value + "of iteration.")
+                            sys.exit(0)
+                        
+                        # Verificar si la variable es de tipo arreglo o no
+                        exp_type = self.AssignationAnalyzer(leaf.childs[0])
+
+                        if(not var.is_array):
+                            print(var.s_type, exp_type)
+                            if (var.s_type != exp_type):
+                                print("[Context Error] line " + str(self.c_currentLine) + ". Different variable types.")
+                                sys.exit(0)
+                        else:
+
+                            if(exp_type != 'int'):
+                                print("[Context Error] line " + str(self.c_currentLine) + ". Trying to asign array other type different than Integer.")
+                                sys.exit(0)
+                            
+                            count = self.CheckCountExp(leaf.childs[0])
+
+                            if(count != (var.array_indexes[1] - var.array_indexes[0]) + 1):
+                                print("[Context Error] line " + str(self.c_currentLine) + ". Trying to asign more elements than range of Array.")
+                                sys.exit(0)
+
                     elif(leaf.p_type == 'Conditional'):
                         self.c_currentLine += 1
                         for child in leaf.childs:
@@ -264,7 +284,7 @@ class SyntaxTreeContext:
                                     print("[Context Error] line " + str(self.c_currentLine) + ". Conditional variables are of a different types.")
                                     sys.exit(0) 
 
-                    elif (leaf.p_type == 'DooLoop'):
+                    elif (leaf.p_type == 'DoLoop'):
                         self.c_currentLine += 1
                         child = leaf.p_value
                         oprator1 = child.childs[0]
@@ -295,11 +315,32 @@ class SyntaxTreeContext:
         else:
             print('[Context Error]: No SyntaxTreeStructure')
 
+    def AssignationAnalyzer(self, assignation):
+
+        if(len(assignation.childs) == 1):
+            return self.ExpressionAnalizer(assignation.childs[0])
+        else:
+            type1 = self.ExpressionAnalizer(assignation.childs[0])
+
+            type2 = self.AssignationAnalyzer(assignation.childs[1])
+
+            if(type1 != type2):
+                print("[Context Error] line " + str(self.c_currentLine) + ". Trying to asign list of expressions of different types.")
+                sys.exit(0)
+            
+            return type1
+
     def CheckIfArray(self, id_type):
         if(isinstance(id_type, SyntaxLeaf)):
             return True
         else:
             return False
+    
+    def CheckCountExp(self, expression):
+        if(len(expression.childs) > 1):
+            return 1 + self.CheckCountExp(expression.childs[1])
+        else:
+            return len(expression.childs)
 
     def CheckId(self, id_var):
         if (len(self.c_scopes) > 0):
