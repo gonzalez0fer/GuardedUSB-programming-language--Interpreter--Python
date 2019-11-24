@@ -356,7 +356,7 @@ class SyntaxTreeContext:
 
                     elif (leaf.p_type  == 'Content'):
                         self.c_currentLine+=1
-                        self.ContentAnalyzer(leaf)
+                        self.ContentAnalyzer(leaf)                
         else:
             print('[Context Error]: No SyntaxTreeStructure')
 
@@ -412,8 +412,9 @@ class SyntaxTreeContext:
         longest_type = len(sorttyp[-1])
         margin_table = ' '*(((longest_val+longest_type)//2)+4)
 
-        print(color.BLUWHITE +margin_table+ "SYMBOL TABLE"+margin_table+ color.END)
+        print(color.BLUWHITE +margin_table+ "SYMBOLS TABLE"+margin_table+ color.END)
         for scope in self.c_secScopes:
+            print(scope)
             for i in scope:
                 if len(scope[i].s_value) < longest_val:
                     if len(scope[i].s_value) % 2 == 0:
@@ -426,7 +427,7 @@ class SyntaxTreeContext:
                 else:
                     if (scope[i].is_array):
                         print(color.BLUE+'Variable '+color.END+scope[i].s_value+' ' +color.BLUE+'|'+color.END+ ' '+ \
-                            color.BLUE+'Type '+color.END+scope[i].s_type + '[' + str(scope[i].array_indexes[0]) + '..' + str(scope[i].array_indexes[1]) + ']')
+                            color.BLUE+'Type '+color.END+scope[i].s_type + '[' + str(scope[i].array_indexes[0]) + '..' + str(scope[i].array_indexes[1]) + ']'+ ' int')
                     else:
                         print(color.BLUE+'Variable '+color.END+scope[i].s_value+' ' +color.BLUE+'|'+color.END+ ' '+ \
                             color.BLUE+'Type '+color.END+scope[i].s_type)

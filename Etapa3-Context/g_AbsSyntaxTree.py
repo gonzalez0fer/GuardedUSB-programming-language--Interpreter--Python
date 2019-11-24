@@ -5,10 +5,33 @@
 # Kevin Mena 13-10869
 #######################################
 from g_utils import *
+#from g_context import *
 
 # En este File reposa las clases y metodos para la construccion e 
 # impresion del Arbol Sintactico de nuestro programa
 
+def PrintSymbolTable(c_secScopes):
+
+    print(color.BLUWHITE +''+ "SYMBOLS TABLE"+''+ color.END)
+    scope = c_secScopes[0]
+        #print(scope)
+    for i in scope:
+        if len(scope[i].s_value) < 5:
+            if len(scope[i].s_value) % 2 == 0:
+                print(color.BLUE+'Variable '+color.END+' '*((2-len(scope[i].s_value)))+scope[i].s_value+\
+                    ' '+color.BLUE+'|'+color.END+ ' '+ color.BLUE+'Type '+color.END+scope[i].s_type)
+            else:
+                print(color.BLUE+'Variable '+color.END+' '*((2-len(scope[i].s_value)))+scope[i].s_value+\
+                    ' '+color.BLUE+'|'+color.END+ ' '+ color.BLUE+'Type '+color.END+scope[i].s_type)
+
+        else:
+            if (scope[i].is_array):
+                print(color.BLUE+'Variable '+color.END+scope[i].s_value+' ' +color.BLUE+'|'+color.END+ ' '+ \
+                    color.BLUE+'Type '+color.END+scope[i].s_type + '[' + str(scope[i].array_indexes[0]) + '..' + str(scope[i].array_indexes[1]) + ']'+ ' int')
+            else:
+                print(color.BLUE+'Variable '+color.END+scope[i].s_value+' ' +color.BLUE+'|'+color.END+ ' '+ \
+                    color.BLUE+'Type '+color.END+scope[i].s_type)
+    c_secScopes.pop(0)
 class SyntaxLeaf:
     """ Definicion del objeto [SyntaxLeaf], el cual representa cada hoja y/o
     ramificacion de nuestro arbol.
@@ -34,7 +57,7 @@ class SyntaxLeaf:
             self.childs = []
 
 
-def SyntaxTreePrinter(syntaxLeaf, identation):
+def SyntaxTreePrinter(syntaxLeaf, identation, contex_scope = None):
     """ Definicion del metodo [SyntaxTreePrinter], el cual se encarga de imprimir
     la estructura mas externa del arbol sintactico [Declare/Content].
     
@@ -48,11 +71,12 @@ def SyntaxTreePrinter(syntaxLeaf, identation):
 
             for leaf in syntaxLeaf.childs:
                 if (leaf.p_type == "Declare"):
-                    printer(identation, leaf.p_type)
+                    #printer(identation, leaf.p_type)
                     identation = identation + TAB
-                    PrintDeclaration(leaf, identation)
+                    PrintSymbolTable(contex_scope)
+                    #PrintDeclaration(leaf, identation)
                 elif (leaf.p_type == "Content"):
-                    PrintContent(leaf, identation)
+                    PrintContent(leaf, identation, contex_scope)
 
 
 def PrintDeclaration(syntaxLeaf, identation):
@@ -71,7 +95,7 @@ def PrintDeclaration(syntaxLeaf, identation):
             PrintDeclaration(leaf, identation)
 
 
-def PrintContent(syntaxLeaf, identation):
+def PrintContent(syntaxLeaf, identation, contex_scope = None):
     """ Definicion del metodo [PrintContent], el cual se encarga de imprimir
     la estructura [Content] del arbol sintactico.
     
@@ -82,22 +106,22 @@ def PrintContent(syntaxLeaf, identation):
         child = syntaxLeaf.childs[0]
 
         if (child.p_type == "Instruction"):
-            PrintInstruction(child, identation)
+            PrintInstruction(child, identation, contex_scope)
         elif (child.p_type == "Block"):
-            SyntaxTreePrinter(child, identation)
+            SyntaxTreePrinter(child, identation, contex_scope)
     elif (len(syntaxLeaf.childs) >= 2):
         for leaf in syntaxLeaf.childs:
             if (leaf==';'):
                 printseq(identation)
             elif(leaf.p_type == "Instruction"):
-                PrintInstruction(leaf, identation)
+                PrintInstruction(leaf, identation,contex_scope)
             elif(leaf.p_type == "Block"):
-                SyntaxTreePrinter(leaf, identation)
+                SyntaxTreePrinter(leaf, identation,contex_scope)
             elif(leaf.p_type == "Content"):
-                PrintContent(leaf, identation)
+                PrintContent(leaf, identation, contex_scope)
 
 
-def PrintInstruction(syntaxLeaf, identation):
+def PrintInstruction(syntaxLeaf, identation, contex_scope = None):
     """ Definicion del metodo [PrintInstruction], el cual se encarga de imprimir
     la estructura [Instruction] del arbol sintactico.
     
@@ -109,22 +133,22 @@ def PrintInstruction(syntaxLeaf, identation):
     if(child.p_type == "Conditional"):
         printer(identation, "If")
         identation = identation + TAB
-        PrintConditional(child, identation)
+        PrintConditional(child, identation,contex_scope)
     elif(child.p_type == "Forloop"):
         printer(identation, "For\n",identation+ TAB, "In")
-        PrintForLoop(child,identation+ TAB)
+        PrintForLoop(child,identation+ TAB,contex_scope)
     elif(child.p_type == "Doloop"):
         printer(identation, "Do")
-        PrintDoLoop(child,identation+ TAB)
+        PrintDoLoop(child,identation+ TAB,contex_scope)
     elif(child.p_type == "Asign"):
-        PrintAsign(child, identation)
+        PrintAsign(child, identation,contex_scope)
     elif(child.p_type == "Input"):
-        PrintInput(child, identation)
+        PrintInput(child, identation,contex_scope)
     elif(child.p_type == "Output"):
-        PrintOutput(child, identation)
+        PrintOutput(child, identation,contex_scope)
 
 
-def PrintForLoop(syntaxLeaf, identation):
+def PrintForLoop(syntaxLeaf, identation, contex_scope = None):
     """ Definicion del metodo [PrintForLoop], el cual se encarga de imprimir
     la estructura iterativa [ForLoop] junto con sus [Guard] del arbol sintactico.
     
@@ -136,13 +160,13 @@ def PrintForLoop(syntaxLeaf, identation):
 
     for leaf in syntaxLeaf.childs:
         if(leaf.p_type == "Content"):
-            PrintContent(leaf, identation)
+            PrintContent(leaf, identation,contex_scope)
         elif (leaf.p_type == "Expression"):
             printExp(identation)
-            PrintExpression(leaf, identation+TAB)
+            PrintExpression(leaf, identation+TAB,contex_scope)
 
 
-def PrintDoLoop(syntaxLeaf, identation):
+def PrintDoLoop(syntaxLeaf, identation, contex_scope = None):
     """ Definicion del metodo [PrintForLoop], el cual se encarga de imprimir
     la estructura iterativa [DoLoop] junto con sus [Guard] del arbol sintactico.
     
@@ -152,14 +176,14 @@ def PrintDoLoop(syntaxLeaf, identation):
     for leaf in syntaxLeaf.childs:
         if(leaf.p_type == "Expression"):
             printExp(identation)
-            PrintExpression(leaf, identation)
+            PrintExpression(leaf, identation,contex_scope)
         elif(leaf.p_type == "Content"):
-            PrintContent(leaf, identation)
+            PrintContent(leaf, identation,contex_scope)
         elif(leaf.p_type == "Guard"):
-            PrintConditional(leaf, identation)
+            PrintConditional(leaf, identation,contex_scope)
 
 
-def PrintConditional(syntaxLeaf, identation):
+def PrintConditional(syntaxLeaf, identation, contex_scope=None):
     """ Definicion del metodo [PrintConditional], el cual se encarga de imprimir
     las estructuras [Conditional, Guard] del arbol sintactico.
     
@@ -171,14 +195,14 @@ def PrintConditional(syntaxLeaf, identation):
 
     for leaf in syntaxLeaf.childs:
         if(leaf.p_type == "Expression"):
-            PrintExpression(leaf, identation)
+            PrintExpression(leaf, identation,contex_scope)
         elif(leaf.p_type == "Content"):
-            PrintContent(leaf, identation)
+            PrintContent(leaf, identation,contex_scope)
         elif(leaf.p_type == "Guard"):
-            PrintConditional(leaf, identation)
+            PrintConditional(leaf, identation,contex_scope)
 
 
-def PrintAsign(syntaxLeaf, identation):
+def PrintAsign(syntaxLeaf, identation,contex_scope=None):
     """ Definicion del metodo [PrintAsign], el cual se encarga de imprimir
     la estructura [Asign] del arbol sintactico.
     
@@ -189,9 +213,9 @@ def PrintAsign(syntaxLeaf, identation):
     identation = identation + TAB
     print(identation, "Ident:", syntaxLeaf.p_value)
     identation = identation + TAB
-    PrintAssignation(syntaxLeaf.childs[0], identation)
+    PrintAssignation(syntaxLeaf.childs[0], identation,contex_scope)
 
-def PrintAssignation(syntaxLeaf, identation):
+def PrintAssignation(syntaxLeaf, identation, contex_scope=None):
     """ Definicion del metodo [PrintAssignation], el cual se encarga de imprimir
     las/la [Expression] del arbol sintactico.
     
@@ -201,13 +225,13 @@ def PrintAssignation(syntaxLeaf, identation):
 
     if(len(syntaxLeaf.childs) == 1):
 
-        PrintExpression(syntaxLeaf.childs[0], identation)
+        PrintExpression(syntaxLeaf.childs[0], identation, contex_scope)
     else:
-        PrintExpression(syntaxLeaf.childs[0], identation)
+        PrintExpression(syntaxLeaf.childs[0], identation, contex_scope)
         #printExp(identation)
-        PrintAssignation(syntaxLeaf.childs[1], identation)
+        PrintAssignation(syntaxLeaf.childs[1], identation, contex_scope)
 
-def PrintInput(syntaxLeaf, identation):
+def PrintInput(syntaxLeaf, identation, contex_scope=None):
     """ Definicion del metodo [PrintInput], el cual se encarga de imprimir
     la estructura [Read] del arbol sintactico.
     
@@ -219,7 +243,7 @@ def PrintInput(syntaxLeaf, identation):
     print(identation, "Ident:", syntaxLeaf.childs[0])
 
 
-def PrintOutput(syntaxLeaf, identation):
+def PrintOutput(syntaxLeaf, identation, contex_scope=None):
     """ Definicion del metodo [PrintOutput], el cual se encarga de imprimir
     la estructura [Print/Println] del arbol sintactico.
     
@@ -239,17 +263,17 @@ def PrintOutput(syntaxLeaf, identation):
         if(leaf.p_type == "Expression"):
             to_do.append((leaf,identation))
         else:
-            PrintConcatExp(leaf, identation + TAB, to_do)
+            PrintConcatExp(leaf, identation + TAB, to_do, contex_scope)
 
     for sleaf in to_do:
         if(sleaf[0].p_type == "Expression"):
-            PrintExpression(sleaf[0],sleaf[1]+TAB*len(to_do))
+            PrintExpression(sleaf[0],sleaf[1]+TAB*len(to_do),contex_scope )
         elif(sleaf[0].p_type == "Terminal"):
-            PrintTerminal(sleaf[0],sleaf[1]+TAB*len(to_do)) 
+            PrintTerminal(sleaf[0],sleaf[1]+TAB*len(to_do),contex_scope ) 
         else:
             pass
 
-def PrintConcatExp(syntaxLeaf, identation, to_do):
+def PrintConcatExp(syntaxLeaf, identation, to_do, contex_scope=None):
     """ Definicion del metodo [PrintConcatExp], el cual se encarga de imprimir
     la estructura [Concat] del arbol sintactico.
     
@@ -264,10 +288,10 @@ def PrintConcatExp(syntaxLeaf, identation, to_do):
             to_do.append([leaf,identation])
         else:
             identation = identation + TAB
-            PrintConcatExp(leaf, identation,to_do)        
+            PrintConcatExp(leaf, identation,to_do, contex_scope)        
       
 
-def PrintVariable(syntaxLeaf, identation):
+def PrintVariable(syntaxLeaf, identation, contex_scope=None):
     """ Definicion del metodo [PrintVariable], el cual se encarga de imprimir
     la estructura [Variable] del arbol sintactico.
     
@@ -277,13 +301,13 @@ def PrintVariable(syntaxLeaf, identation):
     if(len(syntaxLeaf.childs) > 0):
         print(identation, "Ident:", syntaxLeaf.p_value)
 
-        PrintVariable(syntaxLeaf.childs[0], identation)
+        PrintVariable(syntaxLeaf.childs[0], identation, contex_scope)
     else:
         print(identation, "Ident:", syntaxLeaf.p_value)
         identation = identation + TAB
 
 
-def PrintExpression(syntaxLeaf, identation, uminus = False):
+def PrintExpression(syntaxLeaf, identation, uminus = False, contex_scope=None):
     """ Definicion del metodo [PrintExpression], el cual se encarga de imprimir
     la estructura [Expression] del arbol sintactico.
     
@@ -294,34 +318,34 @@ def PrintExpression(syntaxLeaf, identation, uminus = False):
 
     if (child.p_type == "AritmeticOperator"):
         identation = identation + TAB
-        PrintAritmeticOp(child, identation) 
+        PrintAritmeticOp(child, identation, contex_scope) 
     elif (child.p_type == "Terminal"):
-        PrintTerminal(child, identation)
+        PrintTerminal(child, identation, contex_scope)
     elif (child.p_type == "RelationalOperator"):
         #printExp(identation)
         identation = identation + TAB
-        PrintRelationalOp(child, identation)
+        PrintRelationalOp(child, identation, contex_scope)
     elif (child.p_type == "BooleanOperator"):
         printExp(identation)
         identation = identation + TAB
-        PrintBooleanOp(child, identation)
+        PrintBooleanOp(child, identation, contex_scope)
     elif (child.p_type == "StrOperator"):
         printExp(identation)
         identation = identation + TAB
-        PrintStrOp(child, identation)
+        PrintStrOp(child, identation, contex_scope)
     elif (child.p_type == "ArrayOperator"):
-        PrintArrayOp(child, identation)
+        PrintArrayOp(child, identation, contex_scope)
     elif(child.p_type == "ArrayExpression"):
         #printExp(identation)
         identation = identation + TAB
-        PrintArrayExp(child, identation)
+        PrintArrayExp(child, identation, contex_scope)
     elif(child.p_type == "UnaryAritmeticOperator"):
         identation = identation + TAB
-        PrintTerminal(child, identation, True)   
+        PrintTerminal(child, identation, True, contex_scope)   
 
 
 
-def PrintArrayExp(syntaxLeaf, identation):
+def PrintArrayExp(syntaxLeaf, identation, contex_scope=None):
     """ Definicion del metodo [PrintArrayExp], el cual se encarga de imprimir
     la estructura [Array] del arbol sintactico.
     
@@ -332,25 +356,25 @@ def PrintArrayExp(syntaxLeaf, identation):
         printer(identation, "ArrayAsign")
         identation = identation + TAB
         if(isinstance(syntaxLeaf.p_value, SyntaxLeaf)):
-            PrintArrayExp(syntaxLeaf.p_value, identation)
+            PrintArrayExp(syntaxLeaf.p_value, identation, contex_scope)
         else:
             print(identation, "Ident:", syntaxLeaf.p_value)
 
         for leaf in syntaxLeaf.childs:
-                PrintTerminal(leaf, identation)
+                PrintTerminal(leaf, identation, contex_scope)
     else:
         printer(identation, "EvalArray")
         identation = identation + TAB
         if(isinstance(syntaxLeaf.p_value, SyntaxLeaf)):
-            PrintArrayExp(syntaxLeaf.p_value, identation)
+            PrintArrayExp(syntaxLeaf.p_value, identation, contex_scope)
         else:
             print(identation, "Ident:", syntaxLeaf.p_value)
 
         for leaf in syntaxLeaf.childs:
-                PrintTerminal(leaf, identation+TAB)
+                PrintTerminal(leaf, identation+TAB, contex_scope)
 
 
-def PrintArrayOp(syntaxLeaf, identation):
+def PrintArrayOp(syntaxLeaf, identation, contex_scope=None):
     """ Definicion del metodo [PrintArrayOp], el cual se encarga de imprimir
     la estructura [ArrayOperator] de las funciones de manipulacion de funciones
     array del arbol sintactico.
@@ -377,7 +401,7 @@ def PrintArrayOp(syntaxLeaf, identation):
         print(identation, "Ident:", child)
 
 
-def PrintUnaryAritmeticOp(syntaxLeaf, identation, uminus = False):
+def PrintUnaryAritmeticOp(syntaxLeaf, identation, uminus = False, contex_scope=None):
     """ Definicion del metodo [PrintUnaryAritmeticOp], el cual se encarga de imprimir
     la estructura [UnaryAritmeticOp] de los operadores aritmeticos del arbol sintactico.
     
@@ -387,10 +411,10 @@ def PrintUnaryAritmeticOp(syntaxLeaf, identation, uminus = False):
     identation = identation + TAB
 
     for leaf in syntaxLeaf.childs:
-        PrintExpression(leaf, identation, True)
+        PrintExpression(leaf, identation, True, contex_scope)
 
 
-def PrintAritmeticOp(syntaxLeaf, identation):
+def PrintAritmeticOp(syntaxLeaf, identation, contex_scope=None):
     """ Definicion del metodo [PrintAritmeticOp], el cual se encarga de imprimir
     la estructura [AricmeticOperator] de los operadores aritmeticos del arbol sintactico.
     
@@ -402,10 +426,10 @@ def PrintAritmeticOp(syntaxLeaf, identation):
     identation = identation + TAB
 
     for leaf in syntaxLeaf.childs:
-        PrintExpression(leaf, identation)
+        PrintExpression(leaf, identation,contex_scope)
 
 
-def PrintTerminal(syntaxLeaf, identation, uminus = False):
+def PrintTerminal(syntaxLeaf, identation, uminus = False, contex_scope=None):
     """ Definicion del metodo [PrintTerminal], el cual se encarga de imprimir
     la estructura [Terminal] del arbol sintactico.
     
@@ -435,10 +459,10 @@ def PrintTerminal(syntaxLeaf, identation, uminus = False):
             print(identation, syntaxLeaf.p_value)
             identation = identation + TAB
     if(len(syntaxLeaf.childs) > 0 ):
-        PrintTerminal(syntaxLeaf.childs[0], identation, uminus)
+        PrintTerminal(syntaxLeaf.childs[0], identation, uminus, contex_scope)
 
 
-def PrintRelationalOp(syntaxLeaf, identation):
+def PrintRelationalOp(syntaxLeaf, identation, contex_scope=None):
     """ Definicion del metodo [PrintRelationalOp], el cual se encarga de imprimir
     la estructura [RelationalOperator] del arbol sintactico.
     
@@ -450,10 +474,10 @@ def PrintRelationalOp(syntaxLeaf, identation):
     print(identation, symbols[syntaxLeaf.p_value])
     identation = identation + TAB
     for leaf in syntaxLeaf.childs:
-        PrintExpression(leaf, identation)
+        PrintExpression(leaf, identation, contex_scope)
 
 
-def PrintBooleanOp(syntaxLeaf, identation):
+def PrintBooleanOp(syntaxLeaf, identation, contex_scope=None):
     """ Definicion del metodo [PrintBooleanOp], el cual se encarga de imprimir
     la estructura [BooleanOperator] del arbol sintactico.
     
@@ -464,10 +488,10 @@ def PrintBooleanOp(syntaxLeaf, identation):
     identation = identation + TAB
 
     for leaf in syntaxLeaf.childs:
-        PrintExpression(leaf, identation)
+        PrintExpression(leaf, identation, contex_scope)
 
 
-def PrintStrOp(syntaxLeaf, identation):
+def PrintStrOp(syntaxLeaf, identation, contex_scope=None):
     """ Definicion del metodo [PrintStrOp], el cual se encarga de imprimir
     la estructura [StrOperator] del arbol sintactico.
     
