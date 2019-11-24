@@ -189,7 +189,6 @@ def PrintAsign(syntaxLeaf, identation):
     identation = identation + TAB
     print(identation, "Ident:", syntaxLeaf.p_value)
     identation = identation + TAB
-    printExp(identation)
     PrintAssignation(syntaxLeaf.childs[0], identation)
 
 def PrintAssignation(syntaxLeaf, identation):
@@ -201,10 +200,11 @@ def PrintAssignation(syntaxLeaf, identation):
     """
 
     if(len(syntaxLeaf.childs) == 1):
+
         PrintExpression(syntaxLeaf.childs[0], identation)
     else:
         PrintExpression(syntaxLeaf.childs[0], identation)
-        printExp(identation)
+        #printExp(identation)
         PrintAssignation(syntaxLeaf.childs[1], identation)
 
 def PrintInput(syntaxLeaf, identation):
@@ -347,7 +347,6 @@ def PrintArrayExp(syntaxLeaf, identation):
             print(identation, "Ident:", syntaxLeaf.p_value)
 
         for leaf in syntaxLeaf.childs:
-                printExp(identation)
                 PrintTerminal(leaf, identation+TAB)
 
 
@@ -398,7 +397,8 @@ def PrintAritmeticOp(syntaxLeaf, identation):
     recibe: syntaxLeaf : objeto sintactico a ser analizado.
             identation : numero de tabs para margen izquierdo.
     """
-    print(identation, symbols[syntaxLeaf.p_value])
+    printExp(identation, 'Arith')
+    print(identation,symbols[syntaxLeaf.p_value])
     identation = identation + TAB
 
     for leaf in syntaxLeaf.childs:
@@ -412,6 +412,12 @@ def PrintTerminal(syntaxLeaf, identation, uminus = False):
     recibe: syntaxLeaf : objeto sintactico a ser analizado.
             identation : numero de tabs para margen izquierdo.
     """
+    if syntaxLeaf.c_type == "int":
+        printExp(identation, 'Arith')
+    elif syntaxLeaf.c_type == 'bool':
+        printExp(identation, 'Boolean')
+    else:
+        pass
     if (syntaxLeaf.p_value is not None):
         if(syntaxLeaf.c_type == "int" and uminus==True):
             print(identation, "Literal:", '-'+str(syntaxLeaf.p_value))
@@ -439,6 +445,8 @@ def PrintRelationalOp(syntaxLeaf, identation):
     recibe: syntaxLeaf : objeto sintactico a ser analizado.
             identation : numero de tabs para margen izquierdo.
     """
+    printExp(identation, 'Bool')
+    print('hallo', syntaxLeaf.childs[0].childs[0].p_value)
     print(identation, symbols[syntaxLeaf.p_value])
     identation = identation + TAB
     for leaf in syntaxLeaf.childs:

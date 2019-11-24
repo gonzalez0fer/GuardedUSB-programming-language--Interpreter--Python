@@ -390,10 +390,10 @@ def parser_builder(meta_program):
     log = logging.getLogger()
     parsed_program = parser.parse(meta_program, debug=log)
 
-    context = SyntaxTreeContext()
-    context.ContextAnalyzer(parsed_program)
-    context.PrintSymbolTable()
-    print('ESTE PRINT ESTA EN G_PARSER \n','Scopes: ',context.c_scopes,'\n SecScopes: ',context.c_secScopes)
+    #context = SyntaxTreeContext()
+    #context.ContextAnalyzer(parsed_program)
+    #context.PrintSymbolTable()
+    #print('ESTE PRINT ESTA EN G_PARSER \n','Scopes: ',context.c_scopes,'\n SecScopes: ',context.c_secScopes)
 
     if not(parser_error):
         SyntaxTreePrinter(parsed_program, "")
