@@ -114,14 +114,20 @@ class SyntaxTreeContext:
 
             elif(child.p_type == 'ArrayExpression'):
                 if(len(child.childs) == 1):
+                    t = self.CheckId(child.p_value)
+
                     operator1 = child.childs[0]
                     type1 = self.ExpressionAnalizer(operator1)
 
                     if(type1 != 'int'):
                         print("[Context Error] line " + str(self.c_currentLine) +'. Array expression wrong type.')
                         sys.exit(0)
-                    else:
-                        return child.c_type
+                    
+                    if(operator1.childs[0].lexeme > t.array_indexes[1] or operator1.childs[0].lexeme < t.array_indexes[0]):
+                        print("[Context Error] line " + str(self.c_currentLine) +'. Array expression out of boundaries.')
+                        sys.exit(0)
+
+                    return child.c_type
                     ##### FALTA VER SI EL ELEMENTO ESTA DENTRO DEL RANGO DEL ARREGLO
                 else:
                     operator1 = child.childs[0]
@@ -129,11 +135,17 @@ class SyntaxTreeContext:
                     type1 = self.ExpressionAnalizer(operator1)
                     type2 = self.ExpressionAnalizer(operator2)
 
+                    t = self.CheckId(child.p_value)
+
                     if(type1 != type2 != 'int'):
                         print("[Context Error] line " + str(self.c_currentLine) +'. Array expression wrong type.')
                         sys.exit(0)
-                    else:
-                        return child.c_type
+                    
+                    if(operator1.lexeme > t.array_indexes[1] or operator1.lexeme < t.array_indexes[0]):
+                        print("[Context Error] line " + str(self.c_currentLine) +'. Array expression out of boundaries.')
+                        sys.exit(0)
+                    
+                    return child.c_type
                     ##### FALTA VER SI EL ELEMENTO 1 ESTA DENTRO DEL RANGO DEL ARREGLO
 
             elif(child.p_type == 'ArrayOperator'):
@@ -175,8 +187,8 @@ class SyntaxTreeContext:
         
         new_type = s_type.p_value
 
-        if(isinstance(new_type, SyntaxLeaf)):
-            new_type = "array[" + str(s_type.p_value.childs[0]) + ".." + str(s_type.p_value.childs[1]) + "]"
+        if(is_array):
+            new_type = "array"
         
         new_symbol = ContextSymbol(leaf.p_value, new_type)
         new_symbol.is_array = is_array
@@ -217,9 +229,6 @@ class SyntaxTreeContext:
                     # Verificar si la variable es arreglo o no
                     is_array = self.CheckIfArray(leaf_type.p_value)
                     self.AppendContextSymbol(child, leaf_type, is_array)
-                # elif child.p_type == 'Array':
-                #     p_type = self.getType(child)
-                #     self.getArrayType(child)
 
     def ContentAnalyzer(self, content):
         if(len(content.childs) > 0):
@@ -264,7 +273,7 @@ class SyntaxTreeContext:
                         count = self.CheckCountExp(leaf.childs[0])
 
                         if(count != (var.array_indexes[1] - var.array_indexes[0]) + 1):
-                            print("[Context Error] line " + str(self.c_currentLine) + ". Trying to asign more elements than range of Array.")
+                            print("[Context Error] line " + str(self.c_currentLine) + ". Trying to asign different number of elements in the Array.")
                             sys.exit(0)
 
                 elif(leaf.p_type == 'Conditional'):
@@ -279,7 +288,20 @@ class SyntaxTreeContext:
                             if (t != 'bool'):
                                 print("[Context Error] line " + str(self.c_currentLine) + ". Conditional variables are of a different types.")
                                 sys.exit(0) 
-                                
+
+                elif(leaf.p_type == 'ForLoop'):
+                    self.c_currentLine += 1
+                    child = leaf.p_value
+                    oprator1 = child.childs[0]
+                    oprator2 = child.childs[1]
+                    type1 = self.ExpressionAnalizer(oprator1)
+                    type2 = self.ExpressionAnalizer(oprator2)
+
+                    if (type1 != 'int' or type2 != 'int'):
+                        print("[Context Error] line " + str(self.c_currentLine) + ". For expressions are different type.")
+                        sys.exit(0)
+                    
+                    self.AppendContextSymbol(SyntaxLeaf('Terminal', child), SyntaxLeaf('Datatype', 'int'), False)
 
                 elif (leaf.p_type == 'DoLoop'):
                     self.c_currentLine += 1
@@ -326,7 +348,6 @@ class SyntaxTreeContext:
                         self.c_scopes.pop(0)
 
                     elif (leaf.p_type == 'Declare'):
-                        print("CREANDO NUEVO SCOPE")
                         self.c_currentLine+=1
                         new_scope ={}
                         self.c_scopes.insert(0,new_scope)
@@ -403,9 +424,9 @@ class SyntaxTreeContext:
                             ' '+color.BLUE+'|'+color.END+ ' '+ color.BLUE+'Type '+color.END+scope[i].s_type)
 
                 else:
-                    if re.match(r'array[[0-9]+\.\.[0-9]+]',scope[i].s_type):
+                    if (scope[i].is_array):
                         print(color.BLUE+'Variable '+color.END+scope[i].s_value+' ' +color.BLUE+'|'+color.END+ ' '+ \
-                            color.BLUE+'Type '+color.END+scope[i].s_type + ' int')
+                            color.BLUE+'Type '+color.END+scope[i].s_type + '[' + str(scope[i].array_indexes[0]) + '..' + str(scope[i].array_indexes[1]) + ']')
                     else:
                         print(color.BLUE+'Variable '+color.END+scope[i].s_value+' ' +color.BLUE+'|'+color.END+ ' '+ \
                             color.BLUE+'Type '+color.END+scope[i].s_type)

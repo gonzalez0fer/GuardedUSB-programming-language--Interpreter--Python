@@ -1,4 +1,6 @@
 |[
     declare
         x, y, z, p : int, bool, array[0..2], int
+    
+    z := 1
 ]|
