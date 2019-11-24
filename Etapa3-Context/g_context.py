@@ -113,7 +113,7 @@ class SyntaxTreeContext:
                     return 'int'
 
             elif(child.p_type == 'ArrayExpression'):
-                if(len(child.childs) > 1):
+                if(len(child.childs) == 1):
                     operator1 = child.childs[0]
                     type1 = self.ExpressionAnalizer(operator1)
 
@@ -140,10 +140,10 @@ class SyntaxTreeContext:
                 operator1 = child.childs[0]
                 type1 = self.CheckId(operator1)
 
-                if(not type1.c_array):
+                if(not type1.is_array):
                     print("[Context Error] line " + str(self.c_currentLine) +'. Array operation invalid or variable not array.')
                     sys.exit(0)
-                return type1.c_type
+                return 'int'
 
             elif(child.p_type == 'Terminal'):
 
@@ -209,16 +209,17 @@ class SyntaxTreeContext:
         leaf_type = leaf.p_value
 
         for child in leaf.childs:
-            if (child.p_type == 'Declare'):
-                self.c_currentLine += 1
-                self.CreateContextScope(child)
-            elif (child.p_type == 'Variable'):
-                # Verificar si la variable es arreglo o no
-                is_array = self.CheckIfArray(leaf_type.p_value)
-                self.AppendContextSymbol(child, leaf_type, is_array)
-            # elif child.p_type == 'Array':
-            #     p_type = self.getType(child)
-            #     self.getArrayType(child)
+            if(child != ';'):
+                if (child.p_type == 'Declare'):
+                    self.c_currentLine += 1
+                    self.CreateContextScope(child)
+                elif (child.p_type == 'Variable'):
+                    # Verificar si la variable es arreglo o no
+                    is_array = self.CheckIfArray(leaf_type.p_value)
+                    self.AppendContextSymbol(child, leaf_type, is_array)
+                # elif child.p_type == 'Array':
+                #     p_type = self.getType(child)
+                #     self.getArrayType(child)
 
     def ContentAnalyzer(self, content):
         if(len(content.childs) > 0):
@@ -270,9 +271,9 @@ class SyntaxTreeContext:
                     self.c_currentLine += 1
                     for child in leaf.childs:
                         if (child.p_type == 'Content'):
-                            self.ContextAnalyzer(child)
+                            self.ContentAnalyzer(child)
                         elif ( child.p_type == 'Guard'):
-                            self.ExpressionAnalizer(child)
+                            self.ContextAnalyzer(child)
                         else:
                             t = self.ExpressionAnalizer(child)
                             if (t != 'bool'):
@@ -325,6 +326,7 @@ class SyntaxTreeContext:
                         self.c_scopes.pop(0)
 
                     elif (leaf.p_type == 'Declare'):
+                        print("CREANDO NUEVO SCOPE")
                         self.c_currentLine+=1
                         new_scope ={}
                         self.c_scopes.insert(0,new_scope)

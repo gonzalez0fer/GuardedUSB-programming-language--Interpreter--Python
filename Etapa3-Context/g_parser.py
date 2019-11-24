@@ -242,10 +242,10 @@ def p_expression(p):
 
 # Reglas que definen al elemento [ArrayExpression]
 def p_arrayexpres(p):
-    ''' ArrayExpression :   ArrayExpression TkOpenPar Terminal TkTwoPoints Terminal TkClosePar
-                        |   TkId TkOpenPar Terminal TkTwoPoints Terminal TkClosePar
-                        |   ArrayExpression TkOBracket Terminal TkCBracket
-                        |   TkId TkOBracket Terminal TkCBracket
+    ''' ArrayExpression :   ArrayExpression TkOpenPar Expression TkTwoPoints Expression TkClosePar
+                        |   TkId TkOpenPar Expression TkTwoPoints Expression TkClosePar
+                        |   ArrayExpression TkOBracket Expression TkCBracket
+                        |   TkId TkOBracket Expression TkCBracket
     '''
     if (len(p)==7):
         p[0] = SyntaxLeaf('ArrayExpression', p[1], [p[3],p[5]])
