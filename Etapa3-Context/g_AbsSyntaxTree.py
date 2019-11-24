@@ -423,7 +423,7 @@ def PrintTerminal(syntaxLeaf, identation, uminus = False):
             print(identation, "Ident:", syntaxLeaf.p_value)
             identation = identation + TAB
         elif(syntaxLeaf.p_value != "true" and syntaxLeaf.p_value != "false"):
-            print(identation + '"%s"' % syntaxLeaf.p_value)
+            print(identation + '%s' % syntaxLeaf.p_value)
             identation = identation + TAB
         else:
             print(identation, syntaxLeaf.p_value)

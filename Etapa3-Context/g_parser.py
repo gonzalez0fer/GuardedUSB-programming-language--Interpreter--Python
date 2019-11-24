@@ -81,7 +81,6 @@ def p_terminal(p):
                 | TkQuote
                 | TkOpenPar Terminal TkClosePar
     '''
-
     if (len(p) == 4):
         p[0] = SyntaxLeaf('Terminal', None, [p[2]])
         if (str(p[2].lexeme)).isdigit():
@@ -91,6 +90,9 @@ def p_terminal(p):
             or p[2].lexeme == "false"):
             p[0].c_type = 'bool'
             p[0].lexeme = str(p[2].lexeme)
+        elif(p[2].lexeme[0] == "\""):
+            p[0].c_type = "string"
+            p[0].lexeme = p[1]
         else:
             p[0].c_type = "var"
             p[0].lexeme = p[2].lexeme           
@@ -103,6 +105,9 @@ def p_terminal(p):
         elif (p[1] == "true" \
             or p[1] == "false"):
             p[0].c_type = "bool"
+            p[0].lexeme = p[1]
+        elif(p[1][0] == "\""):
+            p[0].c_type = "string"
             p[0].lexeme = p[1]
         else:
             p[0].c_type = "var"

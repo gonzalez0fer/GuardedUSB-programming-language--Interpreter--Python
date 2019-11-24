@@ -109,7 +109,7 @@ def t_TkId(t):
 
 def t_TkString(t):
     r'"([^"\\\n]|\\"|\\\\|\\n)*"'
-    t.value = t.value[1:-1]
+    t.value = t.value[0:]
     return t
 
 
