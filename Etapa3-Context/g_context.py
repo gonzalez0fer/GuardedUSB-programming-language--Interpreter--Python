@@ -219,6 +219,90 @@ class SyntaxTreeContext:
             #     p_type = self.getType(child)
             #     self.getArrayType(child)
 
+    def ContentAnalyzer(self, content):
+        if(len(content.childs) > 0):
+            for leaf in content.childs:
+                if(leaf != ';'):
+                    if(leaf.p_type == "Instruction"):
+                        self.InstructionAnalyzer(leaf)
+                    elif(leaf.p_type == "Block"):
+                        self.c_currentLine+=1
+                        self.ContextAnalyzer(leaf)
+                        self.c_scopes.pop(0)
+                    elif(leaf.p_type == "Content"):
+                        self.c_currentLine+=1
+                        self.ContentAnalyzer(leaf)
+    
+    def InstructionAnalyzer(self, instruction):
+        if(len(instruction.childs) > 0):
+            for leaf in instruction.childs:
+                if (leaf.p_type  == 'Asign'):
+                    self.c_currentLine += 1
+
+                    # Verificar que la variable este declarada
+                    var = self.CheckId(leaf.p_value)
+
+                    if (var.is_index):
+                        print("[Context Error] line " + str(self.c_currentLine) + ". tries to modify varible" + leaf.p_value + "of iteration.")
+                        sys.exit(0)
+                    
+                    # Verificar si la variable es de tipo arreglo o no
+                    exp_type = self.AssignationAnalyzer(leaf.childs[0])
+
+                    if(not var.is_array):
+                        if (var.s_type != exp_type):
+                            print("[Context Error] line " + str(self.c_currentLine) + ". Different variable types.")
+                            sys.exit(0)
+                    else:
+
+                        if(exp_type != 'int'):
+                            print("[Context Error] line " + str(self.c_currentLine) + ". Trying to asign array other type different than Integer.")
+                            sys.exit(0)
+                        
+                        count = self.CheckCountExp(leaf.childs[0])
+
+                        if(count != (var.array_indexes[1] - var.array_indexes[0]) + 1):
+                            print("[Context Error] line " + str(self.c_currentLine) + ". Trying to asign more elements than range of Array.")
+                            sys.exit(0)
+
+                elif(leaf.p_type == 'Conditional'):
+                    self.c_currentLine += 1
+                    for child in leaf.childs:
+                        if (child.p_type == 'Content'):
+                            self.ContextAnalyzer(child)
+                        else:
+                            t = self.ExpressionAnalizer(child)
+                            if (t != 'bool'):
+                                print("[Context Error] line " + str(self.c_currentLine) + ". Conditional variables are of a different types.")
+                                sys.exit(0) 
+
+                elif (leaf.p_type == 'DoLoop'):
+                    self.c_currentLine += 1
+                    child = leaf.p_value
+                    oprator1 = child.childs[0]
+                    oprator2 = child.childs[1]
+                    type1 = self.ExpressionAnalizer(oprator1)
+                    type2 = self.ExpressionAnalizer(oprator2)
+                    if (child.p_value != '!=' and child.p_value != '==' and \
+                        child.p_value != '<' and child.p_value != '>' and \
+                            child.p_value != '<=' and child.p_value != '>='):
+                        if (type1 != 'int' or type2 != 'int'):
+                            print("[Context Error] line " + str(self.c_currentLine) + ". Do variables are of a different types.")
+                            sys.exit(0)
+                    if (type1 != type2):
+                        print("[Context Error] line " + str(self.c_currentLine) + ". Do variables are of a different types.")
+                        sys.exit(0)
+                    else:
+                        t = 'bool'
+                    if (t != 'bool'):
+                        print("[Context Error] line " + str(self.c_currentLine) + ". Do variables are of a different types.")
+                        sys.exit(0)
+                    self.ContextAnalyzer(leaf.childs[0])
+
+                else:
+                    if (leaf.p_type =='Input' or leaf.p_type =='Output'):
+                        self.c_currentLine += 1
+                    self.ContextAnalyzer(leaf)                    
 
     def ContextAnalyzer(self, SyntaxTreeStructure):
         """ Definicion del metodo [ContextAnalyzer], el cual se encarga de revisar 
@@ -243,75 +327,9 @@ class SyntaxTreeContext:
                         self.CreateContextScope(leaf)
                         self.c_secScopes.append(self.c_scopes[0])
 
-                    elif (leaf.p_type  == 'Asign'):
-                        self.c_currentLine += 1
-
-                        # Verificar que la variable este declarada
-                        var = self.CheckId(leaf.p_value)
-
-                        if (var.is_index):
-                            print("[Context Error] line " + str(self.c_currentLine) + ". tries to modify varible" + leaf.p_value + "of iteration.")
-                            sys.exit(0)
-                        
-                        # Verificar si la variable es de tipo arreglo o no
-                        exp_type = self.AssignationAnalyzer(leaf.childs[0])
-
-                        if(not var.is_array):
-                            print(var.s_type, exp_type)
-                            if (var.s_type != exp_type):
-                                print("[Context Error] line " + str(self.c_currentLine) + ". Different variable types.")
-                                sys.exit(0)
-                        else:
-
-                            if(exp_type != 'int'):
-                                print("[Context Error] line " + str(self.c_currentLine) + ". Trying to asign array other type different than Integer.")
-                                sys.exit(0)
-                            
-                            count = self.CheckCountExp(leaf.childs[0])
-
-                            if(count != (var.array_indexes[1] - var.array_indexes[0]) + 1):
-                                print("[Context Error] line " + str(self.c_currentLine) + ". Trying to asign more elements than range of Array.")
-                                sys.exit(0)
-
-                    elif(leaf.p_type == 'Conditional'):
-                        self.c_currentLine += 1
-                        for child in leaf.childs:
-                            if (child.p_type == 'Content'):
-                                self.ContextAnalyzer(child)
-                            else:
-                                t = self.ExpressionAnalizer(child)
-                                if (t != 'bool'):
-                                    print("[Context Error] line " + str(self.c_currentLine) + ". Conditional variables are of a different types.")
-                                    sys.exit(0) 
-
-                    elif (leaf.p_type == 'DoLoop'):
-                        self.c_currentLine += 1
-                        child = leaf.p_value
-                        oprator1 = child.childs[0]
-                        oprator2 = child.childs[1]
-                        type1 = self.ExpressionAnalizer(oprator1)
-                        type2 = self.ExpressionAnalizer(oprator2)
-                        if (child.p_value != '!=' and child.p_value != '==' and \
-                            child.p_value != '<' and child.p_value != '>' and \
-                                child.p_value != '<=' and child.p_value != '>='):
-                            if (type1 != 'int' or type2 != 'int'):
-                                print("[Context Error] line " + str(self.c_currentLine) + ". Do variables are of a different types.")
-                                sys.exit(0)
-                        if (type1 != type2):
-                            print("[Context Error] line " + str(self.c_currentLine) + ". Do variables are of a different types.")
-                            sys.exit(0)
-                        else:
-                            t = 'bool'
-                        if (t != 'bool'):
-                            print("[Context Error] line " + str(self.c_currentLine) + ". Do variables are of a different types.")
-                            sys.exit(0)
-                        self.ContextAnalyzer(leaf.childs[0])
-
-                    else:
-                        if (leaf.p_type =='Input' or leaf.p_type =='Output'):
-                            self.c_currentLine += 1
-                        self.ContextAnalyzer(leaf)                    
-
+                    elif (leaf.p_type  == 'Content'):
+                        self.c_currentLine+=1
+                        self.ContentAnalyzer(leaf)
         else:
             print('[Context Error]: No SyntaxTreeStructure')
 

@@ -2,5 +2,6 @@
     declare
         x, y, z, p : int, bool, array[0..2], int
     
+    x := 1;
     z:= 4, 3, 2
 ]|
