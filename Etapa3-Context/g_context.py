@@ -146,6 +146,7 @@ class SyntaxTreeContext:
                 return type1.c_type
 
             elif(child.p_type == 'Terminal'):
+
                 if (len(child.childs)>0):
                     for h in child.childs:
                         t = self.ExpressionAnalizer(h)
@@ -153,7 +154,7 @@ class SyntaxTreeContext:
                 else:
                     if (child.c_type == 'var'):
                         t = self.CheckId(child.lexeme)
-                        return t.c_type
+                        return t.s_type
                     else:
                         return child.c_type
        
@@ -270,11 +271,14 @@ class SyntaxTreeContext:
                     for child in leaf.childs:
                         if (child.p_type == 'Content'):
                             self.ContextAnalyzer(child)
+                        elif ( child.p_type == 'Guard'):
+                            self.ExpressionAnalizer(child)
                         else:
                             t = self.ExpressionAnalizer(child)
                             if (t != 'bool'):
                                 print("[Context Error] line " + str(self.c_currentLine) + ". Conditional variables are of a different types.")
                                 sys.exit(0) 
+                                
 
                 elif (leaf.p_type == 'DoLoop'):
                     self.c_currentLine += 1
