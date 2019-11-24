@@ -6,7 +6,6 @@
 #######################################
 
 import sys, re
-from context_utils import *
 from g_utils import *
 from g_AbsSyntaxTree import *
 
@@ -48,6 +47,7 @@ class SyntaxTreeContext:
     def __init__(self):
         self.c_scopes = []
         self.c_secScopes = []
+        self.c_auxScopes = []
         self.c_currentLine = 1
 
 
@@ -353,6 +353,7 @@ class SyntaxTreeContext:
                         self.c_scopes.insert(0,new_scope)
                         self.CreateContextScope(leaf)
                         self.c_secScopes.append(self.c_scopes[0])
+                        self.c_auxScopes.append(self.c_scopes[0])
 
                     elif (leaf.p_type  == 'Content'):
                         self.c_currentLine+=1
@@ -395,39 +396,3 @@ class SyntaxTreeContext:
         
         print("[Context Error] line " + str(self.c_currentLine) +'. Variable ' + id_var + ' has not been declared before.')
         sys.exit(0)
-
-    def PrintSymbolTable(self):
-        values =[]
-        types =[]
-        for scope in self.c_secScopes:
-            for var in scope:
-                #print('hey',var)        
-                #print('hey',scope[var].s_value,scope[var].s_type)        
-                values.append(scope[var].s_value)
-                types.append(scope[var].s_type)
-            
-        sortpre =sorted(values, key=len)
-        sorttyp = sorted(types, key=len)
-        longest_val = len(sortpre[-1])
-        longest_type = len(sorttyp[-1])
-        margin_table = ' '*(((longest_val+longest_type)//2)+4)
-
-        print(color.BLUWHITE +margin_table+ "SYMBOLS TABLE"+margin_table+ color.END)
-        for scope in self.c_secScopes:
-            print(scope)
-            for i in scope:
-                if len(scope[i].s_value) < longest_val:
-                    if len(scope[i].s_value) % 2 == 0:
-                        print(color.BLUE+'Variable '+color.END+' '*((longest_val-len(scope[i].s_value)))+scope[i].s_value+\
-                            ' '+color.BLUE+'|'+color.END+ ' '+ color.BLUE+'Type '+color.END+scope[i].s_type)
-                    else:
-                        print(color.BLUE+'Variable '+color.END+' '*((longest_val-len(scope[i].s_value)))+scope[i].s_value+\
-                            ' '+color.BLUE+'|'+color.END+ ' '+ color.BLUE+'Type '+color.END+scope[i].s_type)
-
-                else:
-                    if (scope[i].is_array):
-                        print(color.BLUE+'Variable '+color.END+scope[i].s_value+' ' +color.BLUE+'|'+color.END+ ' '+ \
-                            color.BLUE+'Type '+color.END+scope[i].s_type + '[' + str(scope[i].array_indexes[0]) + '..' + str(scope[i].array_indexes[1]) + ']'+ ' int')
-                    else:
-                        print(color.BLUE+'Variable '+color.END+scope[i].s_value+' ' +color.BLUE+'|'+color.END+ ' '+ \
-                            color.BLUE+'Type '+color.END+scope[i].s_type)

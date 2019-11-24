@@ -5,33 +5,11 @@
 # Kevin Mena 13-10869
 #######################################
 from g_utils import *
-#from g_context import *
+from g_context_utils import *
 
 # En este File reposa las clases y metodos para la construccion e 
 # impresion del Arbol Sintactico de nuestro programa
 
-def PrintSymbolTable(c_secScopes):
-
-    print(color.BLUWHITE +''+ "SYMBOLS TABLE"+''+ color.END)
-    scope = c_secScopes[0]
-        #print(scope)
-    for i in scope:
-        if len(scope[i].s_value) < 5:
-            if len(scope[i].s_value) % 2 == 0:
-                print(color.BLUE+'Variable '+color.END+' '*((2-len(scope[i].s_value)))+scope[i].s_value+\
-                    ' '+color.BLUE+'|'+color.END+ ' '+ color.BLUE+'Type '+color.END+scope[i].s_type)
-            else:
-                print(color.BLUE+'Variable '+color.END+' '*((2-len(scope[i].s_value)))+scope[i].s_value+\
-                    ' '+color.BLUE+'|'+color.END+ ' '+ color.BLUE+'Type '+color.END+scope[i].s_type)
-
-        else:
-            if (scope[i].is_array):
-                print(color.BLUE+'Variable '+color.END+scope[i].s_value+' ' +color.BLUE+'|'+color.END+ ' '+ \
-                    color.BLUE+'Type '+color.END+scope[i].s_type + '[' + str(scope[i].array_indexes[0]) + '..' + str(scope[i].array_indexes[1]) + ']'+ ' int')
-            else:
-                print(color.BLUE+'Variable '+color.END+scope[i].s_value+' ' +color.BLUE+'|'+color.END+ ' '+ \
-                    color.BLUE+'Type '+color.END+scope[i].s_type)
-    c_secScopes.pop(0)
 class SyntaxLeaf:
     """ Definicion del objeto [SyntaxLeaf], el cual representa cada hoja y/o
     ramificacion de nuestro arbol.
@@ -73,7 +51,7 @@ def SyntaxTreePrinter(syntaxLeaf, identation, contex_scope = None):
                 if (leaf.p_type == "Declare"):
                     #printer(identation, leaf.p_type)
                     identation = identation + TAB
-                    PrintSymbolTable(contex_scope)
+                    PrintSymbolTable(contex_scope, identation)
                     #PrintDeclaration(leaf, identation)
                 elif (leaf.p_type == "Content"):
                     PrintContent(leaf, identation, contex_scope)
