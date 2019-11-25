@@ -362,7 +362,7 @@ class SyntaxTreeContext:
                 else:
                     if (leaf.p_type =='Output'):
                         self.c_currentLine += 1
-                        for child in leaf:
+                        for child in leaf.childs:
                             self.ExpressionAnalizer(child)                    
 
     def ContextAnalyzer(self, SyntaxTreeStructure):
