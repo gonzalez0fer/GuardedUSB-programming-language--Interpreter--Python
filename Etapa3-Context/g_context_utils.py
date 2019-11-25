@@ -30,7 +30,8 @@ def PrintSymbolTable(c_auxScopes, identation):
         else:
             if (scope[i].is_array):
                 print(' '+identation+color.BLUE+'Variable '+color.END+scope[i].s_value+' ' +color.BLUE+'|'+color.END+ ' '+ \
-                    color.BLUE+'Type '+color.END+scope[i].s_type + '[' + str(scope[i].array_indexes[0]) + '..' + str(scope[i].array_indexes[1]) + ']'+ ' int')
+                    color.BLUE+'Type '+color.END+scope[i].s_type + '[' + str(scope[i].array_indexes[0]) + '..' + str(scope[i].array_indexes[1]) + ']')
             else:
                 print(' '+identation+color.BLUE+'Variable '+color.END+scope[i].s_value+' ' +color.BLUE+'|'+color.END+ ' '+ \
                     color.BLUE+'Type '+color.END+scope[i].s_type)
+    print('\n')

@@ -358,6 +358,7 @@ def PrintArrayOp(syntaxLeaf, identation, contex_scope):
     recibe: syntaxLeaf : objeto sintactico a ser analizado.
             identation : numero de tabs para margen izquierdo.
     """
+    printExp(identation,'Arith')
     if(syntaxLeaf.p_value == "size"):
         printer(identation, "Size")
         identation = identation + TAB
