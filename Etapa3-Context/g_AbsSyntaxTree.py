@@ -41,6 +41,7 @@ def SyntaxTreePrinter(syntaxLeaf, identation, contex_scope = None):
     
     recibe: syntaxLeaf : objeto sintactico a ser analizado.
             identation : numero de tabs para margen izquierdo.
+            context_scope : pila de scopes que contienen las tablas de simbolos.
     """
     if (syntaxLeaf):
         if(len(syntaxLeaf.childs) > 0):
@@ -63,6 +64,7 @@ def PrintDeclaration(syntaxLeaf, identation, contex_scope = None):
     
     recibe: syntaxLeaf : objeto sintactico a ser analizado.
             identation : numero de tabs para margen izquierdo.
+            context_scope : pila de scopes que contienen las tablas de simbolos.
     """
     for leaf in syntaxLeaf.childs:
         if(leaf== ";"):
@@ -79,6 +81,7 @@ def PrintContent(syntaxLeaf, identation, contex_scope = None):
     
     recibe: syntaxLeaf : objeto sintactico a ser analizado.
             identation : numero de tabs para margen izquierdo.
+            context_scope : pila de scopes que contienen las tablas de simbolos.
     """
     if (len(syntaxLeaf.childs) == 1):
         child = syntaxLeaf.childs[0]
@@ -105,6 +108,7 @@ def PrintInstruction(syntaxLeaf, identation, contex_scope = None):
     
     recibe: syntaxLeaf : objeto sintactico a ser analizado.
             identation : numero de tabs para margen izquierdo.
+            context_scope : pila de scopes que contienen las tablas de simbolos.
     """
     child = syntaxLeaf.childs[0]
 
@@ -132,6 +136,7 @@ def PrintForLoop(syntaxLeaf, identation, contex_scope = None):
     
     recibe: syntaxLeaf : objeto sintactico a ser analizado.
             identation : numero de tabs para margen izquierdo.
+            context_scope : pila de scopes que contienen las tablas de simbolos.
     """
     print(identation+TAB, "Ident:", syntaxLeaf.p_value)
     identation = identation + TAB
@@ -150,6 +155,7 @@ def PrintDoLoop(syntaxLeaf, identation, contex_scope = None):
     
     recibe: syntaxLeaf : objeto sintactico a ser analizado.
             identation : numero de tabs para margen izquierdo.
+            context_scope : pila de scopes que contienen las tablas de simbolos.
     """
     for leaf in syntaxLeaf.childs:
         if(leaf.p_type == "Expression"):
@@ -167,6 +173,7 @@ def PrintConditional(syntaxLeaf, identation, contex_scope):
     
     recibe: syntaxLeaf : objeto sintactico a ser analizado.
             identation : numero de tabs para margen izquierdo.
+            context_scope : pila de scopes que contienen las tablas de simbolos.
     """
     printer(identation, "Guard")
     identation = identation + TAB
@@ -186,6 +193,7 @@ def PrintAsign(syntaxLeaf, identation,contex_scope):
     
     recibe: syntaxLeaf : objeto sintactico a ser analizado.
             identation : numero de tabs para margen izquierdo.
+            context_scope : pila de scopes que contienen las tablas de simbolos.
     """
     printer(identation, "Asig")
     identation = identation + TAB
@@ -199,6 +207,7 @@ def PrintAssignation(syntaxLeaf, identation, contex_scope):
     
     recibe: syntaxLeaf : objeto sintactico a ser analizado.
             identation : numero de tabs para margen izquierdo.
+            context_scope : pila de scopes que contienen las tablas de simbolos.
     """
 
     if(len(syntaxLeaf.childs) == 1):
@@ -215,6 +224,7 @@ def PrintInput(syntaxLeaf, identation, contex_scope):
     
     recibe: syntaxLeaf : objeto sintactico a ser analizado.
             identation : numero de tabs para margen izquierdo.
+            context_scope : pila de scopes que contienen las tablas de simbolos.
     """
     printer(identation, "Read")
     identation = identation + TAB
@@ -227,6 +237,7 @@ def PrintOutput(syntaxLeaf, identation, contex_scope):
     
     recibe: syntaxLeaf : objeto sintactico a ser analizado.
             identation : numero de tabs para margen izquierdo.
+            context_scope : pila de scopes que contienen las tablas de simbolos.
     """
     if(syntaxLeaf.p_value == "print"):
         printer(identation, "Print")
@@ -257,6 +268,7 @@ def PrintConcatExp(syntaxLeaf, identation, to_do, contex_scope):
     
     recibe: syntaxLeaf : objeto sintactico a ser analizado.
             identation : numero de tabs para margen izquierdo.
+            context_scope : pila de scopes que contienen las tablas de simbolos.
     """
     for leaf in syntaxLeaf.childs:
         if(leaf.p_type == "Expression"):
@@ -275,6 +287,7 @@ def PrintVariable(syntaxLeaf, identation, contex_scope):
     
     recibe: syntaxLeaf : objeto sintactico a ser analizado.
             identation : numero de tabs para margen izquierdo.
+            context_scope : pila de scopes que contienen las tablas de simbolos.
     """
     if(len(syntaxLeaf.childs) > 0):
         print(identation, "Ident:", syntaxLeaf.p_value)
@@ -291,6 +304,7 @@ def PrintExpression(syntaxLeaf, identation,contex_scope, uminus = False):
     
     recibe: syntaxLeaf : objeto sintactico a ser analizado.
             identation : numero de tabs para margen izquierdo.
+            context_scope : pila de scopes que contienen las tablas de simbolos.
     """
     child = syntaxLeaf.childs[0]
 
@@ -327,6 +341,7 @@ def PrintArrayExp(syntaxLeaf, identation, contex_scope):
     
     recibe: syntaxLeaf : objeto sintactico a ser analizado.
             identation : numero de tabs para margen izquierdo.
+            context_scope : pila de scopes que contienen las tablas de simbolos.
     """
     if(len(syntaxLeaf.childs) == 2):
         printer(identation, "ArrayAsign")
@@ -357,6 +372,7 @@ def PrintArrayOp(syntaxLeaf, identation, contex_scope):
     
     recibe: syntaxLeaf : objeto sintactico a ser analizado.
             identation : numero de tabs para margen izquierdo.
+            context_scope : pila de scopes que contienen las tablas de simbolos.
     """
     printExp(identation,'Arith')
     if(syntaxLeaf.p_value == "size"):
@@ -384,6 +400,7 @@ def PrintUnaryAritmeticOp(syntaxLeaf, identation,contex_scope, uminus = False):
     
     recibe: syntaxLeaf : objeto sintactico a ser analizado.
             identation : numero de tabs para margen izquierdo.
+            context_scope : pila de scopes que contienen las tablas de simbolos.
     """
     identation = identation + TAB
 
@@ -397,6 +414,7 @@ def PrintAritmeticOp(syntaxLeaf, identation, contex_scope):
     
     recibe: syntaxLeaf : objeto sintactico a ser analizado.
             identation : numero de tabs para margen izquierdo.
+            context_scope : pila de scopes que contienen las tablas de simbolos.
     """
     printExp(identation, 'Arith')
     print(identation,symbols[syntaxLeaf.p_value])
@@ -412,6 +430,7 @@ def PrintTerminal(syntaxLeaf, identation, contex_scope, uminus = False):
     
     recibe: syntaxLeaf : objeto sintactico a ser analizado.
             identation : numero de tabs para margen izquierdo.
+            context_scope : pila de scopes que contienen las tablas de simbolos.
     """
     if syntaxLeaf.c_type == "int":
         printExp(identation, 'Arith')
@@ -445,6 +464,7 @@ def PrintRelationalOp(syntaxLeaf, identation, contex_scope):
     
     recibe: syntaxLeaf : objeto sintactico a ser analizado.
             identation : numero de tabs para margen izquierdo.
+            context_scope : pila de scopes que contienen las tablas de simbolos.
     """
     printExp(identation, 'Bool')
 
@@ -464,6 +484,7 @@ def PrintBooleanOp(syntaxLeaf, identation, contex_scope):
     
     recibe: syntaxLeaf : objeto sintactico a ser analizado.
             identation : numero de tabs para margen izquierdo.
+            context_scope : pila de scopes que contienen las tablas de simbolos.
     """
     print(identation, symbols[syntaxLeaf.p_value])
     identation = identation + TAB
@@ -478,6 +499,7 @@ def PrintStrOp(syntaxLeaf, identation, contex_scope):
     
     recibe: syntaxLeaf : objeto sintactico a ser analizado.
             identation : numero de tabs para margen izquierdo.
+            context_scope : pila de scopes que contienen las tablas de simbolos.
     """
     print(identation, "Concat")
     identation = identation + TAB

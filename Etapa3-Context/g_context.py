@@ -52,6 +52,13 @@ class SyntaxTreeContext:
 
 
     def ExpressionAnalizer(self, expression):
+        """ Definicion del metodo [ExpressionAnalizer], el cual se encarga de revisar 
+        linea a linea de forma recursiva todos los componentes del Arbol Sintactico
+        generado por el parser que se encuentran relacionados a las diversas estructuras 
+        agrupadas bajo el termino [expresion] de gusb.
+        
+        recibe: expression : Estructura completa del arbol sintactico a analizar.
+        """
         for child in expression.childs:
             if (child.p_type == 'BooleanOperator'):
                 oprator1 = child.childs[0]
@@ -234,6 +241,7 @@ class SyntaxTreeContext:
                     else:
                         stack_top[leaf.p_value].s_asignvalue = leaf
 
+
     def CreateContextScope(self, leaf):
         """ Definicion del metodo [CreateContextScope], el cual se encarga de hacer el manejo del
         metodo de creacion de simbolos en la tabla.
@@ -259,7 +267,15 @@ class SyntaxTreeContext:
                     is_array = self.CheckIfArray(leaf_type.p_value)
                     self.AppendContextSymbol(child, leaf_type, is_array)
 
+
     def ContentAnalyzer(self, content):
+        """ Definicion del metodo [ContentAnalyzer], el cual se encarga de revisar 
+        linea a linea de forma recursiva todos los componentes del Arbol Sintactico
+        generado por el parser que se encuentran relacionados a la estructura denominada
+        [contenido] de gusb.
+        
+        recibe: instruction : Estructura completa del arbol sintactico a analizar.
+        """
         if(len(content.childs) > 0):
             for leaf in content.childs:
                 if(leaf != ';'):
@@ -273,7 +289,15 @@ class SyntaxTreeContext:
                         self.c_currentLine+=1
                         self.ContentAnalyzer(leaf)
     
+
     def InstructionAnalyzer(self, instruction):
+        """ Definicion del metodo [InstructionAnalyzer], el cual se encarga de revisar 
+        linea a linea de forma recursiva todos los componentes del Arbol Sintactico
+        generado por el parser que se encuentran relacionados a la estructura denominada
+        [instruccion] de gusb.
+        
+        recibe: instruction : Estructura completa del arbol sintactico a analizar.
+        """
         if(len(instruction.childs) > 0):
             for leaf in instruction.childs:
                 if (leaf.p_type  == 'Asign'):
@@ -365,6 +389,7 @@ class SyntaxTreeContext:
                         for child in leaf.childs:
                             self.ExpressionAnalizer(child)                    
 
+
     def ContextAnalyzer(self, SyntaxTreeStructure):
         """ Definicion del metodo [ContextAnalyzer], el cual se encarga de revisar 
         linea a linea de forma recursiva todos los componentes del Arbol Sintactico
@@ -395,7 +420,15 @@ class SyntaxTreeContext:
         else:
             print('[Context Error]: No SyntaxTreeStructure')
 
+
     def AssignationAnalyzer(self, assignation):
+        """ Definicion del metodo [AssignationAnalyzer], el cual se encarga de revisar 
+        linea a linea de forma recursiva todos los componentes del Arbol Sintactico
+        generado por el parser que se encuentran relacionados a la estructura [asignacion] 
+        de gusb.
+        
+        recibe: assignation : Estructura completa del arbol sintactico a analizar.
+        """
 
         if(len(assignation.childs) == 1):
             return self.ExpressionAnalizer(assignation.childs[0])
@@ -410,11 +443,13 @@ class SyntaxTreeContext:
             
             return type1
     
+
     def GetVariableArray(self, exp):
         if(isinstance(exp, SyntaxLeaf)):
             return self.GetVariableArray(exp.p_value)
         else:
             return self.CheckId(exp)
+
 
     def CheckIfArray(self, id_type):
         if(isinstance(id_type, SyntaxLeaf)):
@@ -422,11 +457,13 @@ class SyntaxTreeContext:
         else:
             return False
     
+
     def CheckCountExp(self, expression):
         if(len(expression.childs) > 1):
             return 1 + self.CheckCountExp(expression.childs[1])
         else:
             return len(expression.childs)
+
 
     def CheckId(self, id_var):
         if (len(self.c_scopes) > 0):
@@ -437,6 +474,7 @@ class SyntaxTreeContext:
         print("[Context Error] line " + str(self.c_currentLine) +'. Variable ' + id_var + ' has not been declared before.')
         sys.exit(0)
     
+
     def CountChilds(self, leaf):
         if(len(leaf.childs) > 0):
             return 1 + self.CountChilds(leaf.childs[0])

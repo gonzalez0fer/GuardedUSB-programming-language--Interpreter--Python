@@ -1,7 +1,26 @@
+#######################################
+# CI3715 Traductores e Interpretadores
+# Entrega 3. 
+# Fernando Gonzalez 08-10464
+# Kevin Mena 13-10869
+#######################################
+
 import sys
 from g_utils import color
 
-def PrintSymbolTable(c_auxScopes, identation):    
+# En este File reposa el metodo de impresion para las tablas
+# de simbolos, el cual sera llamado desde el arbol sintactico
+# para decorarlo.
+
+def PrintSymbolTable(c_auxScopes, identation):
+    """ Definicion del metodo [PrintSymbolTable], el cual se encarga del recorrido,
+    interpretacion y posterior impresion de la pila de tabla de hash conocida como
+    scope en forma de tablas de simbolos amigables a la lectura en cada declaracion
+    de gusb. 
+    
+    recibe: c_auxScopes : Estructura de pila que contiene cada tabla de hash generada por gusb.
+            identation : identacion que presentara la tabla en la impresion.
+    """    
     c_auxScopes.pop(0)
     values =[]
     types =[]
