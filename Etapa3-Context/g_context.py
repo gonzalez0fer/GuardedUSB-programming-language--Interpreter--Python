@@ -185,6 +185,9 @@ class SyntaxTreeContext:
                         return t.s_type
                     else:
                         return child.c_type
+            elif(child.p_type == 'ConcatExpression'):
+                for leaf in child.childs:
+                    self.ExpressionAnalizer(leaf)
        
 
     def AppendContextSymbol(self, leaf, s_type, is_array):
@@ -352,10 +355,15 @@ class SyntaxTreeContext:
                         sys.exit(0)
                     self.ContextAnalyzer(leaf.childs[0])
 
+                elif(leaf.p_type == 'Input'):
+                    self.c_currentLine += 1
+                    var = self.CheckId(leaf.childs[0])
+
                 else:
-                    if (leaf.p_type =='Input' or leaf.p_type =='Output'):
+                    if (leaf.p_type =='Output'):
                         self.c_currentLine += 1
-                        self.ContextAnalyzer(leaf)                    
+                        for child in leaf:
+                            self.ExpressionAnalizer(child)                    
 
     def ContextAnalyzer(self, SyntaxTreeStructure):
         """ Definicion del metodo [ContextAnalyzer], el cual se encarga de revisar 
