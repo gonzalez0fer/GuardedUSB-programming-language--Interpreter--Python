@@ -1,7 +1,8 @@
 import sys
 from g_utils import color
 
-def PrintSymbolTable(c_auxScopes, identation):
+def PrintSymbolTable(c_auxScopes, identation):    
+    c_auxScopes.pop(0)
     values =[]
     types =[]
     for scope in c_auxScopes:
@@ -33,4 +34,3 @@ def PrintSymbolTable(c_auxScopes, identation):
             else:
                 print(identation+color.BLUE+'Variable '+color.END+scope[i].s_value+' ' +color.BLUE+'|'+color.END+ ' '+ \
                     color.BLUE+'Type '+color.END+scope[i].s_type)
-    c_auxScopes.pop(0)

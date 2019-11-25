@@ -392,7 +392,7 @@ def parser_builder(meta_program):
 
     context = SyntaxTreeContext()
     context.ContextAnalyzer(parsed_program)
-    SCOPES = context.c_auxScopes
+    SCOPES = ['empty']+ context.c_auxScopes
 
     if not(parser_error):
         SyntaxTreePrinter(parsed_program, "", SCOPES)
