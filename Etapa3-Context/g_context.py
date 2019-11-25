@@ -218,8 +218,11 @@ class SyntaxTreeContext:
         if ((len(leaf.childs))>0):
             for leaf in leaf.childs:
                 if (leaf.p_type == 'Variable'):
-                    is_array = self.CheckIfArray(s_type.childs[0].p_value)
-                    self.AppendContextSymbol(leaf, s_type.childs[0], is_array)
+                    if(len(s_type.childs) > 0):
+                        is_array = self.CheckIfArray(s_type.childs[0].p_value)
+                        self.AppendContextSymbol(leaf, s_type.childs[0], is_array)
+                    else:
+                        self.AppendContextSymbol(leaf, s_type, is_array)
                 elif (leaf.p_type == 'Expression'):
                     t = self.ExpressionAnalizer(leaf)
                     if (t != s_type.p_value):
@@ -242,6 +245,13 @@ class SyntaxTreeContext:
                     self.c_currentLine += 1
                     self.CreateContextScope(child)
                 elif (child.p_type == 'Variable'):
+                    countVar = self.CountChilds(child)
+                    countDatatypes = self.CountChilds(leaf_type)
+
+                    if(countVar > 0 and countDatatypes > 1 and countVar != countDatatypes):
+                        print("[Context Error] line " + str(self.c_currentLine) + 'Trying to asign more datatypes than variables.')
+                        sys.exit(0)
+                    
                     # Verificar si la variable es arreglo o no
                     is_array = self.CheckIfArray(leaf_type.p_value)
                     self.AppendContextSymbol(child, leaf_type, is_array)
@@ -345,7 +355,7 @@ class SyntaxTreeContext:
                 else:
                     if (leaf.p_type =='Input' or leaf.p_type =='Output'):
                         self.c_currentLine += 1
-                    self.ContextAnalyzer(leaf)                    
+                        self.ContextAnalyzer(leaf)                    
 
     def ContextAnalyzer(self, SyntaxTreeStructure):
         """ Definicion del metodo [ContextAnalyzer], el cual se encarga de revisar 
@@ -418,3 +428,9 @@ class SyntaxTreeContext:
         
         print("[Context Error] line " + str(self.c_currentLine) +'. Variable ' + id_var + ' has not been declared before.')
         sys.exit(0)
+    
+    def CountChilds(self, leaf):
+        if(len(leaf.childs) > 0):
+            return 1 + self.CountChilds(leaf.childs[0])
+        else:
+            return 1 
