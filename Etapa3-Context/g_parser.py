@@ -83,35 +83,35 @@ def p_terminal(p):
     '''
     if (len(p) == 4):
         p[0] = SyntaxLeaf('Terminal', None, [p[2]])
-        if (str(p[2].lexeme)).isdigit():
+        if (str(p[2].c_lexeme)).isdigit():
             p[0].c_type = 'int'
-            p[0].lexeme = str(p[2].lexeme)
-        elif (p[2].lexeme == "true" \
-            or p[2].lexeme == "false"):
+            p[0].c_lexeme = str(p[2].c_lexeme)
+        elif (p[2].c_lexeme == "true" \
+            or p[2].c_lexeme == "false"):
             p[0].c_type = 'bool'
-            p[0].lexeme = str(p[2].lexeme)
-        elif(p[2].lexeme[0] == "\""):
+            p[0].c_lexeme = str(p[2].c_lexeme)
+        elif(p[2].c_lexeme[0] == "\""):
             p[0].c_type = "string"
-            p[0].lexeme = p[1]
+            p[0].c_lexeme = p[1]
         else:
             p[0].c_type = "var"
-            p[0].lexeme = p[2].lexeme           
+            p[0].c_lexeme = p[2].c_lexeme           
 
     else:
         p[0] = SyntaxLeaf('Terminal', p[1])
         if ((str(p[1])).isdigit()):
             p[0].c_type = "int"
-            p[0].lexeme = p[1]
+            p[0].c_lexeme = p[1]
         elif (p[1] == "true" \
             or p[1] == "false"):
             p[0].c_type = "bool"
-            p[0].lexeme = p[1]
+            p[0].c_lexeme = p[1]
         elif(p[1][0] == "\""):
             p[0].c_type = "string"
-            p[0].lexeme = p[1]
+            p[0].c_lexeme = p[1]
         else:
             p[0].c_type = "var"
-            p[0].lexeme = p[1]
+            p[0].c_lexeme = p[1]
 
 
 # Reglas que definen al elemento [Content]

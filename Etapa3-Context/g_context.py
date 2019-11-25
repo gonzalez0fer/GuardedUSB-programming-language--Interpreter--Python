@@ -114,7 +114,16 @@ class SyntaxTreeContext:
 
             elif(child.p_type == 'ArrayExpression'):
                 if(len(child.childs) == 1):
-                    t = self.CheckId(child.p_value)
+
+                    if(isinstance(child.p_value, SyntaxLeaf)):
+                        self.ExpressionAnalizer(child.p_value)
+                        t = self.GetVariableArray(child.p_value)
+                    else:
+                        t = self.CheckId(child.p_value)
+                    
+                    if(not t.is_array):
+                        print("[Context Error] line " + str(self.c_currentLine) +'. Variable ' + t.s_value + 'is not array.')
+                        sys.exit(0)
 
                     operator1 = child.childs[0]
                     type1 = self.ExpressionAnalizer(operator1)
@@ -123,30 +132,37 @@ class SyntaxTreeContext:
                         print("[Context Error] line " + str(self.c_currentLine) +'. Array expression wrong type.')
                         sys.exit(0)
                     
-                    if(operator1.childs[0].lexeme > t.array_indexes[1] or operator1.childs[0].lexeme < t.array_indexes[0]):
+                    if(operator1.childs[0].c_lexeme > t.array_indexes[1] or operator1.childs[0].c_lexeme < t.array_indexes[0]):
                         print("[Context Error] line " + str(self.c_currentLine) +'. Array expression out of boundaries.')
                         sys.exit(0)
 
-                    return child.c_type
-                    ##### FALTA VER SI EL ELEMENTO ESTA DENTRO DEL RANGO DEL ARREGLO
+                    return type1
+
                 else:
+                    if(isinstance(child.p_value, SyntaxLeaf)):
+                        self.ExpressionAnalizer(child.p_value)
+                        t = self.GetVariableArray(child.p_value)
+                    else:
+                        t = self.CheckId(child.p_value)
+                    
+                    if(not t.is_array):
+                        print("[Context Error] line " + str(self.c_currentLine) +'. Variable ' + t.s_value + 'is not array.')
+                        sys.exit(0)
+                    
                     operator1 = child.childs[0]
                     operator2 = child.childs[1]
                     type1 = self.ExpressionAnalizer(operator1)
                     type2 = self.ExpressionAnalizer(operator2)
 
-                    t = self.CheckId(child.p_value)
-
                     if(type1 != type2 != 'int'):
                         print("[Context Error] line " + str(self.c_currentLine) +'. Array expression wrong type.')
                         sys.exit(0)
                     
-                    if(operator1.lexeme > t.array_indexes[1] or operator1.lexeme < t.array_indexes[0]):
+                    if(operator1.childs[0].c_lexeme > t.array_indexes[1] or operator1.childs[0].c_lexeme < t.array_indexes[0]):
                         print("[Context Error] line " + str(self.c_currentLine) +'. Array expression out of boundaries.')
                         sys.exit(0)
                     
-                    return child.c_type
-                    ##### FALTA VER SI EL ELEMENTO 1 ESTA DENTRO DEL RANGO DEL ARREGLO
+                    return type1
 
             elif(child.p_type == 'ArrayOperator'):
                 operator1 = child.childs[0]
@@ -165,7 +181,7 @@ class SyntaxTreeContext:
                         return t
                 else:
                     if (child.c_type == 'var'):
-                        t = self.CheckId(child.lexeme)
+                        t = self.CheckId(child.c_lexeme)
                         return t.s_type
                     else:
                         return child.c_type
@@ -375,6 +391,12 @@ class SyntaxTreeContext:
                 sys.exit(0)
             
             return type1
+    
+    def GetVariableArray(self, exp):
+        if(isinstance(exp, SyntaxLeaf)):
+            return self.GetVariableArray(exp.p_value)
+        else:
+            return self.CheckId(exp)
 
     def CheckIfArray(self, id_type):
         if(isinstance(id_type, SyntaxLeaf)):
