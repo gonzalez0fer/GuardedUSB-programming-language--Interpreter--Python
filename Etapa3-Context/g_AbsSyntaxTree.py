@@ -16,6 +16,8 @@ class SyntaxLeaf:
     
     inicializa con: 
             p_type : tipo de objeto sintactico a ser representado en la hoja.
+            p_line : linea del objeto representado en la hoja.
+            p_column : columna del objeto representado en la hoja.
             p_value : valor del objeto sintactico de la hoja (de existir).
             childs : lista de objetos sintacticos hijos(de existir).
             ----------
@@ -23,9 +25,11 @@ class SyntaxLeaf:
             c_lexeme : valores terminales a ser asignados en el contexto.
             c_array : estructuras representables en arreglos a ser asignadas en contexto.
     """
-    def __init__(self, p_type, p_value = None, childs = None):
+    def __init__(self, p_type, p_value = None, childs = None, p_line = None, p_column = None):
         self.p_type = p_type
         self.p_value = p_value
+        self.p_line = p_line
+        self.p_column = p_column
         self.c_type = None
         self.c_array = None
         self.c_lexeme = None

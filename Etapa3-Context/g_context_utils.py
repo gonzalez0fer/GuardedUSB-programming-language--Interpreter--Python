@@ -45,7 +45,6 @@ def PrintSymbolTable(c_auxScopes, identation):
             else:
                 print(' '+identation+color.BLUE+'Variable '+color.END+' '*((longest_val-len(scope[i].s_value)))+scope[i].s_value+\
                     ' '+color.BLUE+'|'+color.END+ ' '+ color.BLUE+'Type '+color.END+scope[i].s_type)
-
         else:
             if (scope[i].is_array):
                 print(' '+identation+color.BLUE+'Variable '+color.END+scope[i].s_value+' ' +color.BLUE+'|'+color.END+ ' '+ \
