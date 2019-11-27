@@ -1,6 +1,15 @@
+#######################################
+# CI3715 Traductores e Interpretadores
+# Entrega 3. 
+# Fernando Gonzalez 08-10464
+# Kevin Mena 13-10869
+#######################################
+
 from g_lexer import *
 from g_parser import *
 import sys, os
+
+# en este file reposa el main de nuestro Interpretador
 
 if __name__ == '__main__':
     try:
