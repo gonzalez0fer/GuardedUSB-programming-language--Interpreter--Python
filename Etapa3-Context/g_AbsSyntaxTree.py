@@ -149,7 +149,7 @@ def PrintForLoop(syntaxLeaf, identation, contex_scope = None):
         if(leaf.p_type == "Content"):
             PrintContent(leaf, identation,contex_scope)
         elif (leaf.p_type == "Expression"):
-            printExp(identation)
+            printExp(identation,'Arith')
             PrintExpression(leaf, identation+TAB,contex_scope)
 
 
@@ -163,7 +163,6 @@ def PrintDoLoop(syntaxLeaf, identation, contex_scope = None):
     """
     for leaf in syntaxLeaf.childs:
         if(leaf.p_type == "Expression"):
-            printExp(identation)
             PrintExpression(leaf, identation,contex_scope)
         elif(leaf.p_type == "Content"):
             PrintContent(leaf, identation,contex_scope)
@@ -320,7 +319,7 @@ def PrintExpression(syntaxLeaf, identation,contex_scope, uminus = False):
         identation = identation + TAB
         PrintRelationalOp(child, identation, contex_scope)
     elif (child.p_type == "BooleanOperator"):
-        printExp(identation)
+        printExp(identation,'Bool')
         identation = identation + TAB
         PrintBooleanOp(child, identation, contex_scope)
     elif (child.p_type == "StrOperator"):
