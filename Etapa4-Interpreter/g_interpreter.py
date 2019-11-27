@@ -24,6 +24,13 @@ class InterpretedTreeEvaluator():
         self. SymbolsTable = SymbolsTable
 
     def SyntaxTreeContextEvaluator(self, SyntaxTreeStructure):
+        """ Definicion del metodo [SyntaxTreeContextEvaluator], el cual se encarga de hacer 
+        el recorrido del arbol contrastando con las tablas de simbolos creadas
+        en el contexto y haciendo los calculos pertinentes para la interpretacion.
+
+        
+        recibe: SyntaxTreeStructure : Estructura completa del arbol sintactico a analizar.
+        """
         if SyntaxTreeStructure:
             if (len(SyntaxTreeStructure.childs) > 0):
                 for leaf in SyntaxTreeStructure.childs:
@@ -38,15 +45,47 @@ class InterpretedTreeEvaluator():
                         if (isinstance(var_name,str)):
                             self.setValue(var_name, var_value)
                         else:
-                            #por definir idea
+                            #########################por definir idea
                             pass
                             array_index = self.ExpressionEvaluator(leaf.childs[0])
                             self.setValue(var_name.p_value, var_value, array_index) 
 
+                    elif (leaf.p_type == 'Variable'):
+                        for child in leaf.childs:
+                            self.SyntaxTreeContextEvaluator(child)
+
+                    elif (leaf.p_type == 'Declare'):
+                        self.SyntaxTreeContextEvaluator(leaf)
+
+                    elif (leaf.p_type== 'Output'):
+                        value = self.ExpressionEvaluator(leaf.childs[0])
+                        print(value)
+
+                    elif (leaf.p_type == 'ENTRADA'):
+                        val = input()
+                        var = leaf.p_value
+                        if (val == 'false'):
+                            val = False
+                        elif (val == 'true'):
+                            val = True
+                        if (val.isdigit()):
+                            val = int(val)
+
+                        # Revisando tipaje con la tabla, si es correcto,
+                        # se asigna.
+                        for i in self.SymbolsTable:
+                            if var in i:
+                                s_table_type = i[var].s_type
+                                if(isinstance(val,bool) and s_table_type!='bool'):
+                                    print("Error. Tipo incorrecto")
+                                    sys.exit(0)
+                                elif(isinstance(val, int) and s_table_type!= 'int'):
+                                    print("Error. Tipo incorrecto")
+                                    sys.exit(0)
+                        self.setValor(var, val)
+
         else:
             print('[Interpreter Error]: No SyntaxTreeStructure')
-
-
 
 
     def ExpressionEvaluator(self, expression):
@@ -57,7 +96,8 @@ class InterpretedTreeEvaluator():
                 return t
             else:
                 if (expression.c_type == 'var'):
-                    t = self.getValor(expression.lexeme)
+                    pass
+                    #t = self.getValor(expression.lexeme)
                     return t
                 else:
                     if (expression.lexeme == 'true'):
@@ -77,7 +117,7 @@ class InterpretedTreeEvaluator():
                 res = op1 and op2
             return res
 
-        elif (expression.p_type  == 'BooleanOperator'):
+        elif (expression.p_type  == 'UnaryBooleanOperator'):
             op = self.ExpressionEvaluator(expression.childs[0])
             return not op
 
@@ -130,6 +170,6 @@ class InterpretedTreeEvaluator():
             t = self.ExpressionEvaluator(expression.childs[0])
 
 
-	def setValor(self, var, val, index=None):
+    def setValor(self, var, val, index=None):
         #Aqui recibira la tabla e ira asignando e imprimiendo errores
         pass
