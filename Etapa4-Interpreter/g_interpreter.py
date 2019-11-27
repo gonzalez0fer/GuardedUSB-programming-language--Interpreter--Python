@@ -77,10 +77,12 @@ class InterpretedTreeEvaluator():
                             if var in i:
                                 s_table_type = i[var].s_type
                                 if(isinstance(val,bool) and s_table_type!='bool'):
-                                    print("Error. Tipo incorrecto")
+                                    print("[Interpreter Error] line " + str(leaf.p_line) + ' column '+str(leaf.p_column)+ \
+                                    '. Trying to asign list of expressions of different types.')
                                     sys.exit(0)
                                 elif(isinstance(val, int) and s_table_type!= 'int'):
-                                    print("Error. Tipo incorrecto")
+                                    print("[Interpreter Error] line " + str(leaf.p_line) + ' column '+str(leaf.p_column)+ \
+                                    '. Trying to asign list of expressions of different types.')
                                     sys.exit(0)
                         self.setValor(var, val)
 
@@ -153,7 +155,8 @@ class InterpretedTreeEvaluator():
                 res = op1 * op2
             elif (operator_tok == '/'):
                 if (op2 == 0):
-                    print("[Interpreter Error]: Zero div not allowed")
+                    print("[Interpreter Error]: " + str(expression.p_line) + \
+                        ' column '+str(expression.p_column)+' division by zero not allowed ')
                     sys.exit(0)
                 else:
                     res = op1 / op2
