@@ -125,9 +125,9 @@ class SyntaxTreeContext:
 
                     if(isinstance(child.p_value, SyntaxLeaf)):
                         self.ExpressionAnalizer(child.p_value)
-                        t = self.GetVariableArray(child.p_value)
+                        t = self.GetVariableArray(child.p_value,[child.p_line,child.p_column])
                     else:
-                        t = self.CheckId(child.p_value)
+                        t = self.CheckId(child.p_value,[child.p_line,child.p_column])
                     
                     if(not t.is_array):
                         print("[Context Error] line " + str(child.p_line) + ' column '+str(child.p_column)+ '. Variable ' + t.s_value + 'is not array.')
@@ -149,9 +149,9 @@ class SyntaxTreeContext:
                 else:
                     if(isinstance(child.p_value, SyntaxLeaf)):
                         self.ExpressionAnalizer(child.p_value)
-                        t = self.GetVariableArray(child.p_value)
+                        t = self.GetVariableArray(child.p_value,[child.p_line,child.p_column])
                     else:
-                        t = self.CheckId(child.p_value)
+                        t = self.CheckId(child.p_value,[child.p_line,child.p_column])
                     
                     if(not t.is_array):
                         print("[Context Error] line " + str(child.p_line) + ' column '+str(child.p_column)+ '. Variable ' + t.s_value + 'is not array.')
@@ -174,7 +174,7 @@ class SyntaxTreeContext:
 
             elif(child.p_type == 'ArrayOperator'):
                 operator1 = child.childs[0]
-                type1 = self.CheckId(operator1)
+                type1 = self.CheckId(operator1,[[child.p_line,child.p_column]])
 
                 if(not type1.is_array):
                     print("[Context Error] line " + str(child.p_line) + ' column '+str(child.p_column)+ '. Array operation invalid or variable not array.')
@@ -188,7 +188,7 @@ class SyntaxTreeContext:
                         return t
                 else:
                     if (child.c_type == 'var'):
-                        t = self.CheckId(child.c_lexeme)
+                        t = self.CheckId(child.c_lexeme,[child.p_line,child.p_column])
                         return t.s_type
                     else:
                         return child.c_type
@@ -304,7 +304,7 @@ class SyntaxTreeContext:
                     self.c_currentLine += 1
 
                     # Verificar que la variable este declarada
-                    var = self.CheckId(leaf.p_value)
+                    var = self.CheckId(leaf.p_value,[leaf.p_line,leaf.p_column])
 
                     if (var.is_index):
                         print("[Context Error] line " + str(leaf.p_line) + ' column '+str(leaf.p_column)+  ". tries to modify varible" + leaf.p_value + "of iteration.")
@@ -329,7 +329,7 @@ class SyntaxTreeContext:
                             exp = exp_asign.p_value
 
                             if(isinstance(exp, SyntaxLeaf)):
-                                asignvar = self.GetVariableArray(exp)
+                                asignvar = self.GetVariableArray(exp,[exp_asign.p_line,exp_asign.p_column])
 
                                 if(var.s_value != asignvar.s_value):
                                     print("[Context Error] line " + str(leaf.p_line) + ' column '+str(leaf.p_column)+  ". Trying to asign different Array.")
@@ -396,7 +396,7 @@ class SyntaxTreeContext:
 
                 elif(leaf.p_type == 'Input'):
                     self.c_currentLine += 1
-                    var = self.CheckId(leaf.childs[0])
+                    var = self.CheckId(leaf.childs[0], [leaf.p_line,leaf.p_column])
 
                 else:
                     if (leaf.p_type =='Output'):
@@ -471,17 +471,17 @@ class SyntaxTreeContext:
             type2 = self.AssignationAnalyzer(assignation.childs[1])
 
             if(type1 != type2):
-                print("[Context Error] line " + str(self.c_currentLine) + ". Trying to asign list of expressions of different types.")
+                print("[Context Error] line " + str(assignation.p_line) + ' column '+str(assignation.p_column)+ '. Trying to asign list of expressions of different types.')
                 sys.exit(0)
             
             return type1
     
 
-    def GetVariableArray(self, exp):
+    def GetVariableArray(self, exp, index_f_c=None):
         if(isinstance(exp, SyntaxLeaf)):
             return self.GetVariableArray(exp.p_value)
         else:
-            return self.CheckId(exp)
+            return self.CheckId(exp,index_f_c)
 
 
     def CheckIfArray(self, id_type):
@@ -498,12 +498,15 @@ class SyntaxTreeContext:
             return len(expression.childs)
 
 
-    def CheckId(self, id_var):
+    def CheckId(self, id_var, index_f_c=None):
         if (len(self.c_scopes) > 0):
             for x in range(len(self.c_scopes)):
                 if id_var in self.c_scopes[x]:
                     return self.c_scopes[x][id_var]
         
+        if index_f_c:
+            print("[Context Error] line " + str(index_f_c[0]) +' column: '+str(index_f_c[1]) +'. Variable ' + id_var + ' has not been declared before.')
+            sys.exit(0)
         print("[Context Error] line " + str(self.c_currentLine) +'. Variable ' + id_var + ' has not been declared before.')
         sys.exit(0)
     
