@@ -1,0 +1,80 @@
+Block 
+    Declare  
+        Ident: a  
+        Ident: b  
+        Ident: i  
+        Sequencing   
+            Ident: x   
+            Ident: y 
+        Read  
+            Ident: a 
+            Sequencing  
+                Read   
+                    Ident: b  
+                Sequencing   
+                    Asig    
+                    Ident: x    
+                    Exp     
+                        ArrayAsig      
+                            ArrayAsig       
+                                Ident: x       
+                                Literal: 2       
+                                Ident: a      
+                                Literal: 3      
+                                Ident: b   
+                Sequencing    
+                For     
+                    In      
+                        Ident: i      
+                        Exp       
+                            Ident: a      
+                        Exp       
+                            Ident: b     
+                Block      
+                    Println       
+                        Concat        
+                            "Variable \"i\" es igual a: "        
+                        Ident: i    
+                Sequencing     
+                    Read      
+                        Ident: y     
+                    Sequencing      
+                        For       
+                            In        
+                                Ident: j        
+                                Exp         
+                                    Min          
+                                        Ident: y        
+                                Exp
+                                    Max          
+                                        Ident: y       
+                            Block        
+                                Print         
+                                    Concat          
+                                        Concat           
+                                            Concat            
+                                                Ident: j            
+                                                ":"           
+                                        EvalArray            
+                                            Ident: y            
+                                            Exp             
+                                                Ident: j          
+                                        " "      
+                            Sequencing       
+                                Asig        
+                                    Ident: a        
+                                    Exp         
+                                        Plus          
+                                            Literal: 3          
+                                            Ident: b       
+                                Sequencing        
+                                    Asig         
+                                        Ident: b         
+                                        Exp          
+                                            Literal: -4        
+                                    Sequencing         
+                                        If          
+                                            Guard           
+                                                Exp            And             Leq              Min               Ident: x              Ident: b             Leq              Ident: b              Max               Ident: x           Println            Ident: b          Guard           Exp            And             Less              Min               Ident: y              Ident: b             Less
+              Ident: b              Max               Ident: y           Println            Ident: a          Guard           Exp            Or             Geq              Min               Ident: y              Ident: b             Geq              Ident: b              Max               Ident: y           Block            Declare             Ident z            Println             Concat              Ident: a              Ident: b            Sequencing             Asig              Ident: z              Exp               ArrayAsig                ArrayAsig                 Ident: z                 Literal: 2                 Ident: a                Literal: 3                Ident: b             Sequencing              Println               Concat                Concat                 Concat                  Concat                   "array["                   Min                    Ident: z                  ".."                 Max                  Ident: z                "]"         Sequencing          Asig
+           Ident: i           Exp            Literal: 3          Sequencing           Do            Exp             Less              Ident: i              Literal: 10            Block             Read              Ident: i             Sequencing              Print               "Still here!"              Sequencing               Asig                Ident: i                Exp                 Plus                  Ident: i                  Literal: 1

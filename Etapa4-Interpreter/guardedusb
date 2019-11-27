@@ -1,0 +1,41 @@
+#######################################
+# CI3715 Traductores e Interpretadores
+# Entrega 3. 
+# Fernando Gonzalez 08-10464
+# Kevin Mena 13-10869
+#######################################
+
+from g_lexer import *
+from g_parser import *
+import sys, os
+
+# en este file reposa el main de nuestro Interpretador
+
+if __name__ == '__main__':
+    try:
+        os.remove("parsetab.py")
+        os.remove("parser.out")
+    except:
+        pass
+    # Bloque que garantiza parametros de entrada via bash para iniciar nuestro programa
+    if (len(sys.argv) != 2):
+        print('Error: incorrect number of parameters\n      input file is missing.')
+        sys.exit(1)
+    elif not (sys.argv[1].lower().endswith(('.gusb'))):
+        print('Error: unknown file extension\n      only .gusb files supported.')
+        sys.exit(1)
+    else:
+        pass
+
+    #lectura del archivo que contiene el programa a evaluar.
+    input_file = open(sys.argv[1], "r")
+    meta_program = input_file.read()
+    
+    # Inicializacion de Lexer para ubicar errores lexicograficos
+    lexer_builder(meta_program)
+
+    # Inicializacion del Parser para la ubicacion de errores sintacticos.
+    parser_output = parser_builder(meta_program)
+    #print(parser_output)
+    
+    input_file.close()

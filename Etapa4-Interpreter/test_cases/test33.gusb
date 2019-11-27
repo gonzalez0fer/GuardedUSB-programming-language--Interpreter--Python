@@ -1,0 +1,6 @@
+|[
+    declare
+        x, y, z, p : int, bool, array[0..2], int
+    
+    z := z(2:4)
+]|
