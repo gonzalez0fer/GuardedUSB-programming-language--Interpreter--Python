@@ -86,6 +86,7 @@ class SyntaxTreeContext:
                 oprator2 = child.childs[1]
                 type1 = self.ExpressionAnalizer(oprator1)
                 type2 = self.ExpressionAnalizer(oprator2)
+
                 if (child.p_value != '!=' and child.p_value != '==' and \
                     child.p_value != '<' and child.p_value != '>' and \
                     child.p_value != '<=' and child.p_value != '>='):
@@ -181,7 +182,6 @@ class SyntaxTreeContext:
                 return 'int'
 
             elif(child.p_type == 'Terminal'):
-
                 if (len(child.childs)>0):
                     for h in child.childs:
                         t = self.ExpressionAnalizer(h)
@@ -323,6 +323,20 @@ class SyntaxTreeContext:
                             print("[Context Error] line " + str(leaf.p_line) + ' column '+str(leaf.p_column)+  ". Trying to asign array other type different than Integer.")
                             sys.exit(0)
                         
+                        exp_asign = leaf.childs[0].childs[0].childs[0]
+                        print(leaf.childs[0].childs[0].childs[0].p_type)
+                        if(exp_asign.p_type == 'ArrayExpression'):
+                            exp = exp_asign.p_value
+                            print("Entre")
+                            if(isinstance(exp, SyntaxLeaf)):
+                                asignvar = self.GetVariableArray(exp)
+
+                                if(var.s_value != asignvar.s_value):
+                                    print("[Context Error] line " + str(leaf.p_line) + ' column '+str(leaf.p_column)+  ". Trying to asign different Array.")
+                                    sys.exit(0)
+                                
+                                return
+
                         count = self.CheckCountExp(leaf.childs[0])
 
                         if(count != (var.array_indexes[1] - var.array_indexes[0]) + 1):
@@ -335,7 +349,7 @@ class SyntaxTreeContext:
                         if (child.p_type == 'Content'):
                             self.ContentAnalyzer(child)
                         elif ( child.p_type == 'Guard'):
-                            self.ContentAnalyzer(child)
+                            self.GuardAnalyzer(child)
                         else:
                             t = self.ExpressionAnalizer(child)
                             if (t != 'bool'):
@@ -390,6 +404,25 @@ class SyntaxTreeContext:
                         for child in leaf.childs:
                             self.ExpressionAnalizer(child)                    
 
+    def GuardAnalyzer(self, leaf):
+        """ Definicion del metodo [GuardAnalyzer], el cual se encarga de revisar 
+        linea a linea de forma recursiva todos los componentes del Arbol Sintactico
+        generado por el parser que se encuentran relacionados a la estructura denominada
+        [guard] de gusb.
+        
+        recibe: leaf : Estructura completa del arbol sintactico a analizar.
+        """
+        self.c_currentLine += 1
+        for child in leaf.childs:
+            if (child.p_type == 'Content'):
+                self.ContentAnalyzer(child)
+            elif ( child.p_type == 'Guard'):
+                self.GuardAnalyzer(child)
+            else:
+                t = self.ExpressionAnalizer(child)
+                if (t != 'bool'):
+                    print("[Context Error] line " + str(child.p_line) + ' column '+str(child.p_column)+  ". Conditional variables are of a different types.")
+                    sys.exit(0)
 
     def ContextAnalyzer(self, SyntaxTreeStructure):
         """ Definicion del metodo [ContextAnalyzer], el cual se encarga de revisar 
