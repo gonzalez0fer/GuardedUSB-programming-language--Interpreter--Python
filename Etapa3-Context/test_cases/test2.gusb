@@ -16,8 +16,7 @@
     // iterar sobre los indices del segundo arreglo  
     read y;  
     for j in min(y) to max(y) -->    
-        |[   
-            j := 1;   
+        |[     
             print j || ":" || y[j] || " "   
         ]|  
     rof; 

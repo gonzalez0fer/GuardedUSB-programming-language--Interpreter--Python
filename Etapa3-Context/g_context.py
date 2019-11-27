@@ -140,7 +140,13 @@ class SyntaxTreeContext:
                         print("[Context Error] line " + str(child.p_line) + ' column '+str(child.p_column)+ '. Array expression wrong type.')
                         sys.exit(0)
                     
-                    if(operator1.childs[0].c_lexeme > t.array_indexes[1] or operator1.childs[0].c_lexeme < t.array_indexes[0]):
+                    index = operator1.childs[0].c_lexeme
+
+                    if(operator1.childs[0].c_type == 'var'):
+                        # Cableado porque no sabemos su valor
+                        index = t.array_indexes[0]
+
+                    if(index > t.array_indexes[1] or index < t.array_indexes[0]):
                         print("[Context Error] line " + str(child.p_line) + ' column '+str(child.p_column)+ '. Array expression out of boundaries.')
                         sys.exit(0)
 
@@ -206,13 +212,17 @@ class SyntaxTreeContext:
                 s_type : tipaje de la hoja.
                 is_array : booleano si es un arreglo.
         """
+        
+        if(len(self.c_scopes) == 0):
+            new_scope ={}
+            self.c_scopes.insert(0,new_scope)
+            self.c_secScopes.append(self.c_scopes[0])
+            self.c_auxScopes.append(self.c_scopes[0])
+        
         stack_top = self.c_scopes[0]
         if leaf.p_value in stack_top:
-            var = self.CheckId(leaf.p_value)
-
-            if(not var.is_index):
-                print("[Context Error] Line " + str(leaf.p_line) + ' column '+str(leaf.p_column)+ '. Variable ' + leaf.p_value + ' has been declared before.')
-                sys.exit(0)
+            print("[Context Error] Line " + str(leaf.p_line) + ' column '+str(leaf.p_column)+ '. Variable ' + leaf.p_value + ' has been declared before.')
+            sys.exit(0)
         
         new_type = s_type.p_value
 
@@ -288,7 +298,8 @@ class SyntaxTreeContext:
                     elif(leaf.p_type == "Block"):
                         self.c_currentLine+=1
                         self.ContextAnalyzer(leaf)
-                        self.c_scopes.pop(0)
+                        if(len(self.c_scopes) > 0):
+                            self.c_scopes.pop(0)
                     elif(leaf.p_type == "Content"):
                         self.c_currentLine+=1
                         self.ContentAnalyzer(leaf)
@@ -311,7 +322,7 @@ class SyntaxTreeContext:
                     var = self.CheckId(leaf.p_value)
 
                     if (var.is_index):
-                        print("[Context Error] line " + str(leaf.p_line) + ' column '+str(leaf.p_column)+  ". tries to modify varible" + leaf.p_value + "of iteration.")
+                        print("[Context Error] line " + str(leaf.p_line) + ' column '+str(leaf.p_column)+  ". tries to modify variable " + leaf.p_value + " of iteration.")
                         sys.exit(0)
                     
                     # Verificar si la variable es de tipo arreglo o no
@@ -379,7 +390,7 @@ class SyntaxTreeContext:
                     
                     if(not self.SeeIfVarExist(leaf.p_value)):
                         self.AppendContextSymbol(SyntaxLeaf('Terminal', leaf.p_value), SyntaxLeaf('Datatype', 'int'), False, True)
-                    
+
                     self.ContentAnalyzer(leaf.childs[2])
                     #cambiar a false
 
@@ -401,7 +412,6 @@ class SyntaxTreeContext:
 
                 elif(leaf.p_type == 'Input'):
                     self.c_currentLine += 1
-                    print(leaf.childs[0])
                     var = self.CheckId(leaf.childs[0])
 
                 else:
@@ -443,7 +453,8 @@ class SyntaxTreeContext:
                     if (leaf.p_type == 'Block'):
                         self.c_currentLine+=1
                         self.ContextAnalyzer(leaf)
-                        self.c_scopes.pop(0)
+                        if(len(self.c_scopes) > 0):
+                            self.c_scopes.pop(0)
 
                     elif (leaf.p_type == 'Declare'):
                         self.c_currentLine+=1
@@ -513,14 +524,16 @@ class SyntaxTreeContext:
         return False
 
     def CheckId(self, id_var):
-        print(id_var)
-        print(self.c_secScopes)
+        found = False
         if(len(self.c_secScopes) > 0):
             for scope in self.c_secScopes:
-                print(scope)
                 if (len(scope) > 0):
                     if id_var in scope:
-                        return scope[id_var]
+                        found = True
+                        var = scope[id_var]
+        
+        if(found):
+            return var
         
         print("[Context Error] line " + str(self.c_currentLine) +'. Variable ' + id_var + ' has not been declared before.')
         sys.exit(0)
