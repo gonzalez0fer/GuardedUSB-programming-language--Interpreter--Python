@@ -215,7 +215,6 @@ def PrintAssignation(syntaxLeaf, identation, contex_scope):
     """
 
     if(len(syntaxLeaf.childs) == 1):
-
         PrintExpression(syntaxLeaf.childs[0], identation, contex_scope)
     else:
         PrintExpression(syntaxLeaf.childs[0], identation, contex_scope)
@@ -316,7 +315,7 @@ def PrintExpression(syntaxLeaf, identation,contex_scope, uminus = False):
         identation = identation + TAB
         PrintAritmeticOp(child, identation, contex_scope) 
     elif (child.p_type == "Terminal"):
-        PrintTerminal(child, identation, contex_scope)
+        PrintTerminal(child, identation, contex_scope, uminus)
     elif (child.p_type == "RelationalOperator"):
         identation = identation + TAB
         PrintRelationalOp(child, identation, contex_scope)
@@ -335,7 +334,7 @@ def PrintExpression(syntaxLeaf, identation,contex_scope, uminus = False):
         PrintArrayExp(child, identation, contex_scope)
     elif(child.p_type == "UnaryAritmeticOperator"):
         identation = identation + TAB
-        PrintTerminal(child, identation, contex_scope, True)   
+        PrintExpression(child.childs[0], identation, contex_scope, True)   
 
 
 
@@ -471,11 +470,13 @@ def PrintRelationalOp(syntaxLeaf, identation, contex_scope):
             context_scope : pila de scopes que contienen las tablas de simbolos.
     """
     printExp(identation, 'Bool')
-
-    if (contex_scope[0][syntaxLeaf.childs[0].childs[0].p_value].s_type == 'int'):
-        print(identation, color.RED+'Arith'+color.END+ symbols[syntaxLeaf.p_value])
-    elif (contex_scope[0][syntaxLeaf.childs[0].childs[0].p_value].s_type == 'bool'):
-        print(identation, color.RED+'Boolean'+color.END+ symbols[syntaxLeaf.p_value])
+    try:
+        if (contex_scope[0][syntaxLeaf.childs[0].childs[0].p_value].s_type == 'int'):
+            print(identation, color.RED+'Arith'+color.END+ symbols[syntaxLeaf.p_value])
+        elif (contex_scope[0][syntaxLeaf.childs[0].childs[0].p_value].s_type == 'bool'):
+            print(identation, color.RED+'Boolean'+color.END+ symbols[syntaxLeaf.p_value])
+    except:
+        pass
 
     identation = identation + TAB
     for leaf in syntaxLeaf.childs:

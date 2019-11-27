@@ -1,142 +1,202 @@
-Block   ->   TkOBlock Content TkCBlock
+
+Block   :   TkOBlock Content TkCBlock
         |   TkOBlock TkDeclare Declaration Content TkCBlock
         |   TkOBlock TkDeclare Declaration TkCBlock
 
 
-Declaration ->   Variables TkTwoPoints Datatype
-            |   Variables TkTwoPoints Datatype TkSemicolon Declaration
+Declaration :   Variables TkTwoPoints Datatype
+        |   Variables TkTwoPoints Datatype TkSemicolon Declaration
      
 
-Array   ->   TkArray TkOBracket Terminal TkSoForth Terminal TkCBracket
-        |   TkArray TkOBracket AritmeticOperator TkSoForth AritmeticOperator TkCBracket
+Array   :   TkArray TkOBracket TkNum TkSoForth TkNum TkCBracket
 
 
-Terminal ->  TkId
-            | TkString
-            | TkNum
-            | TkTrue
-            | TkFalse
-            | TkQuote
-            | TkOpenPar Terminal TkClosePar
+Terminal :  TkId
+        | TkString
+        | TkNum
+        | TkTrue
+        | TkFalse
+        | TkQuote
+        | TkOpenPar Terminal TkClosePar
 
 
-Content ->   Instruction
+Content :   Instruction
         |   Instruction TkSemicolon Content
         |   Block TkSemicolon Content
         |   Block
     
 
-Instruction ->   Conditional
-            |   Forloop
-            |   Doloop
-            |   Asign
-            |   Input
-            |   Output
+Instruction :   Conditional
+        |   Forloop
+        |   Doloop
+        |   Asign
+        |   Input
+        |   Output
 
 
-Conditional ->   TkIf Expression TkArrow Content TkFi
-            |   TkIf Expression TkArrow Content Guard TkFi
+Conditional :   TkIf Expression TkArrow Content TkFi
+                |   TkIf Expression TkArrow Content Guard TkFi
 
 
-Guard   ->   TkGuard Expression TkArrow Content
+Guard   :   TkGuard Expression TkArrow Content
         |   TkGuard Expression TkArrow Content Guard
 
 
-Asign    ->   TkId TkAsig Expression
+Asign    :   TkId TkAsig Assignation
 
 
-Input   ->   TkRead TkId
+Assignation    :    Expression
+                |   Expression TkComma Assignation
 
 
-Output   ->   TkPrint Expression
+Input   :   TkRead TkId
+
+
+Output   :   TkPrint Expression
         |   TkPrint Expression ConcatExpression
         |   TkPrintln Expression
         |   TkPrintln Expression ConcatExpression
 
 
-ConcatExpression -> TkConcat Expression
+ConcatExpression : TkConcat Expression
                 |   TkConcat Expression ConcatExpression
 
 
-Doloop ->   TkDo Expression TkArrow Content TkOd
+Doloop :   TkDo Expression TkArrow Content TkOd
         |   TkDo Expression TkArrow Content Guard TkOd 
 
 
-Forloop -> TkFor TkId TkIn Expression TkTo Expression TkArrow Content TkRof
+Forloop : TkFor TkId TkIn Expression TkTo Expression TkArrow Content TkRof
 
 
-Expression  ->   AritmeticOperator
-            |   Terminal
-            |   RelationalOperator
-            |   BooleanOperator
-            |   StrOperator
-            |   ArrayOperator
-            |   ArrayExpression
+Expression  :   AritmeticOperator
+        |   Terminal
+        |   RelationalOperator
+        |   BooleanOperator
+        |   StrOperator
+        |   ArrayOperator
+        |   ArrayExpression
 
 
-ArrayExpression ->   ArrayExpression TkOpenPar Terminal TkTwoPoints Terminal TkClosePar
-                |   TkId TkOpenPar Terminal TkTwoPoints Terminal TkClosePar
-                |   ArrayExpression TkOBracket Terminal TkCBracket
-                |   TkId TkOBracket Terminal TkCBracket
+# Reglas que definen al elemento [ArrayExpression]
+def p_arrayexpres(p):
+    ''' ArrayExpression :   ArrayExpression TkOpenPar Expression TkTwoPoints Expression TkClosePar
+                        |   TkId TkOpenPar Expression TkTwoPoints Expression TkClosePar
+                        |   ArrayExpression TkOBracket Expression TkCBracket
+                        |   TkId TkOBracket Expression TkCBracket
+    '''
+    if (len(p)==7):
+        p[0] = SyntaxLeaf('ArrayExpression', p[1], [p[3],p[5]],p.lineno(4), find_column2(p.lexer.lexdata,p,4))
+    else:
+        p[0] = SyntaxLeaf('ArrayExpression', p[1], [p[3]],p.lineno(2), find_column2(p.lexer.lexdata,p,2))
 
 
-AritmeticOperator -> Expression TkMinus Expression
-                |   Expression TkPlus Expression
-                |   Expression TkDiv Expression
-                |   Expression TkMult Expression
-                |   Expression TkMod Expression
-                |   TkOpenPar Expression TkMinus Expression TkClosePar
-                |   TkOpenPar Expression TkPlus Expression TkClosePar
-                |   TkOpenPar Expression TkDiv Expression TkClosePar
-                |   TkOpenPar Expression TkMult Expression TkClosePar
-                |   TkOpenPar Expression TkMod Expression TkClosePar
-                |   TkMinus Expression %prec uminus
-                |   TkOpenPar TkMinus Expression TkClosePar %prec uminus
-	
-		
-StrOperator -> TkId TkConcat TkId
-            | TkOpenPar TkId TkConcat TkId TkClosePar
+# Reglas que definen al elemento [AritmeticOperator]
+def p_aritmoper(p):
+    ''' AritmeticOperator : Expression TkMinus Expression
+        |   Expression TkPlus Expression
+        |   Expression TkDiv Expression
+        |   Expression TkMult Expression
+        |   Expression TkMod Expression
+        |   TkOpenPar Expression TkMinus Expression TkClosePar
+        |   TkOpenPar Expression TkPlus Expression TkClosePar
+        |   TkOpenPar Expression TkDiv Expression TkClosePar
+        |   TkOpenPar Expression TkMult Expression TkClosePar
+        |   TkOpenPar Expression TkMod Expression TkClosePar
+        |   TkMinus Expression %prec uminus
+        |   TkOpenPar TkMinus Expression TkClosePar %prec uminus
+    '''
+    if (len(p) == 6):
+        p[0] = SyntaxLeaf('AritmeticOperator', p[3], [p[2], p[4]], p.lineno(3), find_column2(p.lexer.lexdata,p,3))
+    elif (len(p) == 4):
+        p[0] = SyntaxLeaf('AritmeticOperator', p[2], [p[1], p[3]], p.lineno(2), find_column2(p.lexer.lexdata,p,2))
+    elif (len(p) == 3):
+        p[0] = SyntaxLeaf('UnaryAritmeticOperator', p[1], [p[2]],p.lineno(1), find_column2(p.lexer.lexdata,p,1))
+    else:
+        p[0] = SyntaxLeaf('UnaryAritmeticOperator', p[2], [p[3]],p.lineno(2), find_column2(p.lexer.lexdata,p,2))
+    
+        
+# Reglas que definen al elemento [StrOperator]
+def p_Stroper(p):
+    ''' StrOperator : TkId TkConcat TkId
+        | TkOpenPar TkId TkConcat TkId TkClosePar
+    '''
+    if (len(p)==6):
+        p[0] = SyntaxLeaf('StrOperator',[p[3],p[5]],p.lineno(3), find_column2(p.lexer.lexdata,p,3))
+    else:
+        p[0] = SyntaxLeaf('StrOperator',[p[1],p[3]], p.lineno(2), find_column2(p.lexer.lexdata,p,2))
 
 
-ArrayOperator   ->   TkSize TkOpenPar TkId TkClosePar
-                | TkMax TkOpenPar TkId TkClosePar
-                | TkMin TkOpenPar TkId TkClosePar
-                | TkAtoi TkOpenPar TkId TkClosePar
-                | TkSize TkOpenPar Array TkClosePar
-                | TkMax TkOpenPar Array TkClosePar
-                | TkMin TkOpenPar Array TkClosePar
-                | TkAtoi TkOpenPar Array TkClosePar
+# Reglas que definen al elemento [ArrayOperator]
+def p_arrayoper(p):
+    ''' ArrayOperator   :   TkSize TkOpenPar TkId TkClosePar
+                    | TkMax TkOpenPar TkId TkClosePar
+                    | TkMin TkOpenPar TkId TkClosePar
+                    | TkAtoi TkOpenPar TkId TkClosePar
+                    | TkSize TkOpenPar Array TkClosePar
+                    | TkMax TkOpenPar Array TkClosePar
+                    | TkMin TkOpenPar Array TkClosePar
+                    | TkAtoi TkOpenPar Array TkClosePar
+    '''
+    p[0] = SyntaxLeaf('ArrayOperator', p[1], [p[3]], p.lineno(1), find_column2(p.lexer.lexdata,p,1))
 
 
-RelationalOperator -> Expression TkLess Expression
-                    |   Expression TkLeq Expression
-                    |   Expression TkGreater Expression
-                    |   Expression TkGeq Expression
-                    |   Expression TkEqual Expression
-                    |   Expression TkNEqual Expression
-                    |   TkOpenPar Expression TkGreater Expression TkClosePar
-                    |   TkOpenPar Expression TkGeq Expression TkClosePar
-                    |   TkOpenPar Expression TkLess Expression TkClosePar
-                    |   TkOpenPar Expression TkLeq Expression TkClosePar
-                    |   TkOpenPar Expression TkEqual Expression TkClosePar
-                    |   TkOpenPar Expression TkNEqual Expression TkClosePar
+# Reglas que definen al elemento [RelationalOperator]
+def p_opRel(p):
+    '''RelationalOperator : Expression TkLess Expression
+                |   Expression TkLeq Expression
+                |   Expression TkGreater Expression
+                |   Expression TkGeq Expression
+                |   Expression TkEqual Expression
+                |   Expression TkNEqual Expression
+                |   TkOpenPar Expression TkGreater Expression TkClosePar
+                |   TkOpenPar Expression TkGeq Expression TkClosePar
+                |   TkOpenPar Expression TkLess Expression TkClosePar
+                |   TkOpenPar Expression TkLeq Expression TkClosePar
+                |   TkOpenPar Expression TkEqual Expression TkClosePar
+                |   TkOpenPar Expression TkNEqual Expression TkClosePar
+    '''
+    if (len(p) == 6):
+        p[0] = SyntaxLeaf('RelationalOperator', p[3], [p[2], p[4]],p.lineno(3), find_column2(p.lexer.lexdata,p,3))
+    else:
+        p[0] = SyntaxLeaf('RelationalOperator', p[2], [p[1], p[3]],p.lineno(2), find_column2(p.lexer.lexdata,p,2))
 
 
-Variables -> TkId TkComma Variables
-        | TkId    
+# Reglas que definen al elemento [Variables]
+def p_variables(p):
+    ''' Variables : TkId TkComma Variables
+                | TkId 
+    '''
+    if (len(p)==4):
+        p[0] = SyntaxLeaf('Variable', p[1], [p[3]], p.lineno(2), find_column2(p.lexer.lexdata,p,2))
+    else:
+        p[0] = SyntaxLeaf('Variable', p[1],None, p.lineno(1), find_column2(p.lexer.lexdata,p,1))    
 
 
-BooleanOperator -> Expression TkAnd Expression
+# Reglas que definen al elemento [BooleanOperator]
+def p_boolop(p):
+    '''BooleanOperator : Expression TkAnd Expression
                 |   Expression TkOr Expression
                 |   TkOpenPar Expression TkAnd Expression TkClosePar
                 |   TkOpenPar Expression TkOr Expression TkClosePar
                 |   TkNot Expression
                 |   TkOpenPar TkNot Expression TkClosePar
+    '''
+    if (len(p) == 4):
+        p[0] = SyntaxLeaf('BooleanOperator', p[2], [p[1], p[3]],p.lineno(2), find_column2(p.lexer.lexdata,p,2))
+    elif (len(p) == 3):
+        p[0] = SyntaxLeaf('UnaryBooleanOperator', p[1], [p[2]],p.lineno(1), find_column2(p.lexer.lexdata,p,1))
+    elif (len(p) == 5):
+        p[0] = SyntaxLeaf('UnaryBooleanOperator', p[2], [p[3]],p.lineno(2), find_column2(p.lexer.lexdata,p,2))
+    else:
+        p[0] = SyntaxLeaf('BooleanOperator', p[3], [p[2], p[4]],p.lineno(3), find_column2(p.lexer.lexdata,p,3))
 
 
-Datatype -> TkInt
-        |   Array
-        |   TkBool
-        |   TkInt TkComma Datatype
-        |   TkBool TkComma Datatype
-        |   Array TkComma Datatype
+# Reglas que definen al elemento [Datatype]
+def p_datatype(p):
+    ''' Datatype : TkInt
+                |   Array
+                |   TkBool
+                |   TkInt TkComma Datatype
+                |   TkBool TkComma Datatype
+                |   Array TkComma Datatype

@@ -324,10 +324,10 @@ class SyntaxTreeContext:
                             sys.exit(0)
                         
                         exp_asign = leaf.childs[0].childs[0].childs[0]
-                        print(leaf.childs[0].childs[0].childs[0].p_type)
+
                         if(exp_asign.p_type == 'ArrayExpression'):
                             exp = exp_asign.p_value
-                            print("Entre")
+
                             if(isinstance(exp, SyntaxLeaf)):
                                 asignvar = self.GetVariableArray(exp)
 
