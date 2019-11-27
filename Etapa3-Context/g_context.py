@@ -66,7 +66,8 @@ class SyntaxTreeContext:
                 type1 = self.ExpressionAnalizer(oprator1)
                 type2 = self.ExpressionAnalizer(oprator2)
                 if (type1 != type2 != 'bool'):
-                    print("[Context Error] line " + str(child.p_line) + ' column '+str(child.p_column)+  '. Boolean operator wrong type.')
+                    print("[Context Error] line " + str(child.p_line) + ' column '+\
+                        str(child.p_column)+  '. Boolean operator wrong var types.')
                     sys.exit(0)
                 else:
                     return 'bool'
@@ -76,7 +77,8 @@ class SyntaxTreeContext:
                 type0 = self.ExpressionAnalizer(operator0)
 
                 if(type0 != 'bool'):
-                    print("[Context Error] line " + str(child.p_line) + ' column '+str(child.p_column)+ '. Boolean operator wrong type.')
+                    print("[Context Error] line " + str(child.p_line) + ' column '+\
+                        str(child.p_column)+ '. Boolean operator wrong var types.')
                     sys.exit(0)
                 else:
                     return 'bool'
@@ -91,10 +93,12 @@ class SyntaxTreeContext:
                     child.p_value != '<' and child.p_value != '>' and \
                     child.p_value != '<=' and child.p_value != '>='):
                     if (type1 != 'int' or type2 != 'int'):
-                        print("[Context Error] line " + str(child.p_line) + ' column '+str(child.p_column)+ '. Relational operator wrong type.')
+                        print("[Context Error] line " + str(child.p_line) + ' column '+\
+                            str(child.p_column)+ '. Relational operator wrong var types.')
                         sys.exit(0)
                 if (type1 != type2):
-                    print("[Context Error] line " + str(child.p_line) + ' column '+str(child.p_column)+ '. Relational operator wrong type.')
+                    print("[Context Error] line " + str(child.p_line) + ' column '+\
+                        str(child.p_column)+ '. Relational operator wrong var types.')
                     sys.exit(0)
                 else:
                     return "bool"
@@ -105,7 +109,8 @@ class SyntaxTreeContext:
                 type1 = self.ExpressionAnalizer(oprator1)
                 type2 = self.ExpressionAnalizer(oprator2)
                 if (type1 != type2 != 'int'):
-                    print("[Context Error] line " + str(child.p_line) + ' column '+str(child.p_column)+ '. Aritmetic operator wrong type.')
+                    print("[Context Error] line " + str(child.p_line) + ' column '+\
+                        str(child.p_column)+ '. Aritmetic operator wrong var types.')
                     sys.exit(0)
                 else:
                     return 'int'
@@ -115,7 +120,8 @@ class SyntaxTreeContext:
                 type0 = self.ExpressionAnalizer(operator0)
 
                 if(type0 != 'int'):
-                    print("[Context Error] line " + str(child.p_line) + ' column '+str(child.p_column)+ '. Aritmetic operator wrong type.')
+                    print("[Context Error] line " + str(child.p_line) + ' column '+\
+                        str(child.p_column)+ '. Aritmetic operator wrong var types.')
                     sys.exit(0)
                 else:
                     return 'int'
@@ -130,14 +136,16 @@ class SyntaxTreeContext:
                         t = self.CheckId(child.p_value,[child.p_line,child.p_column])
                     
                     if(not t.is_array):
-                        print("[Context Error] line " + str(child.p_line) + ' column '+str(child.p_column)+ '. Variable ' + t.s_value + 'is not array.')
+                        print("[Context Error] line " + str(child.p_line) + ' column '+\
+                            str(child.p_column)+ '. Variable ' + t.s_value + 'is not array.')
                         sys.exit(0)
 
                     operator1 = child.childs[0]
                     type1 = self.ExpressionAnalizer(operator1)
 
                     if(type1 != 'int'):
-                        print("[Context Error] line " + str(child.p_line) + ' column '+str(child.p_column)+ '. Array expression wrong type.')
+                        print("[Context Error] line " + str(child.p_line) + ' column '+\
+                            str(child.p_column)+ '. Array expression wrong type.')
                         sys.exit(0)
                     
                     index = operator1.childs[0].c_lexeme
@@ -147,7 +155,8 @@ class SyntaxTreeContext:
                         index = t.array_indexes[0]
 
                     if(index > t.array_indexes[1] or index < t.array_indexes[0]):
-                        print("[Context Error] line " + str(child.p_line) + ' column '+str(child.p_column)+ '. Array expression out of boundaries.')
+                        print("[Context Error] line " + str(child.p_line) + ' column '+\
+                            str(child.p_column)+ '. Array expression out of boundaries.')
                         sys.exit(0)
 
                     return type1
@@ -160,7 +169,8 @@ class SyntaxTreeContext:
                         t = self.CheckId(child.p_value,[child.p_line,child.p_column])
                     
                     if(not t.is_array):
-                        print("[Context Error] line " + str(child.p_line) + ' column '+str(child.p_column)+ '. Variable ' + t.s_value + 'is not array.')
+                        print("[Context Error] line " + str(child.p_line) + ' column '+\
+                            str(child.p_column)+ '. Variable ' + t.s_value + 'is not array.')
                         sys.exit(0)
                     
                     operator1 = child.childs[0]
@@ -169,11 +179,13 @@ class SyntaxTreeContext:
                     type2 = self.ExpressionAnalizer(operator2)
 
                     if(type1 != type2 != 'int'):
-                        print("[Context Error] line " + str(child.p_line) + ' column '+str(child.p_column)+ '. Array expression wrong type.')
+                        print("[Context Error] line " + str(child.p_line) + ' column '+\
+                            str(child.p_column)+ '. Array expression wrong type.')
                         sys.exit(0)
                     
                     if(operator1.childs[0].c_lexeme > t.array_indexes[1] or operator1.childs[0].c_lexeme < t.array_indexes[0]):
-                        print("[Context Error] line " + str(child.p_line) + ' column '+str(child.p_column)+ '. Array expression out of boundaries.')
+                        print("[Context Error] line " + str(child.p_line) + ' column '+\
+                            str(child.p_column)+ '. Array expression out of boundaries.')
                         sys.exit(0)
                     
                     return type1
@@ -183,7 +195,8 @@ class SyntaxTreeContext:
                 type1 = self.CheckId(operator1,[[child.p_line,child.p_column]])
 
                 if(not type1.is_array):
-                    print("[Context Error] line " + str(child.p_line) + ' column '+str(child.p_column)+ '. Array operation invalid or variable not array.')
+                    print("[Context Error] line " + str(child.p_line) + ' column '+\
+                        str(child.p_column)+ '. Array operation invalid or variable not array.')
                     sys.exit(0)
                 return 'int'
 
@@ -221,7 +234,8 @@ class SyntaxTreeContext:
         
         stack_top = self.c_scopes[0]
         if leaf.p_value in stack_top:
-            print("[Context Error] Line " + str(leaf.p_line) + ' column '+str(leaf.p_column)+ '. Variable ' + leaf.p_value + ' has been declared before.')
+            print("[Context Error] Line " + str(leaf.p_line) + ' column '+\
+                str(leaf.p_column)+ '. Variable ' + leaf.p_value + ' has been declared before.')
             sys.exit(0)
         
         new_type = s_type.p_value
@@ -250,7 +264,8 @@ class SyntaxTreeContext:
                 elif (leaf.p_type == 'Expression'):
                     t = self.ExpressionAnalizer(leaf)
                     if (t != s_type.p_value):
-                        print("[Context Error] line " + str(leaf.p_line) + ' column '+str(leaf.p_column)+  'Variable types does not match.')
+                        print("[Context Error] line " + str(leaf.p_line) + ' column '+\
+                            str(leaf.p_column)+  'Variable types does not match.')
                         sys.exit(0)
                     else:
                         stack_top[leaf.p_value].s_asignvalue = leaf
@@ -274,7 +289,8 @@ class SyntaxTreeContext:
                     countDatatypes = self.CountChilds(leaf_type)
 
                     if(countVar > 0 and countDatatypes > 1 and countVar != countDatatypes):
-                        print("[Context Error] line " + str(child.p_line) + ' column '+str(child.p_column)+  'Trying to asign more datatypes than variables.')
+                        print("[Context Error] line " + str(child.p_line) + ' column '+\
+                            str(child.p_column)+  ' Variables has to be equal in number than datatypes.')
                         sys.exit(0)
                     
                     # Verificar si la variable es arreglo o no
@@ -322,7 +338,8 @@ class SyntaxTreeContext:
                     var = self.CheckId(leaf.p_value,[leaf.p_line,leaf.p_column])
 
                     if (var.is_index):
-                        print("[Context Error] line " + str(leaf.p_line) + ' column '+str(leaf.p_column)+  ". tries to modify variable " + leaf.p_value + " of iteration.")
+                        print("[Context Error] line " + str(leaf.p_line) + ' column '+\
+                            str(leaf.p_column)+  ". tries to modify variable " + leaf.p_value + " of iteration.")
                         sys.exit(0)
                     
                     # Verificar si la variable es de tipo arreglo o no
@@ -330,16 +347,19 @@ class SyntaxTreeContext:
 
                     if(not var.is_array):
                         if(var.is_index):
-                            print("[Context Error] line " + str(leaf.p_line) + ' column '+str(leaf.p_column)+  ". Trying to asign to a control variable.")
+                            print("[Context Error] line " + str(leaf.p_line) + ' column '+\
+                                str(leaf.p_column)+  ". Trying to asign to a control variable.")
                             sys.exit(0)
 
                         if (var.s_type != exp_type):
-                            print("[Context Error] line " + str(leaf.p_line) + ' column '+str(leaf.p_column)+  ". Different variable types.")
+                            print("[Context Error] line " + str(leaf.p_line) + ' column '+\
+                                str(leaf.p_column)+  ". Different variable types.")
                             sys.exit(0)
                     else:
 
                         if(exp_type != 'int'):
-                            print("[Context Error] line " + str(leaf.p_line) + ' column '+str(leaf.p_column)+  ". Trying to asign array other type different than Integer.")
+                            print("[Context Error] line " + str(leaf.p_line) + ' column '+\
+                                str(leaf.p_column)+  ". Trying to asign array other type different than Integer.")
                             sys.exit(0)
                         
                         exp_asign = leaf.childs[0].childs[0].childs[0]
@@ -351,7 +371,8 @@ class SyntaxTreeContext:
                                 asignvar = self.GetVariableArray(exp,[exp_asign.p_line,exp_asign.p_column])
 
                                 if(var.s_value != asignvar.s_value):
-                                    print("[Context Error] line " + str(leaf.p_line) + ' column '+str(leaf.p_column)+  ". Trying to asign different Array.")
+                                    print("[Context Error] line " + str(leaf.p_line) + ' column '+\
+                                        str(leaf.p_column)+  ". Trying to asign different Array.")
                                     sys.exit(0)
                                 
                                 return
@@ -359,7 +380,8 @@ class SyntaxTreeContext:
                         count = self.CheckCountExp(leaf.childs[0])
 
                         if(count != (var.array_indexes[1] - var.array_indexes[0]) + 1):
-                            print("[Context Error] line " + str(leaf.p_line) + ' column '+str(leaf.p_column)+  ". Trying to asign different number of elements in the array " + var.s_value)
+                            print("[Context Error] line " + str(leaf.p_line) + ' column '+\
+                                str(leaf.p_column)+  ". Trying to asign different number of elements in the array " + var.s_value)
                             sys.exit(0)
 
                 elif(leaf.p_type == 'Conditional' or leaf.p_type == 'Guard'):
@@ -372,7 +394,8 @@ class SyntaxTreeContext:
                         else:
                             t = self.ExpressionAnalizer(child)
                             if (t != 'bool'):
-                                print("[Context Error] line " + str(child.p_line) + ' column '+str(child.p_column)+  ". Conditional variables are of a different types.")
+                                print("[Context Error] line " + str(child.p_line) + ' column '\
+                                    +str(child.p_column)+  ". Conditional variables are of a different types.")
                                 sys.exit(0) 
 
 
@@ -385,11 +408,13 @@ class SyntaxTreeContext:
                     type2 = self.ExpressionAnalizer(oprator2)
 
                     if (type1 != 'int' or type2 != 'int'):
-                        print("[Context Error] line " + str(leaf.p_line) + ' column '+str(leaf.p_column)+  ". For expressions are different type.")
+                        print("[Context Error] line " + str(leaf.p_line) + ' column '+str(leaf.p_column)+  \
+                            ". For expressions are different type.")
                         sys.exit(0)
                     
                     if(not self.SeeIfVarExist(leaf.p_value)):
-                        self.AppendContextSymbol(SyntaxLeaf('Terminal', leaf.p_value), SyntaxLeaf('Datatype', 'int'), False, True)
+                        self.AppendContextSymbol(SyntaxLeaf('Terminal', leaf.p_value), \
+                            SyntaxLeaf('Datatype', 'int'), False, True)
 
                     self.ContentAnalyzer(leaf.childs[2])
                     #cambiar a false
@@ -401,7 +426,8 @@ class SyntaxTreeContext:
                     type1 = self.ExpressionAnalizer(oprator1)
 
                     if (type1 != 'bool'):
-                        print("[Context Error] line " + str(child.p_line) + ' column '+str(child.p_column)+  ". Do expression is not a boolean.")
+                        print("[Context Error] line " + str(child.p_line) + ' column '+str(child.p_column)+  \
+                            ". Do expression is not a boolean.")
                         sys.exit(0)
                     
                     for child in leaf.childs:
@@ -420,6 +446,7 @@ class SyntaxTreeContext:
                         for child in leaf.childs:
                             self.ExpressionAnalizer(child)                    
 
+
     def GuardAnalyzer(self, leaf):
         """ Definicion del metodo [GuardAnalyzer], el cual se encarga de revisar 
         linea a linea de forma recursiva todos los componentes del Arbol Sintactico
@@ -437,8 +464,10 @@ class SyntaxTreeContext:
             else:
                 t = self.ExpressionAnalizer(child)
                 if (t != 'bool'):
-                    print("[Context Error] line " + str(child.p_line) + ' column '+str(child.p_column)+  ". Conditional variables are of a different types.")
+                    print("[Context Error] line " + str(child.p_line) + ' column '+str(child.p_column)+  \
+                        ". Conditional variables are of a different types.")
                     sys.exit(0)
+
 
     def ContextAnalyzer(self, SyntaxTreeStructure):
         """ Definicion del metodo [ContextAnalyzer], el cual se encarga de revisar 
@@ -488,13 +517,20 @@ class SyntaxTreeContext:
             type2 = self.AssignationAnalyzer(assignation.childs[1])
 
             if(type1 != type2):
-                print("[Context Error] line " + str(assignation.p_line) + ' column '+str(assignation.p_column)+ '. Trying to asign list of expressions of different types.')
+                print("[Context Error] line " + str(assignation.p_line) + ' column '+str(assignation.p_column)+ \
+                    '. Trying to asign list of expressions of different types.')
                 sys.exit(0)
             
             return type1
     
 
     def GetVariableArray(self, exp, index_f_c=None):
+        """ Definicion del metodo de apoyo [GetVariableArray], el cual se encarga de encontrar la
+        variable que se utiliza en un ArrayExpression.
+        
+        recibe: exp : hoja a analizar.
+                index_f_c : lista que contiene fila y columna actual.
+        """
         if(isinstance(exp, SyntaxLeaf)):
             return self.GetVariableArray(exp.p_value)
         else:
@@ -502,6 +538,11 @@ class SyntaxTreeContext:
 
 
     def CheckIfArray(self, id_type):
+        """ Definicion del metodo de apoyo [CheckIfArray], el cual se encarga de verificar si una instancia
+        de syntaxleaf (hoja) es un arreglo.
+        
+        recibe: id_type : hoja a analizar.
+        """
         if(isinstance(id_type, SyntaxLeaf)):
             return True
         else:
@@ -509,21 +550,39 @@ class SyntaxTreeContext:
     
 
     def CheckCountExp(self, expression):
+        """ Definicion del metodo de apoyo [CheckCountExp], el cual se encarga de contabilizar el numero de
+        elementos que tiene una asingacion para verificar si es igual al numero de elementos de la declaracion de
+        un array.
+        
+        recibe: expression : hoja a analizar.
+        """
         if(len(expression.childs) > 1):
             return 1 + self.CheckCountExp(expression.childs[1])
         else:
             return len(expression.childs)
 
+
     def SeeIfVarExist(self, id_var):
+        """ Definicion del metodo de apoyo [SeeIfVarExist], el cual se encarga de retornar un booleano en caso de
+        haber sido declarada previamente una variable.
+        
+        recibe: id_var : variable a checkear.
+        """
         if(len(self.c_secScopes) > 0):
             for scope in self.c_secScopes:
                 if (len(scope) > 0):
                     if id_var in scope:
-                        return True
-        
+                        return True        
         return False
 
+
     def CheckId(self, id_var, index_f_c=None):
+        """ Definicion del metodo de apoyo [CheckId], el cual se encarga de retornar un la variable
+        en caso de haber sido declarada previamente.
+        
+        recibe: id_var : variable a checkear.
+                index_f_c: lista que contiene fila y columna actual.
+        """
         found = False
         if(len(self.c_secScopes) > 0):
             for scope in self.c_secScopes:
@@ -531,18 +590,23 @@ class SyntaxTreeContext:
                     if id_var in scope:
                         found = True
                         var = scope[id_var]
-        
         if(found):
             return var
-        
         if index_f_c:
-            print("[Context Error] line " + str(index_f_c[0]) +' column: '+str(index_f_c[1]) +'. Variable ' + id_var + ' has not been declared before.')
+            print("[Context Error] line " + str(index_f_c[0]) +' column: '+str(index_f_c[1]) +\
+                '. Variable ' + id_var + ' has not been declared before.')
             sys.exit(0)
-        print("[Context Error] line " + str(self.c_currentLine) +'. Variable ' + id_var + ' has not been declared before.')
+        print("[Context Error] line " + str(self.c_currentLine) +'. Variable ' + id_var + \
+            ' has not been declared before.')
         sys.exit(0)
     
 
     def CountChilds(self, leaf):
+        """ Definicion del metodo de apoyo [CountChilds], el cual se encarga de retornar el numero de
+        hijos de una determinada hoja.
+        
+        recibe: leaf : hoja a checkear.
+        """
         if(len(leaf.childs) > 0):
             return 1 + self.CountChilds(leaf.childs[0])
         else:
