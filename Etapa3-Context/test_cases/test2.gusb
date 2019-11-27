@@ -8,7 +8,7 @@
     read b;  
     x := x(2:a)(3:b);  
     for i in a to b -->    
-        |[      
+        |[     
             println "Variable \"i\" es igual a: " || i    
         ]|  
     rof; 
@@ -16,7 +16,8 @@
     // iterar sobre los indices del segundo arreglo  
     read y;  
     for j in min(y) to max(y) -->    
-        |[      
+        |[   
+            j := 1;   
             print j || ":" || y[j] || " "   
         ]|  
     rof; 
