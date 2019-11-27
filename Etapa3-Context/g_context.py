@@ -140,7 +140,13 @@ class SyntaxTreeContext:
                         print("[Context Error] line " + str(child.p_line) + ' column '+str(child.p_column)+ '. Array expression wrong type.')
                         sys.exit(0)
                     
-                    if(operator1.childs[0].c_lexeme > t.array_indexes[1] or operator1.childs[0].c_lexeme < t.array_indexes[0]):
+                    index = operator1.childs[0].c_lexeme
+
+                    if(operator1.childs[0].c_type == 'var'):
+                        # Cableado porque no sabemos su valor
+                        index = t.array_indexes[0]
+
+                    if(index > t.array_indexes[1] or index < t.array_indexes[0]):
                         print("[Context Error] line " + str(child.p_line) + ' column '+str(child.p_column)+ '. Array expression out of boundaries.')
                         sys.exit(0)
 
@@ -197,7 +203,7 @@ class SyntaxTreeContext:
                     self.ExpressionAnalizer(leaf)
        
 
-    def AppendContextSymbol(self, leaf, s_type, is_array):
+    def AppendContextSymbol(self, leaf, s_type, is_array, is_index = False):
         """ Definicion del metodo [AppendContextSymbol], el cual se encarga de la creacion del
         objeto simbolo el cual sera insertado en la tabla de hash (diccionario) que se encuentra
         en el tope de la pila.
@@ -206,9 +212,16 @@ class SyntaxTreeContext:
                 s_type : tipaje de la hoja.
                 is_array : booleano si es un arreglo.
         """
+        
+        if(len(self.c_scopes) == 0):
+            new_scope ={}
+            self.c_scopes.insert(0,new_scope)
+            self.c_secScopes.append(self.c_scopes[0])
+            self.c_auxScopes.append(self.c_scopes[0])
+        
         stack_top = self.c_scopes[0]
         if leaf.p_value in stack_top:
-            print("[Context Error] Line " + str(leaf.p_line) + ' column '+str(leaf.p_column)+ '. Variable has been declared before.')
+            print("[Context Error] Line " + str(leaf.p_line) + ' column '+str(leaf.p_column)+ '. Variable ' + leaf.p_value + ' has been declared before.')
             sys.exit(0)
         
         new_type = s_type.p_value
@@ -218,6 +231,7 @@ class SyntaxTreeContext:
         
         new_symbol = ContextSymbol(leaf.p_value, new_type)
         new_symbol.is_array = is_array
+        new_symbol.is_index = is_index
 
         if(is_array):
             new_symbol.array_indexes.append(s_type.p_value.childs[0])
@@ -284,7 +298,8 @@ class SyntaxTreeContext:
                     elif(leaf.p_type == "Block"):
                         self.c_currentLine+=1
                         self.ContextAnalyzer(leaf)
-                        self.c_scopes.pop(0)
+                        if(len(self.c_scopes) > 0):
+                            self.c_scopes.pop(0)
                     elif(leaf.p_type == "Content"):
                         self.c_currentLine+=1
                         self.ContentAnalyzer(leaf)
@@ -307,13 +322,17 @@ class SyntaxTreeContext:
                     var = self.CheckId(leaf.p_value,[leaf.p_line,leaf.p_column])
 
                     if (var.is_index):
-                        print("[Context Error] line " + str(leaf.p_line) + ' column '+str(leaf.p_column)+  ". tries to modify varible" + leaf.p_value + "of iteration.")
+                        print("[Context Error] line " + str(leaf.p_line) + ' column '+str(leaf.p_column)+  ". tries to modify variable " + leaf.p_value + " of iteration.")
                         sys.exit(0)
                     
                     # Verificar si la variable es de tipo arreglo o no
                     exp_type = self.AssignationAnalyzer(leaf.childs[0])
 
                     if(not var.is_array):
+                        if(var.is_index):
+                            print("[Context Error] line " + str(leaf.p_line) + ' column '+str(leaf.p_column)+  ". Trying to asign to a control variable.")
+                            sys.exit(0)
+
                         if (var.s_type != exp_type):
                             print("[Context Error] line " + str(leaf.p_line) + ' column '+str(leaf.p_column)+  ". Different variable types.")
                             sys.exit(0)
@@ -340,7 +359,7 @@ class SyntaxTreeContext:
                         count = self.CheckCountExp(leaf.childs[0])
 
                         if(count != (var.array_indexes[1] - var.array_indexes[0]) + 1):
-                            print("[Context Error] line " + str(leaf.p_line) + ' column '+str(leaf.p_column)+  ". Trying to asign different number of elements in the Array.")
+                            print("[Context Error] line " + str(leaf.p_line) + ' column '+str(leaf.p_column)+  ". Trying to asign different number of elements in the array " + var.s_value)
                             sys.exit(0)
 
                 elif(leaf.p_type == 'Conditional' or leaf.p_type == 'Guard'):
@@ -357,42 +376,39 @@ class SyntaxTreeContext:
                                 sys.exit(0) 
 
 
-                elif(leaf.p_type == 'ForLoop'):
+                elif(leaf.p_type == 'Forloop'):
                     self.c_currentLine += 1
-                    child = leaf.p_value
-                    oprator1 = child.childs[0]
-                    oprator2 = child.childs[1]
+                    
+                    oprator1 = leaf.childs[0]
+                    oprator2 = leaf.childs[1]
                     type1 = self.ExpressionAnalizer(oprator1)
                     type2 = self.ExpressionAnalizer(oprator2)
 
                     if (type1 != 'int' or type2 != 'int'):
-                        print("[Context Error] line " + str(child.p_line) + ' column '+str(child.p_column)+  ". For expressions are different type.")
+                        print("[Context Error] line " + str(leaf.p_line) + ' column '+str(leaf.p_column)+  ". For expressions are different type.")
                         sys.exit(0)
                     
-                    self.AppendContextSymbol(SyntaxLeaf('Terminal', child), SyntaxLeaf('Datatype', 'int'), False)
+                    if(not self.SeeIfVarExist(leaf.p_value)):
+                        self.AppendContextSymbol(SyntaxLeaf('Terminal', leaf.p_value), SyntaxLeaf('Datatype', 'int'), False, True)
 
-                elif (leaf.p_type == 'DoLoop'):
+                    self.ContentAnalyzer(leaf.childs[2])
+                    #cambiar a false
+
+                elif (leaf.p_type == 'Doloop'):
                     self.c_currentLine += 1
-                    child = leaf.p_value
-                    oprator1 = child.childs[0]
-                    oprator2 = child.childs[1]
+
+                    oprator1 = leaf.childs[0]
                     type1 = self.ExpressionAnalizer(oprator1)
-                    type2 = self.ExpressionAnalizer(oprator2)
-                    if (child.p_value != '!=' and child.p_value != '==' and \
-                        child.p_value != '<' and child.p_value != '>' and \
-                            child.p_value != '<=' and child.p_value != '>='):
-                        if (type1 != 'int' or type2 != 'int'):
-                            print("[Context Error] line " + str(child.p_line) + ' column '+str(child.p_column)+  ". Do variables are of a different types.")
-                            sys.exit(0)
-                    if (type1 != type2):
-                        print("[Context Error] line " + str(child.p_line) + ' column '+str(child.p_column)+  ". Do variables are of a different types.")
+
+                    if (type1 != 'bool'):
+                        print("[Context Error] line " + str(child.p_line) + ' column '+str(child.p_column)+  ". Do expression is not a boolean.")
                         sys.exit(0)
-                    else:
-                        t = 'bool'
-                    if (t != 'bool'):
-                        print("[Context Error] line " + str(child.p_line) + ' column '+str(child.p_column)+  ". Do variables are of a different types.")
-                        sys.exit(0)
-                    self.ContextAnalyzer(leaf.childs[0])
+                    
+                    for child in leaf.childs:
+                        if(child.p_type == 'Content'):
+                            self.ContentAnalyzer(child)
+                        elif(child.p_type == 'Guard'):
+                            self.GuardAnalyzer(child)
 
                 elif(leaf.p_type == 'Input'):
                     self.c_currentLine += 1
@@ -437,7 +453,8 @@ class SyntaxTreeContext:
                     if (leaf.p_type == 'Block'):
                         self.c_currentLine+=1
                         self.ContextAnalyzer(leaf)
-                        self.c_scopes.pop(0)
+                        if(len(self.c_scopes) > 0):
+                            self.c_scopes.pop(0)
 
                     elif (leaf.p_type == 'Declare'):
                         self.c_currentLine+=1
@@ -497,12 +514,26 @@ class SyntaxTreeContext:
         else:
             return len(expression.childs)
 
+    def SeeIfVarExist(self, id_var):
+        if(len(self.c_secScopes) > 0):
+            for scope in self.c_secScopes:
+                if (len(scope) > 0):
+                    if id_var in scope:
+                        return True
+        
+        return False
 
     def CheckId(self, id_var, index_f_c=None):
-        if (len(self.c_scopes) > 0):
-            for x in range(len(self.c_scopes)):
-                if id_var in self.c_scopes[x]:
-                    return self.c_scopes[x][id_var]
+        found = False
+        if(len(self.c_secScopes) > 0):
+            for scope in self.c_secScopes:
+                if (len(scope) > 0):
+                    if id_var in scope:
+                        found = True
+                        var = scope[id_var]
+        
+        if(found):
+            return var
         
         if index_f_c:
             print("[Context Error] line " + str(index_f_c[0]) +' column: '+str(index_f_c[1]) +'. Variable ' + id_var + ' has not been declared before.')
