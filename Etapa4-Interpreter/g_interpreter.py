@@ -87,33 +87,53 @@ class InterpretedTreeEvaluator():
                         self.setValor(var, val)
 
                     elif (leaf.p_type == 'Forloop'):
-                        variables = []
-                        self.ForEvaluator(leaf, variables)
+                        control_var = self.getValue(leaf.p_value)
+
+                        if control_var!= False:
+
+                            for scope in self.SymbolsTable:
+                                if control_var in scope:
+                                    #si esta en la tabla y no es entero, retorna error
+                                    s_table_type = scope[control_var].s_type
+                                    if(isinstance(control_var,int) and s_table_type!='int'):
+                                        print("[Interpreter Error] line " + str(leaf.p_line) + ' column '+str(leaf.p_column)+ \
+                                            '. Variable ' + control_var.s_value + ' is not type integer to be used as control variable')
+                                        sys.exit(0)
+
+                        #creo simbolo de la variable y scope y le asigno el simbolo que cree.
+                        cont_symbol = ContextSymbol(self.getValue(leaf.p_value[0],None,True),'int')
+                        self.SymbolsTable.insert(0,{})
+                        self.SymbolsTable[0][leaf.p_value[0]] = cont_symbol
+
+                        min_limit = self.ExpressionEvaluator(leaf.childs[0])
+                        #aqui va un set value
+                        max_limit = self.ExpressionEvaluator(leaf.childs[1])
+
+                        for i in range(min_limit, max_limit):
+                            # actualizar valor del contador en cada iteracion
+                            #self.setValor(leaf.valor[0], i)
+                            self.InterpretedTreeEvaluator(leaf.childs[0])
+                        # guardar valor original
+                        #self.setValor(leaf.valor[0], val)
+                        self.SymbolsTable.pop(0)
+
+
+                    elif (leaf.p_type == 'DoLoop'):
+                        exp = self.ExpressionEvaluator(leaf.p_value)
+                        while (exp):
+                            self.SyntaxTreeContextEvaluator(leaf.childs[0])
+                            # evaluar guardia en cada iteracion
+                            comprobarexp = self.ExpressionEvaluator(leaf.p_value)
+                            if (comprobarexp):
+                                continue
+                            else:
+                                break
+
+                    else:
+                        self.SyntaxTreeContextEvaluator(leaf)
+
         else:
             print('[Interpreter Error]: No SyntaxTreeStructure')
-
-    def ForEvaluator(self, forloop, variables):
-        control_var = self.getValue(forloop.p_value)
-
-        if(control_var != False):
-            if(control_var.s_type != 'int'):
-                print("[Interpreter Error] line " + str(forloop.p_line) + ' column '+str(forloop.p_column)+ \
-                                    '. Variable ' + control_var.s_value + ' is not type integer to be used as control variable')
-                sys.exit(0)
-
-        if forloop.p_value in variables:
-            print("[Interpreter Error] line " + str(forloop.p_line) + ' column '+str(forloop.p_column)+ \
-                                    '. Trying to modify a control variable')
-            sys.exit(0)
-        else:
-            variables.append(forloop.p_value)
-        
-        min_limit = self.ExpressionEvaluator(forloop.childs[0])
-        max_limit = self.ExpressionEvaluator(forloop.childs[1])
-
-        control_var = (forloop.p_value, min_limit)
-
-        #for control_var in range(min_limit, max_limit):
 
 
     def ExpressionEvaluator(self, expression):
@@ -201,4 +221,7 @@ class InterpretedTreeEvaluator():
 
     def setValor(self, var, val, index=None):
         #Aqui recibira la tabla e ira asignando e imprimiendo errores
+        pass
+
+    def getValor(self, var, isIndex=None, isControl=None):
         pass
