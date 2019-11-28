@@ -86,8 +86,34 @@ class InterpretedTreeEvaluator():
                                     sys.exit(0)
                         self.setValor(var, val)
 
+                    elif (leaf.p_type == 'Forloop'):
+                        variables = []
+                        self.ForEvaluator(leaf, variables)
         else:
             print('[Interpreter Error]: No SyntaxTreeStructure')
+
+    def ForEvaluator(self, forloop, variables):
+        control_var = self.getValue(forloop.p_value)
+
+        if(control_var != False):
+            if(control_var.s_type != 'int'):
+                print("[Interpreter Error] line " + str(forloop.p_line) + ' column '+str(forloop.p_column)+ \
+                                    '. Variable ' + control_var.s_value + ' is not type integer to be used as control variable')
+                sys.exit(0)
+
+        if forloop.p_value in variables:
+            print("[Interpreter Error] line " + str(forloop.p_line) + ' column '+str(forloop.p_column)+ \
+                                    '. Trying to modify a control variable')
+            sys.exit(0)
+        else:
+            variables.append(forloop.p_value)
+        
+        min_limit = self.ExpressionEvaluator(forloop.childs[0])
+        max_limit = self.ExpressionEvaluator(forloop.childs[1])
+
+        control_var = (forloop.p_value, min_limit)
+
+        #for control_var in range(min_limit, max_limit):
 
 
     def ExpressionEvaluator(self, expression):
