@@ -61,7 +61,7 @@ class InterpretedTreeEvaluator():
                         value = self.ExpressionEvaluator(leaf.childs[0])
                         print(value)
 
-                    elif (leaf.p_type == 'ENTRADA'):
+                    elif (leaf.p_type == 'Input'):
                         val = input()
                         var = leaf.p_value
                         if (val == 'false'):
