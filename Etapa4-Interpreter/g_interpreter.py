@@ -34,8 +34,13 @@ class InterpretedTreeEvaluator():
         if SyntaxTreeStructure:
             if (len(SyntaxTreeStructure.childs) > 0):
                 for leaf in SyntaxTreeStructure.childs:
-
-                    if (leaf.p_type == 'Asign'):
+                        
+                        if(leaf.p_type == 'Block' or leaf.p_type == 'Content'):
+                            for child in leaf.childs:
+                                if(child != ';'):
+                                    self.SyntaxTreeContextEvaluator(child)
+                        
+                        elif (leaf.p_type == 'Asign'):
                         #almaceno el nombre de la variable
                         var_name = leaf.p_value
                         #almaceno el valor a asignar
@@ -84,10 +89,10 @@ class InterpretedTreeEvaluator():
                                     print("[Interpreter Error] line " + str(leaf.p_line) + ' column '+str(leaf.p_column)+ \
                                     '. Trying to asign list of expressions of different types.')
                                     sys.exit(0)
-                        self.setValor(var, val)
+                        self.setValue(var, val)
 
                     elif (leaf.p_type == 'Forloop'):
-                        control_var = self.getValue(leaf.p_value)
+                        control_var = self.getValue(leaf.p_value, None, True)
 
                         if control_var!= False:
 
@@ -101,20 +106,20 @@ class InterpretedTreeEvaluator():
                                         sys.exit(0)
 
                         #creo simbolo de la variable y scope y le asigno el simbolo que cree.
-                        cont_symbol = ContextSymbol(self.getValue(leaf.p_value[0],None,True),'int')
+                        cont_symbol = ContextSymbol(self.getValue(leaf.p_value,None,True),'int')
                         self.SymbolsTable.insert(0,{})
-                        self.SymbolsTable[0][leaf.p_value[0]] = cont_symbol
+                        self.SymbolsTable[0][leaf.p_value] = cont_symbol
 
                         min_limit = self.ExpressionEvaluator(leaf.childs[0])
-                        #aqui va un set value
+                        self.setValue(leaf.p_value, min_limit)
                         max_limit = self.ExpressionEvaluator(leaf.childs[1])
 
                         for i in range(min_limit, max_limit):
                             # actualizar valor del contador en cada iteracion
-                            #self.setValor(leaf.valor[0], i)
-                            self.InterpretedTreeEvaluator(leaf.childs[0])
+                            self.setValue(leaf.p_value, i)
+                            self.SyntaxTreeContextEvaluator(leaf.childs[0])
                         # guardar valor original
-                        #self.setValor(leaf.valor[0], val)
+                        #self.setValue(leaf.valor[0], val)
                         self.SymbolsTable.pop(0)
 
 
@@ -219,9 +224,21 @@ class InterpretedTreeEvaluator():
             t = self.ExpressionEvaluator(expression.childs[0])
 
 
-    def setValor(self, var, val, index=None):
+    def setValue(self, var, val, index=None):
         #Aqui recibira la tabla e ira asignando e imprimiendo errores
         pass
 
-    def getValor(self, var, isIndex=None, isControl=None):
-        pass
+    def getValue(self, var, isIndex=None, isControl=None):
+        if (len(self.SymbolsTable) > 0):
+            for i in range(len(self.SymbolsTable)):
+                if var in self.SymbolsTable[i]:
+                    
+                    if(isControl != None):
+                        return self.SymbolsTable[i][var]
+                    
+                    if(isIndex != None):
+                        if(self.SymbolsTable[i][var].is_array):
+                            if(isIndex < self.SymbolsTable[i][var].array_indexes[0] or isIndex > self.SymbolsTable[i][var].array_indexes[1]):
+                                print('[Interpreter Error] Index ' + isIndex + ' is out of boundaries')
+
+        return False
