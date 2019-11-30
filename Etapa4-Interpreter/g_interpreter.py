@@ -7,6 +7,7 @@
 
 import sys
 from g_context import *
+from g_AbsSyntaxTree import *
 
 #   En este file reposan la clase InterpretedTreeEval
 # el cual se encarga de hacer las evaluaciones 
@@ -35,16 +36,31 @@ class InterpretedTreeEvaluator():
             if (len(SyntaxTreeStructure.childs) > 0):
                 for leaf in SyntaxTreeStructure.childs:
                         
-                        if(leaf.p_type == 'Block' or leaf.p_type == 'Content'):
-                            for child in leaf.childs:
-                                if(child != ';'):
-                                    self.SyntaxTreeContextEvaluator(child)
+                    if(leaf.p_type == 'Block' or leaf.p_type == 'Content'):
+                        for child in leaf.childs:
+                            if(child != ';'):
+                                self.SyntaxTreeContextEvaluator(child)
                         
-                        elif (leaf.p_type == 'Asign'):
+                    elif (leaf.p_type == 'Asign'):
                         #almaceno el nombre de la variable
                         var_name = leaf.p_value
                         #almaceno el valor a asignar
-                        var_value = self.ExpressionEvaluator(leaf.childs[0])
+                        assignation = leaf.childs[0]
+
+                        if(len(assignation.childs) > 1):
+                            var_value = []
+                            var_value.append(self.ExpressionEvaluator(assignation.childs[0]))
+                            
+                            assignation = assignation.childs[1]
+                            numberChilds = len(assignation.childs)
+                            while(numberChilds == 2):
+                                var_value.append(self.ExpressionEvaluator(assignation.childs[0]))
+                                assignation = assignation.childs[1]
+                                numberChilds = len(assignation.childs)
+                            
+                            var_value.append(self.ExpressionEvaluator(assignation.childs[0]))
+                        else:
+                            var_value = self.ExpressionEvaluator(assignation.childs[0])
 
                         #la variable puede ser de tipo int, bool, sino arreglo
                         if (isinstance(var_name,str)):
@@ -59,7 +75,7 @@ class InterpretedTreeEvaluator():
                         for child in leaf.childs:
                             self.SyntaxTreeContextEvaluator(child)
 
-                    elif (leaf.p_type == 'Declare'):
+                    elif (leaf.p_type == 'Declare' or leaf.p_type == 'Instruction'):
                         self.SyntaxTreeContextEvaluator(leaf)
 
                     elif (leaf.p_type== 'Output'):
@@ -90,6 +106,9 @@ class InterpretedTreeEvaluator():
                                     '. Trying to asign list of expressions of different types.')
                                     sys.exit(0)
                         self.setValue(var, val)
+                    
+                    elif(leaf.p_type == 'Conditional'):
+                        self.ConditionalEvaluator(leaf)
 
                     elif (leaf.p_type == 'Forloop'):
                         control_var = self.getValue(leaf.p_value, None, True)
@@ -140,6 +159,14 @@ class InterpretedTreeEvaluator():
         else:
             print('[Interpreter Error]: No SyntaxTreeStructure')
 
+    def ConditionalEvaluator(self, leaf):
+        exp = self.ExpressionEvaluator(leaf.childs[0])
+
+        if(exp):
+            self.SyntaxTreeContextEvaluator(leaf.childs[1])
+        
+        if(len(leaf.childs) > 2):
+            self.ConditionalEvaluator(leaf.childs[2])
 
     def ExpressionEvaluator(self, expression):
 
@@ -150,7 +177,7 @@ class InterpretedTreeEvaluator():
             else:
                 if (expression.c_type == 'var'):
                     pass
-                    #t = self.getValor(expression.lexeme)
+                    #t = self.getValue(expression.lexeme)
                     return t
                 else:
                     if (expression.lexeme == 'true'):
@@ -220,13 +247,69 @@ class InterpretedTreeEvaluator():
             op = self.ExpressionEvaluator(expression.childs[0])
             return -op
 
+        elif(expression.p_type == 'ArrayOperator'):
+            # POR AHORA NADA MAS EL CASO QUE SE LE PASE EL ID DE LA VARIABLE DE UNA VEZ
+            var = self.getValue(expression.child[0])
+
+            if(expression.p_value == 'max'):
+                return max(var.s_asignvalue)
+            elif(expression.p_value == 'min'):
+                return min(var.s_asignvalue)
+            elif(expression.p_value == 'atoi'):
+                if(var.array_indexes[0] == var.array_indexes[1]):
+                    return var.s_asignvalue[0]
+                else:
+                    print("[Context Error] line " + str(expression.p_line) + ' column '+\
+                            str(expression.p_column)+ '. Array ' + var.s_value + ' has not length 1.')
+                    sys.exit(0)
+            elif(expression.p_value == 'size'):
+                return len(var.s_asignvalue)
+
+        elif(expression.p_type == 'ArrayExpression'):
+            if(len(expression.childs) == 1):
+                index = self.ExpressionEvaluator(expression.childs[0])
+
+                if(isinstance(expression.p_value, SyntaxLeaf)):
+                    t = self.ExpressionEvaluator(expression.p_value)
+                else:
+                    t = self.getValue(expression.p_value, None, None)
+                
+                if(index > t.array_indexes[1] or index < t.array_indexes[0]):
+                        print("[Context Error] line " + str(expression.p_line) + ' column '+\
+                            str(expression.p_column)+ '. Array expression out of boundaries.')
+                        sys.exit(0)
+                
+                return t.s_asignvalue[index]
+            else:
+                index = self.ExpressionEvaluator(expression.childs[0])
+                val = self.ExpressionEvaluator(expression.childs[1])
+
+                if(isinstance(expression.p_value, SyntaxLeaf)):
+                    t = self.ExpressionEvaluator(expression.p_value)
+                else:
+                    t = self.getValue(expression.p_value, None, None)
+                
+                if(index > t.array_indexes[1] or index < t.array_indexes[0]):
+                        print("[Context Error] line " + str(expression.p_line) + ' column '+\
+                            str(expression.p_column)+ '. Array expression out of boundaries.')
+                        sys.exit(0)
+                
+                t.s_asignvalue[index] = val
+
+                return t.s_asignvalue
+
         elif(expression.p_type == 'Expression'):
             t = self.ExpressionEvaluator(expression.childs[0])
 
 
     def setValue(self, var, val, index=None):
         #Aqui recibira la tabla e ira asignando e imprimiendo errores
-        pass
+        if (len(self.SymbolsTable) > 0):
+            for i in range(len(self.SymbolsTable)):
+                if var in self.SymbolsTable[i]:
+                    self.SymbolsTable[i][var].s_asignvalue = val
+        
+        # Sino impresion de errores
 
     def getValue(self, var, isIndex=None, isControl=None):
         if (len(self.SymbolsTable) > 0):
