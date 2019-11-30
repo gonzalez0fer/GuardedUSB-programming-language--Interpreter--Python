@@ -410,7 +410,7 @@ def parser_builder(meta_program):
     SCOPES = ['empty']+ context.c_auxScopes
 
     interpreter = InterpretedTreeEvaluator(context.c_secScopes)
-    #interpreter.SyntaxTreeContextEvaluator(parsed_program)
+    interpreter.SyntaxTreeContextEvaluator(parsed_program)
 
     if not(parser_error):
         SyntaxTreePrinter(parsed_program, "", SCOPES)

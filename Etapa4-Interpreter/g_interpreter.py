@@ -35,126 +35,127 @@ class InterpretedTreeEvaluator():
         if SyntaxTreeStructure:
             if (len(SyntaxTreeStructure.childs) > 0):
                 for leaf in SyntaxTreeStructure.childs:
-                        
-                    if(leaf.p_type == 'Block' or leaf.p_type == 'Content'):
-                        for child in leaf.childs:
-                            if(child != ';'):
-                                self.SyntaxTreeContextEvaluator(child)
-                        
-                    elif (leaf.p_type == 'Asign'):
-                        #almaceno el nombre de la variable
-                        var_name = leaf.p_value
-                        #almaceno el valor a asignar
-                        assignation = leaf.childs[0]
-
-                        if(len(assignation.childs) > 1):
-                            var_value = []
-                            var_value.append(self.ExpressionEvaluator(assignation.childs[0]))
+                    if(leaf != ';'):
+                        print(leaf.p_type)
+                        if(leaf.p_type == 'Block' or leaf.p_type == 'Content'):
+                            for child in leaf.childs:
+                                if(child != ';'):
+                                    self.SyntaxTreeContextEvaluator(child)
                             
-                            assignation = assignation.childs[1]
-                            numberChilds = len(assignation.childs)
-                            while(numberChilds == 2):
+                        elif (leaf.p_type == 'Asign'):
+                            #almaceno el nombre de la variable
+                            var_name = leaf.p_value
+                            #almaceno el valor a asignar
+                            assignation = leaf.childs[0]
+
+                            if(len(assignation.childs) > 1):
+                                var_value = []
                                 var_value.append(self.ExpressionEvaluator(assignation.childs[0]))
+                                
                                 assignation = assignation.childs[1]
                                 numberChilds = len(assignation.childs)
-                            
-                            var_value.append(self.ExpressionEvaluator(assignation.childs[0]))
-                        else:
-                            var_value = self.ExpressionEvaluator(assignation.childs[0])
-
-                        #la variable puede ser de tipo int, bool, sino arreglo
-                        if (isinstance(var_name,str)):
-                            self.setValue(var_name, var_value)
-                        else:
-                            #########################por definir idea
-                            pass
-                            array_index = self.ExpressionEvaluator(leaf.childs[0])
-                            self.setValue(var_name.p_value, var_value, array_index) 
-
-                    elif (leaf.p_type == 'Variable'):
-                        for child in leaf.childs:
-                            self.SyntaxTreeContextEvaluator(child)
-
-                    elif (leaf.p_type == 'Declare' or leaf.p_type == 'Instruction'):
-                        self.SyntaxTreeContextEvaluator(leaf)
-
-                    elif (leaf.p_type== 'Output'):
-                        value = self.ExpressionEvaluator(leaf.childs[0])
-                        print(value)
-
-                    elif (leaf.p_type == 'Input'):
-                        val = input()
-                        var = leaf.p_value
-                        if (val == 'false'):
-                            val = False
-                        elif (val == 'true'):
-                            val = True
-                        if (val.isdigit()):
-                            val = int(val)
-
-                        # Revisando tipaje con la tabla, si es correcto,
-                        # se asigna.
-                        for i in self.SymbolsTable:
-                            if var in i:
-                                s_table_type = i[var].s_type
-                                if(isinstance(val,bool) and s_table_type!='bool'):
-                                    print("[Interpreter Error] line " + str(leaf.p_line) + ' column '+str(leaf.p_column)+ \
-                                    '. Trying to asign list of expressions of different types.')
-                                    sys.exit(0)
-                                elif(isinstance(val, int) and s_table_type!= 'int'):
-                                    print("[Interpreter Error] line " + str(leaf.p_line) + ' column '+str(leaf.p_column)+ \
-                                    '. Trying to asign list of expressions of different types.')
-                                    sys.exit(0)
-                        self.setValue(var, val)
-                    
-                    elif(leaf.p_type == 'Conditional'):
-                        self.ConditionalEvaluator(leaf)
-
-                    elif (leaf.p_type == 'Forloop'):
-                        control_var = self.getValue(leaf.p_value, None, True)
-
-                        if control_var!= False:
-
-                            for scope in self.SymbolsTable:
-                                if control_var in scope:
-                                    #si esta en la tabla y no es entero, retorna error
-                                    s_table_type = scope[control_var].s_type
-                                    if(isinstance(control_var,int) and s_table_type!='int'):
-                                        print("[Interpreter Error] line " + str(leaf.p_line) + ' column '+str(leaf.p_column)+ \
-                                            '. Variable ' + control_var.s_value + ' is not type integer to be used as control variable')
-                                        sys.exit(0)
-
-                        #creo simbolo de la variable y scope y le asigno el simbolo que cree.
-                        cont_symbol = ContextSymbol(self.getValue(leaf.p_value,None,True),'int')
-                        self.SymbolsTable.insert(0,{})
-                        self.SymbolsTable[0][leaf.p_value] = cont_symbol
-
-                        min_limit = self.ExpressionEvaluator(leaf.childs[0])
-                        self.setValue(leaf.p_value, min_limit)
-                        max_limit = self.ExpressionEvaluator(leaf.childs[1])
-
-                        for i in range(min_limit, max_limit):
-                            # actualizar valor del contador en cada iteracion
-                            self.setValue(leaf.p_value, i)
-                            self.SyntaxTreeContextEvaluator(leaf.childs[0])
-                        # guardar valor original
-                        #self.setValue(leaf.valor[0], val)
-                        self.SymbolsTable.pop(0)
-
-
-                    elif (leaf.p_type == 'DoLoop'):
-                        exp = self.ExpressionEvaluator(leaf.p_value)
-                        while (exp):
-                            self.SyntaxTreeContextEvaluator(leaf.childs[0])
-                            # evaluar guardia en cada iteracion
-                            comprobarexp = self.ExpressionEvaluator(leaf.p_value)
-                            if (comprobarexp):
-                                continue
+                                while(numberChilds == 2):
+                                    var_value.append(self.ExpressionEvaluator(assignation.childs[0]))
+                                    assignation = assignation.childs[1]
+                                    numberChilds = len(assignation.childs)
+                                
+                                var_value.append(self.ExpressionEvaluator(assignation.childs[0]))
                             else:
-                                break
+                                var_value = self.ExpressionEvaluator(assignation.childs[0])
 
-                    else:
-                        self.SyntaxTreeContextEvaluator(leaf)
+                            #la variable puede ser de tipo int, bool, sino arreglo
+                            if (isinstance(var_name,str)):
+                                self.setValue(var_name, var_value)
+                            else:
+                                #########################por definir idea
+                                pass
+                                array_index = self.ExpressionEvaluator(leaf.childs[0])
+                                self.setValue(var_name.p_value, var_value, array_index) 
+
+                        elif (leaf.p_type == 'Variable'):
+                            for child in leaf.childs:
+                                self.SyntaxTreeContextEvaluator(child)
+
+                        elif (leaf.p_type == 'Declare' or leaf.p_type == 'Instruction'):
+                            self.SyntaxTreeContextEvaluator(leaf)
+
+                        elif (leaf.p_type== 'Output'):
+                            value = self.ExpressionEvaluator(leaf.childs[0])
+                            print("Imprimiendo" + value)
+
+                        elif (leaf.p_type == 'Input'):
+                            val = input()
+                            var = leaf.p_value
+                            if (val == 'false'):
+                                val = False
+                            elif (val == 'true'):
+                                val = True
+                            if (val.isdigit()):
+                                val = int(val)
+
+                            # Revisando tipaje con la tabla, si es correcto,
+                            # se asigna.
+                            for i in self.SymbolsTable:
+                                if var in i:
+                                    s_table_type = i[var].s_type
+                                    if(isinstance(val,bool) and s_table_type!='bool'):
+                                        print("[Interpreter Error] line " + str(leaf.p_line) + ' column '+str(leaf.p_column)+ \
+                                        '. Trying to asign list of expressions of different types.')
+                                        sys.exit(0)
+                                    elif(isinstance(val, int) and s_table_type!= 'int'):
+                                        print("[Interpreter Error] line " + str(leaf.p_line) + ' column '+str(leaf.p_column)+ \
+                                        '. Trying to asign list of expressions of different types.')
+                                        sys.exit(0)
+                            self.setValue(var, val)
+                        
+                        elif(leaf.p_type == 'Conditional'):
+                            self.ConditionalEvaluator(leaf)
+
+                        elif (leaf.p_type == 'Forloop'):
+                            control_var = self.getValue(leaf.p_value, None, True)
+
+                            if control_var!= False:
+
+                                for scope in self.SymbolsTable:
+                                    if control_var in scope:
+                                        #si esta en la tabla y no es entero, retorna error
+                                        s_table_type = scope[control_var].s_type
+                                        if(isinstance(control_var,int) and s_table_type!='int'):
+                                            print("[Interpreter Error] line " + str(leaf.p_line) + ' column '+str(leaf.p_column)+ \
+                                                '. Variable ' + control_var.s_value + ' is not type integer to be used as control variable')
+                                            sys.exit(0)
+
+                            #creo simbolo de la variable y scope y le asigno el simbolo que cree.
+                            cont_symbol = ContextSymbol(self.getValue(leaf.p_value,None,True),'int')
+                            self.SymbolsTable.insert(0,{})
+                            self.SymbolsTable[0][leaf.p_value] = cont_symbol
+
+                            min_limit = self.ExpressionEvaluator(leaf.childs[0])
+                            self.setValue(leaf.p_value, min_limit)
+                            max_limit = self.ExpressionEvaluator(leaf.childs[1])
+
+                            for i in range(min_limit, max_limit):
+                                # actualizar valor del contador en cada iteracion
+                                self.setValue(leaf.p_value, i)
+                                self.SyntaxTreeContextEvaluator(leaf.childs[0])
+                            # guardar valor original
+                            #self.setValue(leaf.valor[0], val)
+                            self.SymbolsTable.pop(0)
+
+
+                        elif (leaf.p_type == 'DoLoop'):
+                            exp = self.ExpressionEvaluator(leaf.p_value)
+                            while (exp):
+                                self.SyntaxTreeContextEvaluator(leaf.childs[0])
+                                # evaluar guardia en cada iteracion
+                                comprobarexp = self.ExpressionEvaluator(leaf.p_value)
+                                if (comprobarexp):
+                                    continue
+                                else:
+                                    break
+
+                        else:
+                            self.SyntaxTreeContextEvaluator(leaf)
 
         else:
             print('[Interpreter Error]: No SyntaxTreeStructure')
@@ -176,16 +177,16 @@ class InterpretedTreeEvaluator():
                 return t
             else:
                 if (expression.c_type == 'var'):
-                    pass
-                    #t = self.getValue(expression.lexeme)
+                    #pass
+                    t = self.getValue(expression.c_lexeme)
                     return t
                 else:
-                    if (expression.lexeme == 'true'):
+                    if (expression.c_lexeme == 'true'):
                         return True
-                    elif (expression.lexeme == 'false'):
+                    elif (expression.c_lexeme == 'false'):
                         return False
                     else:
-                        return expression.lexeme
+                        return expression.c_lexeme
 
         elif (expression.p_type  == 'BooleanOperator'):
             operator_tok = expression.p_value
