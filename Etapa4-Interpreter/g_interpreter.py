@@ -36,7 +36,6 @@ class InterpretedTreeEvaluator():
             if (len(SyntaxTreeStructure.childs) > 0):
                 for leaf in SyntaxTreeStructure.childs:
                     if(leaf != ';'):
-                        print(leaf.p_type)
                         if(leaf.p_type == 'Block' or leaf.p_type == 'Content'):
                             for child in leaf.childs:
                                 if(child != ';'):
@@ -81,7 +80,7 @@ class InterpretedTreeEvaluator():
 
                         elif (leaf.p_type== 'Output'):
                             value = self.ExpressionEvaluator(leaf.childs[0])
-                            print("Imprimiendo" + value)
+                            print(value)
 
                         elif (leaf.p_type == 'Input'):
                             val = input()
@@ -162,7 +161,7 @@ class InterpretedTreeEvaluator():
 
     def ConditionalEvaluator(self, leaf):
         exp = self.ExpressionEvaluator(leaf.childs[0])
-
+        
         if(exp):
             self.SyntaxTreeContextEvaluator(leaf.childs[1])
         
@@ -177,9 +176,8 @@ class InterpretedTreeEvaluator():
                 return t
             else:
                 if (expression.c_type == 'var'):
-                    #pass
                     t = self.getValue(expression.c_lexeme)
-                    return t
+                    return t.s_asignvalue
                 else:
                     if (expression.c_lexeme == 'true'):
                         return True
@@ -206,7 +204,7 @@ class InterpretedTreeEvaluator():
             operator_tok = expression.p_value
             op1 = self.ExpressionEvaluator(expression.childs[0])
             op2 = self.ExpressionEvaluator(expression.childs[1])
-
+            
             if (operator_tok == '<'):
                 res = op1 < op2
             elif (operator_tok == '>'):
@@ -215,10 +213,11 @@ class InterpretedTreeEvaluator():
                 res = op1 <= op2
             elif (operator_tok == '>='):
                 res = op1 >= op2
-            elif (operator_tok == '='):
+            elif (operator_tok == '=='):
                 res = op1 == op2
             elif (operator_tok == '!='):
                 res = op1 != op2
+            
             return res
 
         elif (expression.p_type == 'AritmeticOperator'):
@@ -301,6 +300,7 @@ class InterpretedTreeEvaluator():
 
         elif(expression.p_type == 'Expression'):
             t = self.ExpressionEvaluator(expression.childs[0])
+            return t
 
 
     def setValue(self, var, val, index=None):
@@ -324,5 +324,7 @@ class InterpretedTreeEvaluator():
                         if(self.SymbolsTable[i][var].is_array):
                             if(isIndex < self.SymbolsTable[i][var].array_indexes[0] or isIndex > self.SymbolsTable[i][var].array_indexes[1]):
                                 print('[Interpreter Error] Index ' + isIndex + ' is out of boundaries')
+                    
+                    return self.SymbolsTable[i][var]
 
         return False
