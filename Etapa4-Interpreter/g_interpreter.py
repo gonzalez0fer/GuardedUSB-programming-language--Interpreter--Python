@@ -79,7 +79,7 @@ class InterpretedTreeEvaluator():
                             self.SyntaxTreeContextEvaluator(leaf)
 
                         elif (leaf.p_type== 'Output'):
-                            value = self.ExpressionEvaluator(leaf.childs[0])
+                            value = self.ConcatEvaluator(leaf)
                             print(value)
 
                         elif (leaf.p_type == 'Input'):
@@ -159,11 +159,23 @@ class InterpretedTreeEvaluator():
         else:
             print('[Interpreter Error]: No SyntaxTreeStructure')
 
+    def ConcatEvaluator(self, exp):
+        c_exp = str(self.ExpressionEvaluator(exp.childs[0]))
+
+        if(c_exp[0] == "\""):
+            c_exp = c_exp[1:-1]
+
+        if(len(exp.childs) > 1):
+            c_exp = c_exp + self.ConcatEvaluator(exp.childs[1])
+        
+        return c_exp
+
     def ConditionalEvaluator(self, leaf):
         exp = self.ExpressionEvaluator(leaf.childs[0])
         
         if(exp):
             self.SyntaxTreeContextEvaluator(leaf.childs[1])
+            return
         
         if(len(leaf.childs) > 2):
             self.ConditionalEvaluator(leaf.childs[2])
