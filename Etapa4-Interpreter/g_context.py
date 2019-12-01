@@ -370,14 +370,20 @@ class SyntaxTreeContext:
                             exp = exp_asign.p_value
 
                             if(isinstance(exp, SyntaxLeaf)):
+                                print("Entre")
                                 asignvar = self.GetVariableArray(exp,[exp_asign.p_line,exp_asign.p_column])
+                            else:
+                                asignvar = self.CheckId(exp)
+                            
+                            var_count = (var.array_indexes[1] - var.array_indexes[0]) + 1
+                            asign_var_count = (asignvar.array_indexes[1] - asignvar.array_indexes[0]) + 1
 
-                                if(var.s_value != asignvar.s_value):
-                                    print("[Context Error] line " + str(leaf.p_line) + ' column '+\
-                                        str(leaf.p_column)+  ". Trying to asign different Array.")
-                                    sys.exit(0)
-                                
-                                return
+                            if(var_count != asign_var_count):
+                                print("[Context Error] line " + str(leaf.p_line) + ' column '+\
+                                    str(leaf.p_column)+  ". Trying to asign different Array.")
+                                sys.exit(0)
+                            
+                            return
 
                         count = self.CheckCountExp(leaf.childs[0])
 

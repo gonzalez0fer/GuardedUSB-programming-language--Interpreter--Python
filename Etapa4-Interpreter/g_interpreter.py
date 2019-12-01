@@ -364,7 +364,7 @@ class InterpretedTreeEvaluator():
                 if var in self.SymbolsTable[i]:
                     self.SymbolsTable[i][var].s_asignvalue = val
 
-                    if(is_array):
+                    if(self.SymbolsTable[i][var].is_array):
                         self.SymbolsTable[i][var].array_toList = val
         
         # Sino impresion de errores
