@@ -22,7 +22,8 @@ class ContextSymbol():
             s_value : identificador o valor de la hoja que generara el simbolo.
             s_asignvalue : valor del simbolo si la hoja es de tipo Variable.
             is_index : almacena si el valor de la hoja es usado como contador de un loop.
-            is_array : almacena si la hoja es de tipo arreglo.
+            array_indexes : almacena los index superior e inferior del arreglo.
+            array_toList : almacena los enteros contenidos en el arreglo.
     """
     def __init__(self, s_value, s_type):
         self.s_type = s_type 
@@ -31,6 +32,7 @@ class ContextSymbol():
         self.is_index = None 
         self.is_array = False
         self.array_indexes = []
+        self.array_toList = []
 
 
 class SyntaxTreeContext:

@@ -13,6 +13,7 @@ from g_AbsSyntaxTree import *
 # el cual se encarga de hacer las evaluaciones 
 # respectivas de nuestro programa.
 
+
 class InterpretedTreeEvaluator():
     """ Definicion del objeto [InterpretedTreeEval], cuyos metodos se encargaran
     de hacer el recorrido del arbol contrastando con las tablas de simbolos creadas
@@ -24,12 +25,12 @@ class InterpretedTreeEvaluator():
     def __init__(self, SymbolsTable):
         self. SymbolsTable = SymbolsTable
 
+
     def SyntaxTreeContextEvaluator(self, SyntaxTreeStructure):
         """ Definicion del metodo [SyntaxTreeContextEvaluator], el cual se encarga de hacer 
         el recorrido del arbol contrastando con las tablas de simbolos creadas
         en el contexto y haciendo los calculos pertinentes para la interpretacion.
 
-        
         recibe: SyntaxTreeStructure : Estructura completa del arbol sintactico a analizar.
         """
         if SyntaxTreeStructure:
@@ -152,7 +153,6 @@ class InterpretedTreeEvaluator():
                             #self.setValue(leaf.valor[0], val)
                             self.SymbolsTable.pop(0)
 
-
                         elif (leaf.p_type == 'DoLoop'):
                             exp = self.ExpressionEvaluator(leaf.p_value)
                             while (exp):
@@ -163,36 +163,32 @@ class InterpretedTreeEvaluator():
                                     continue
                                 else:
                                     break
-
                         else:
                             self.SyntaxTreeContextEvaluator(leaf)
-
         else:
             print('[Interpreter Error]: No SyntaxTreeStructure')
 
+
     def ConcatEvaluator(self, exp):
         c_exp = str(self.ExpressionEvaluator(exp.childs[0]))
-
         if(c_exp[0] == "\""):
             c_exp = c_exp[1:-1]
-
         if(len(exp.childs) > 1):
             c_exp = c_exp + self.ConcatEvaluator(exp.childs[1])
         
         return c_exp
 
+
     def ConditionalEvaluator(self, leaf):
         exp = self.ExpressionEvaluator(leaf.childs[0])
-        
         if(exp):
             self.SyntaxTreeContextEvaluator(leaf.childs[1])
             return
-        
         if(len(leaf.childs) > 2):
             self.ConditionalEvaluator(leaf.childs[2])
 
-    def ExpressionEvaluator(self, expression):
 
+    def ExpressionEvaluator(self, expression):
         if (expression.p_type == 'Terminal'):
             if (len(expression.childs)>0):
                 t = self.ExpressionEvaluator(expression.childs[0])
@@ -240,7 +236,6 @@ class InterpretedTreeEvaluator():
                 res = op1 == op2
             elif (operator_tok == '!='):
                 res = op1 != op2
-            
             return res
 
         elif (expression.p_type == 'AritmeticOperator'):
@@ -301,8 +296,8 @@ class InterpretedTreeEvaluator():
                         print("[Context Error] line " + str(expression.p_line) + ' column '+\
                             str(expression.p_column)+ '. Array expression out of boundaries.')
                         sys.exit(0)
-                
                 return t.s_asignvalue[index]
+
             else:
                 index = self.ExpressionEvaluator(expression.childs[0])
                 val = self.ExpressionEvaluator(expression.childs[1])
@@ -316,9 +311,7 @@ class InterpretedTreeEvaluator():
                         print("[Context Error] line " + str(expression.p_line) + ' column '+\
                             str(expression.p_column)+ '. Array expression out of boundaries.')
                         sys.exit(0)
-                
                 t.s_asignvalue[index] = val
-
                 return t.s_asignvalue
 
         elif(expression.p_type == 'Expression'):
