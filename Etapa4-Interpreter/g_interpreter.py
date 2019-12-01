@@ -87,10 +87,15 @@ class InterpretedTreeEvaluator():
                             s_table_type = var.s_type
                             
                             if(var.is_array):
-                                val = []
-                                for i in range(var.array_indexes[0], var.array_indexes[1]):
-                                    input_v = input()
-                                    val.append(input_v) 
+                                input_v = input()
+                                val = input_v.split(",")
+
+                                len_var = var.array_indexes[1] - var.array_indexes[0]
+
+                                if(len(val) != len_var):
+                                    print("[Interpreter Error] line " + str(leaf.p_line) + ' column '+str(leaf.p_column)+ \
+                                    '. Number of elements inserted are different from array size.')
+                                    sys.exit(0)
                             else:
                                 val = input()
                 
