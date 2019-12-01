@@ -170,6 +170,11 @@ class InterpretedTreeEvaluator():
 
 
     def ConcatEvaluator(self, exp):
+        """ Definicion del metodo [ConcatEvaluator], el cual se encarga de hacer 
+        el tratamiento a las expresiones que seran utilizadas para la concatenacion.
+
+        recibe: exp : Expresion a Evaluar.
+        """
         c_exp = str(self.ExpressionEvaluator(exp.childs[0]))
         if(c_exp[0] == "\""):
             c_exp = c_exp[1:-1]
@@ -180,6 +185,11 @@ class InterpretedTreeEvaluator():
 
 
     def ConditionalEvaluator(self, leaf):
+        """ Definicion del metodo [ConditionalEvaluator], el cual se encarga de hacer 
+        el tratamiento a las hojas del tipo Condicional.
+
+        recibe: leaf : hoja a Evaluar.
+        """
         exp = self.ExpressionEvaluator(leaf.childs[0])
         if(exp):
             self.SyntaxTreeContextEvaluator(leaf.childs[1])
@@ -189,6 +199,11 @@ class InterpretedTreeEvaluator():
 
 
     def ExpressionEvaluator(self, expression):
+        """ Definicion del metodo [ExpressionEvaluator], el cual se encarga de hacer 
+        el tratamiento a toda hoja del tipo expresion.
+
+        recibe: expression : hoja a Evaluar.
+        """
         if (expression.p_type == 'Terminal'):
             if (len(expression.childs)>0):
                 t = self.ExpressionEvaluator(expression.childs[0])
