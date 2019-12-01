@@ -267,7 +267,7 @@ class InterpretedTreeEvaluator():
 
         elif(expression.p_type == 'ArrayOperator'):
             # POR AHORA NADA MAS EL CASO QUE SE LE PASE EL ID DE LA VARIABLE DE UNA VEZ
-            var = self.getValue(expression.child[0])
+            var = self.getValue(expression.childs[0])
 
             if(expression.p_value == 'max'):
                 return max(var.s_asignvalue)
@@ -296,35 +296,61 @@ class InterpretedTreeEvaluator():
                         print("[Context Error] line " + str(expression.p_line) + ' column '+\
                             str(expression.p_column)+ '. Array expression out of boundaries.')
                         sys.exit(0)
-                return t.s_asignvalue[index]
+                
+                return t.array_toList[index]
 
             else:
                 index = self.ExpressionEvaluator(expression.childs[0])
                 val = self.ExpressionEvaluator(expression.childs[1])
 
+                exp_val = expression
                 if(isinstance(expression.p_value, SyntaxLeaf)):
-                    t = self.ExpressionEvaluator(expression.p_value)
+                    exp_to_evaluate = []
+                    while(isinstance(exp_val.p_value, SyntaxLeaf)):
+                        exp_to_evaluate.append(exp_val.p_value)
+                        exp_val = exp_val.p_value
+                    
+                    t = self.getValue(exp_val.p_value, None, None)
+
+                    aux_list = [x for x in range(t.array_indexes[0], t.array_indexes[1]+1)]
+
+                    for exp in exp_to_evaluate[::-1]:
+                        exp_index = self.ExpressionEvaluator(exp.childs[0])
+                        exp_val = self.ExpressionEvaluator(exp.childs[1])
+                
+                        if(exp_index > t.array_indexes[1] or exp_index < t.array_indexes[0]):
+                            print("[Context Error] line " + str(expression.p_line) + ' column '+\
+                            str(expression.p_column)+ '. Array expression out of boundaries.')
+                            sys.exit(0)
+                
+                        t.array_toList[aux_list.index(exp_index)] = exp_val
                 else:
                     t = self.getValue(expression.p_value, None, None)
+                
+                aux_list = [x for x in range(t.array_indexes[0], t.array_indexes[1]+1)]
                 
                 if(index > t.array_indexes[1] or index < t.array_indexes[0]):
                         print("[Context Error] line " + str(expression.p_line) + ' column '+\
                             str(expression.p_column)+ '. Array expression out of boundaries.')
                         sys.exit(0)
-                t.s_asignvalue[index] = val
-                return t.s_asignvalue
+                
+                t.array_toList[aux_list.index(index)] = val
+                return t.array_toList
 
         elif(expression.p_type == 'Expression'):
             t = self.ExpressionEvaluator(expression.childs[0])
             return t
 
 
-    def setValue(self, var, val, index=None):
+    def setValue(self, var, val, index=None, is_array=False):
         #Aqui recibira la tabla e ira asignando e imprimiendo errores
         if (len(self.SymbolsTable) > 0):
             for i in range(len(self.SymbolsTable)):
                 if var in self.SymbolsTable[i]:
                     self.SymbolsTable[i][var].s_asignvalue = val
+
+                    if(is_array):
+                        self.SymbolsTable[i][var].array_toList = val
         
         # Sino impresion de errores
 
