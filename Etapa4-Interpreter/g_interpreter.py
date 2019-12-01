@@ -83,28 +83,34 @@ class InterpretedTreeEvaluator():
                             print(value)
 
                         elif (leaf.p_type == 'Input'):
-                            val = input()
-                            var = leaf.p_value
-                            if (val == 'false'):
-                                val = False
-                            elif (val == 'true'):
-                                val = True
-                            if (val.isdigit()):
-                                val = int(val)
+                            var = self.getValue(leaf.childs[0])
+                            s_table_type = var.s_type
+                            
+                            if(var.is_array):
+                                val = []
+                                for i in range(var.array_indexes[0], var.array_indexes[1]):
+                                    input_v = input()
+                                    val.append(input_v) 
+                            else:
+                                val = input()
+                
+                                if (val == 'false'):
+                                    val = False
+                                elif (val == 'true'):
+                                    val = True
+                                elif (val.isdigit()):
+                                    val = int(val)
 
                             # Revisando tipaje con la tabla, si es correcto,
                             # se asigna.
-                            for i in self.SymbolsTable:
-                                if var in i:
-                                    s_table_type = i[var].s_type
-                                    if(isinstance(val,bool) and s_table_type!='bool'):
-                                        print("[Interpreter Error] line " + str(leaf.p_line) + ' column '+str(leaf.p_column)+ \
-                                        '. Trying to asign list of expressions of different types.')
-                                        sys.exit(0)
-                                    elif(isinstance(val, int) and s_table_type!= 'int'):
-                                        print("[Interpreter Error] line " + str(leaf.p_line) + ' column '+str(leaf.p_column)+ \
-                                        '. Trying to asign list of expressions of different types.')
-                                        sys.exit(0)
+                            if(isinstance(val,bool) and s_table_type!='bool'):
+                                print("[Interpreter Error] line " + str(leaf.p_line) + ' column '+str(leaf.p_column)+ \
+                                '. Trying to asign list of expressions of different types.')
+                                sys.exit(0)
+                            elif(isinstance(val, int) and s_table_type!= 'int'):
+                                print("[Interpreter Error] line " + str(leaf.p_line) + ' column '+str(leaf.p_column)+ \
+                                '. Trying to asign list of expressions of different types.')
+                                sys.exit(0)
                             self.setValue(var, val)
                         
                         elif(leaf.p_type == 'Conditional'):
