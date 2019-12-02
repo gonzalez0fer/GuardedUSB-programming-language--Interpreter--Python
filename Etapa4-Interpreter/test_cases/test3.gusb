@@ -6,7 +6,11 @@
         y := 1;
         z:= 4, 3, 2;
         z:= z(0:5);
-        print z;
+        for x in 3 to 5 -->
+            |[
+                print x
+            ]|
+        rof;
         if x == y-->
             x := x - 1;
             print x
@@ -17,7 +21,7 @@
                     q : array[2..2]
 
                 z:= y;
-                q:= atoi(q);
+                q:= 1;
                 println z
             ]|
         fi

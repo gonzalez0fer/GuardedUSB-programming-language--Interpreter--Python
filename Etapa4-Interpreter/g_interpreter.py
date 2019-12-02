@@ -81,7 +81,10 @@ class InterpretedTreeEvaluator():
 
                         elif (leaf.p_type== 'Output'):
                             value = self.ConcatEvaluator(leaf)
-                            print(value)
+                            if(leaf.p_value == "print"):
+                                print(value, end = '')
+                            else:
+                                print(value)
 
                         elif (leaf.p_type == 'Input'):
                             var = self.getValue(leaf.childs[0])
@@ -148,7 +151,7 @@ class InterpretedTreeEvaluator():
                             for i in range(min_limit, max_limit):
                                 # actualizar valor del contador en cada iteracion
                                 self.setValue(leaf.p_value, i)
-                                self.SyntaxTreeContextEvaluator(leaf.childs[0])
+                                self.SyntaxTreeContextEvaluator(leaf.childs[2])
                             # guardar valor original
                             #self.setValue(leaf.valor[0], val)
                             self.SymbolsTable.pop(0)
