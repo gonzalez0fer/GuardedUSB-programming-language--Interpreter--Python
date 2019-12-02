@@ -13,6 +13,8 @@ from g_AbsSyntaxTree import *
 # aumentar y enriquecer Arbol Sintactico de nuestro programa
 # con informacion de contexto y tabla de simbolos.
 
+global_control_vars = []
+
 class ContextSymbol():
     """ Definicion del objeto [ContextSymbol], el cual representa la estructura de un simbolo
     a agregar en cada una de las tablas de hash de nuestra pila.
@@ -354,6 +356,7 @@ class SyntaxTreeContext:
                         #     sys.exit(0)
 
                         if (var.s_type != exp_type and not var.is_index):
+                            #print(var.is_index)
                             print("[Context Error] line " + str(leaf.p_line) + ' column '+\
                                 str(leaf.p_column)+  ". Different variable types.")
                             sys.exit(0)
@@ -409,7 +412,7 @@ class SyntaxTreeContext:
 
                 elif(leaf.p_type == 'Forloop'):
                     self.c_currentLine += 1
-                    
+                    global_control_vars.append(leaf.p_value)
                     oprator1 = leaf.childs[0]
                     oprator2 = leaf.childs[1]
                     type1 = self.ExpressionAnalizer(oprator1)
@@ -428,10 +431,21 @@ class SyntaxTreeContext:
                         t = self.CheckId(leaf.p_value)
                         t.is_index = True
 
+                    #GOKU
+                    try:
+                        if (leaf.childs[2].childs[0].childs[0].p_type == 'Declare'):
+                            t = self.CheckId(leaf.childs[2].childs[0].childs[0].childs[0].p_value)
+                            if t.is_index == True:
+                                break
+                    except:
+                        pass
+
                     self.ContentAnalyzer(leaf.childs[2])
+
                     
                     if(self.SeeIfVarExist(leaf.p_value)):
                         t.is_index = None
+
 
                 elif (leaf.p_type == 'Doloop'):
                     self.c_currentLine += 1
@@ -604,8 +618,10 @@ class SyntaxTreeContext:
                     if id_var in scope:
                         found = True
                         var = scope[id_var]
+                    
         if(found):
             return var
+        
         if index_f_c:
             print("[Context Error] line " + str(index_f_c[0]) +' column: '+str(index_f_c[1]) +\
                 '. Variable ' + id_var + ' has not been declared before.')

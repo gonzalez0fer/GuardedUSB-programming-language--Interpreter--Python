@@ -90,7 +90,7 @@ class InterpretedTreeEvaluator():
 
                             if var in self.SymbolsTable[0]:
                                 print("[Interpreter Error] line " + str(leaf.p_line) + ' column '+\
-                                    str(leaf.p_column)+  ". Redeclare control variable is not allow.")
+                                    str(leaf.p_column)+  ". Redeclare control variable is not allowed.")
                                 sys.exit(0)
                             
                             self.SyntaxTreeContextEvaluator(leaf)
