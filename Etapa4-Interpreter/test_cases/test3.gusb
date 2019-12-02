@@ -6,23 +6,28 @@
         y := 1;
         z:= 4, 3, 2;
         z:= z(0:5);
-        for x in 3 to 5 -->
+        for x in 1 to 5 -->
             |[
-                print x
+                for j in 1 to 5 -->
+                    |[
+                        print x
+                    ]|
+                rof
             ]|
         rof;
-        if x == y-->
-            x := x - 1;
-            print x
-        [] x != y -->
-            |[
-                declare
-                    z : int;
-                    q : array[2..2]
+        x := 7
+        //if x == y -->
+            //x := x - 1;
+            //print x
+        //[] x != y -->
+            //|[
+                //declare
+                //    z : int;
+                //    q : array[2..2]
 
-                z:= y;
-                q:= 1;
-                println z
-            ]|
-        fi
+                //z:= y;
+                //q:= 1;
+                //println z
+            //]|
+        //fi
 ]|

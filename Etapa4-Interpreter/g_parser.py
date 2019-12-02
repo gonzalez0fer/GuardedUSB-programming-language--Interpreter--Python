@@ -67,8 +67,30 @@ def p_declaration(p):
 # Reglas que definen al elemento [Array]
 def p_array(p):
     ''' Array   :   TkArray TkOBracket TkNum TkSoForth TkNum TkCBracket
+                |   TkArray TkOBracket TkMinus TkNum TkSoForth TkMinus TkNum TkCBracket
+                |   TkArray TkOBracket TkMinus TkNum TkSoForth TkNum TkCBracket
+                |   TkArray TkOBracket TkNum TkSoForth TkMinus TkNum TkCBracket
     '''
-    p[0] = SyntaxLeaf('Array', None, [p[3],p[5]],p.lineno(4), find_context_column(p.lexer.lexdata,p,4))
+    if(len(p) == 7):
+        p[0] = SyntaxLeaf('Array', None, [p[3],p[5]],p.lineno(4), find_context_column(p.lexer.lexdata,p,4))
+    elif(len(p) == 8):
+        if(p[3] == '-'):
+            l1 = int(p[4])
+            l1 = l1*-1
+
+            p[0] = SyntaxLeaf('Array', None, [l1,p[6]],p.lineno(4), find_context_column(p.lexer.lexdata,p,4))
+        else:
+            l2 = int(p[6])
+            l2 = l2*-1
+
+            p[0] = SyntaxLeaf('Array', None, [p[3], l2],p.lineno(4), find_context_column(p.lexer.lexdata,p,4))
+    else:
+        l1 = int(p[4])
+        l2 = int(p[7])
+        l1 = l1*-1
+        l2 = l2*-1
+
+        p[0] = SyntaxLeaf('Array', None, [l1,l2],p.lineno(4), find_context_column(p.lexer.lexdata,p,4))
 
 
 # Reglas que definen al elemento [Terminal]
@@ -409,6 +431,7 @@ def parser_builder(meta_program):
     context.ContextAnalyzer(parsed_program)
     SCOPES = ['empty']+ context.c_auxScopes
 
+    context.c_secScopes.insert(0,{})
     interpreter = InterpretedTreeEvaluator(context.c_secScopes)
     interpreter.SyntaxTreeContextEvaluator(parsed_program)
 

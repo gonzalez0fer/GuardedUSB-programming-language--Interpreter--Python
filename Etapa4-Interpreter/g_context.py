@@ -339,21 +339,21 @@ class SyntaxTreeContext:
                     # Verificar que la variable este declarada
                     var = self.CheckId(leaf.p_value,[leaf.p_line,leaf.p_column])
 
-                    if (var.is_index):
-                        print("[Context Error] line " + str(leaf.p_line) + ' column '+\
-                            str(leaf.p_column)+  ". tries to modify variable " + leaf.p_value + " of iteration.")
-                        sys.exit(0)
+                    # if (var.is_index):
+                    #     print("[Context Error] line " + str(leaf.p_line) + ' column '+\
+                    #         str(leaf.p_column)+  ". tries to modify variable " + leaf.p_value + " of iteration.")
+                    #     sys.exit(0)
                     
                     # Verificar si la variable es de tipo arreglo o no
                     exp_type = self.AssignationAnalyzer(leaf.childs[0])
 
                     if(not var.is_array):
-                        if(var.is_index):
-                            print("[Context Error] line " + str(leaf.p_line) + ' column '+\
-                                str(leaf.p_column)+  ". Trying to asign to a control variable.")
-                            sys.exit(0)
+                        # if(var.is_index):
+                        #     print("[Context Error] line " + str(leaf.p_line) + ' column '+\
+                        #         str(leaf.p_column)+  ". Trying to asign to a control variable.")
+                        #     sys.exit(0)
 
-                        if (var.s_type != exp_type):
+                        if (var.s_type != exp_type and not var.is_index):
                             print("[Context Error] line " + str(leaf.p_line) + ' column '+\
                                 str(leaf.p_column)+  ". Different variable types.")
                             sys.exit(0)
@@ -421,11 +421,17 @@ class SyntaxTreeContext:
                         sys.exit(0)
                     
                     if(not self.SeeIfVarExist(leaf.p_value)):
-                        self.AppendContextSymbol(SyntaxLeaf('Terminal', leaf.p_value), \
-                            SyntaxLeaf('Datatype', 'int'), False, True)
+                        pass
+                        #self.AppendContextSymbol(SyntaxLeaf('Terminal', leaf.p_value), \
+                            #SyntaxLeaf('Datatype', 'int'), False, True)
+                    else:
+                        t = self.CheckId(leaf.p_value)
+                        t.is_index = True
 
                     self.ContentAnalyzer(leaf.childs[2])
-                    #cambiar a false
+                    
+                    if(self.SeeIfVarExist(leaf.p_value)):
+                        t.is_index = None
 
                 elif (leaf.p_type == 'Doloop'):
                     self.c_currentLine += 1
