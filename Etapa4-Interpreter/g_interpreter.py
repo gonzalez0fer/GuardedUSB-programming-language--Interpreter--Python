@@ -165,19 +165,43 @@ class InterpretedTreeEvaluator():
                                 self.setValue(leaf.p_value, i)
                                 self.SyntaxTreeContextEvaluator(leaf.childs[2])
                             # guardar valor original
-                            #self.setValue(leaf.valor[0], val)
+                            #self.setValue(leaf.p_value, val)
                             self.SymbolsTable[0].pop(leaf.p_value)
 
-                        elif (leaf.p_type == 'DoLoop'):
-                            exp = self.ExpressionEvaluator(leaf.p_value)
-                            while (exp):
-                                self.SyntaxTreeContextEvaluator(leaf.childs[0])
-                                # evaluar guardia en cada iteracion
-                                comprobarexp = self.ExpressionEvaluator(leaf.p_value)
-                                if (comprobarexp):
-                                    continue
-                                else:
-                                    break
+                        elif (leaf.p_type == 'Doloop'):
+                            exp = self.ExpressionEvaluator(leaf.childs[0])
+                            if(len(leaf.childs) == 2):
+                                while (exp):
+                                    self.SyntaxTreeContextEvaluator(leaf.childs[1])
+                                    # evaluar guardia en cada iteracion
+                                    check_exp = self.ExpressionEvaluator(leaf.childs[0])
+                                    if (check_exp):
+                                        continue
+                                    else:
+                                        break
+                            else:
+                                guard = leaf.childs[2]
+                                expressions = []
+                                while(len(guard.childs) > 2):
+                                    expressions.append(guard.childs[0])
+                                    guard = leaf.childs[2]
+                                
+                                expressions.append(guard.childs[0])
+
+                                for exp_b in expressions:
+                                    exp = exp or self.ExpressionEvaluator(exp_b)
+                                
+                                while (exp):
+                                    self.ConditionalEvaluator(leaf.childs[2])
+                                    # evaluar guardia en cada iteracion
+                                    check_exp = self.ExpressionEvaluator(leaf.childs[0])
+                                    
+                                    for exp_b in expressions:
+                                        check_exp = check_exp or self.ExpressionEvaluator(exp_b)
+                                    if (check_exp):
+                                        continue
+                                    else:
+                                        break
                         else:
                             self.SyntaxTreeContextEvaluator(leaf)
         else:
