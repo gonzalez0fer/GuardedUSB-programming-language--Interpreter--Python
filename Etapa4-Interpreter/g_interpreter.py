@@ -46,7 +46,7 @@ class InterpretedTreeEvaluator():
 
                             var = self.getValue(var_name)
                             
-                            if var.s_value in self.SymbolsTable[0]:
+                            if var_name in self.SymbolsTable[0]:
                                 print("[Interpreter Error] line " + str(leaf.p_line) + ' column '+\
                                     str(leaf.p_column)+  ". Trying to modify variable " + leaf.p_value + " of iteration.")
                                 sys.exit(0)
@@ -263,6 +263,11 @@ class InterpretedTreeEvaluator():
             else:
                 if (expression.c_type == 'var'):
                     t = self.getValue(expression.c_lexeme)
+                    
+                    if(t == False):
+                        if expression.c_lexeme in self.SymbolsTable[0]:
+                            t = self.SymbolsTable[0][expression.c_lexeme]
+                    
                     return t.s_asignvalue
                 else:
                     if (expression.c_lexeme == 'true'):
