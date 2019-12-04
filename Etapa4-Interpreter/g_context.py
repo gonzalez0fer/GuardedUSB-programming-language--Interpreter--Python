@@ -445,7 +445,7 @@ class SyntaxTreeContext:
                     except:
                         pass
 
-                    self.ContentAnalyzer(leaf.childs[2])
+                    self.ContextAnalyzer(leaf.childs[2])
 
                     
                     if(self.SeeIfVarExist(leaf.p_value)):
