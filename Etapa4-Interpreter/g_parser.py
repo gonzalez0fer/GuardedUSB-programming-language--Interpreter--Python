@@ -246,7 +246,7 @@ def p_doloop(p):
 
 # Reglas que definen al elemento [Forloop]
 def p_forloop(p):
-    ''' Forloop : TkFor TkId TkIn Expression TkTo Expression TkArrow Content TkRof
+    ''' Forloop : TkFor TkId TkIn Expression TkTo Expression TkArrow Block TkRof
     ''' 
     p[0] = SyntaxLeaf('Forloop', p[2], [p[4],p[6],p[8]],p.lineno(5), find_context_column(p.lexer.lexdata,p,5))
 

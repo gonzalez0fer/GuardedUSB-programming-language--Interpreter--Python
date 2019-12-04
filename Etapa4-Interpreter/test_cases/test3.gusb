@@ -2,30 +2,20 @@
     declare
         x, y, z, p : int, int, array[0..2], array[0..2]
 
-        x := 1;
-        y := 1;
-        z:= 4, 3, 2;
-        println z;
-        for x in 1 to 5 -->
+    x := 1;
+    y := 1;
+    z:= 4, 3, 2;
+    println z;
+    for x in 1 to 5 -->
+        |[
             for q in 1 to 5 -->
-                print q;
-                q := 2;
-                print x
+                |[
+                    declare
+                        w : bool
+                ]|
             rof
-        rof;
-        x := 7
-        //if x == y -->
-            //x := x - 1;
-            //print x
-        //[] x != y -->
-            //|[
-                //declare
-                //    z : int;
-                //    q : array[2..2]
-
-                //z:= y;
-                //q:= 1;
-                //println z
-            //]|
-        //fi
+        ]|
+    rof;
+    w := true;
+    x := 7
 ]|
