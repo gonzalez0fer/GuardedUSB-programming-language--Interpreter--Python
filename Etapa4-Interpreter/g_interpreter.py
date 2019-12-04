@@ -192,7 +192,7 @@ class InterpretedTreeEvaluator():
                                     exp = exp or self.ExpressionEvaluator(exp_b)
                                 
                                 while (exp):
-                                    self.ConditionalEvaluator(leaf.childs[2])
+                                    self.ConditionalEvaluator(leaf)
                                     # evaluar guardia en cada iteracion
                                     check_exp = self.ExpressionEvaluator(leaf.childs[0])
                                     
@@ -217,6 +217,19 @@ class InterpretedTreeEvaluator():
         c_exp = str(self.ExpressionEvaluator(exp.childs[0]))
         if(c_exp[0] == "\""):
             c_exp = c_exp[1:-1]
+        elif(c_exp[0] == "["):
+            t = self.getValue(exp.childs[0].childs[0].c_lexeme)
+
+            aux_list = [x for x in range(t.array_indexes[0], t.array_indexes[1]+1)]
+
+            val = c_exp.split(",")
+            c_exp = str(aux_list[0]) + ':' + val[0][1] + ', '
+            
+            for num in range(1, len(aux_list) - 1):
+                c_exp += str(aux_list[num]) + ':' + val[num][1] + ', '
+            
+            c_exp += str(aux_list[len(aux_list) - 1]) + ':' + val[len(aux_list) - 1][1]
+            
         if(len(exp.childs) > 1):
             c_exp = c_exp + self.ConcatEvaluator(exp.childs[1])
         

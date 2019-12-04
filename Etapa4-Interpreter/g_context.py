@@ -412,7 +412,12 @@ class SyntaxTreeContext:
 
                 elif(leaf.p_type == 'Forloop'):
                     self.c_currentLine += 1
-                    global_control_vars.append(leaf.p_value)
+                    
+                    # Colocar la variable dummy de control en el arreglo global
+                    cont_symbol = ContextSymbol(leaf.p_value,'int')
+                    cont_symbol.is_index = True
+                    global_control_vars.append(cont_symbol)
+                    
                     oprator1 = leaf.childs[0]
                     oprator2 = leaf.childs[1]
                     type1 = self.ExpressionAnalizer(oprator1)
@@ -445,6 +450,9 @@ class SyntaxTreeContext:
                     
                     if(self.SeeIfVarExist(leaf.p_value)):
                         t.is_index = None
+                    
+                    # Liberar esa variable para no ocasionar errores
+                    global_control_vars.pop(global_control_vars.index(cont_symbol))
 
 
                 elif (leaf.p_type == 'Doloop'):
@@ -622,6 +630,11 @@ class SyntaxTreeContext:
         if(found):
             return var
         
+        # Si no se encuentra se verifica que no este en las variables de control
+        for c_var in global_control_vars:
+            if(id_var == c_var.s_value):
+                return c_var
+
         if index_f_c:
             print("[Context Error] line " + str(index_f_c[0]) +' column: '+str(index_f_c[1]) +\
                 '. Variable ' + id_var + ' has not been declared before.')
