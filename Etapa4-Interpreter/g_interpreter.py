@@ -4,7 +4,7 @@
 # Fernando Gonzalez 08-10464
 # Kevin Mena 13-10869
 #######################################
-
+import re
 import sys
 from g_context import *
 from g_AbsSyntaxTree import *
@@ -119,17 +119,28 @@ class InterpretedTreeEvaluator():
                             
                             if(var.is_array):
                                 input_v = input()
-                                val = input_v.split(",")
 
+                                if input_v == "":
+                                    print("[Interpreter Error] line " + str(leaf.p_line) + ' column '+str(leaf.p_column)+ \
+                                    '. Empty array input.')
+                                    sys.exit(0)
+
+
+                                val = input_v.split(",")
                                 len_var = var.array_indexes[1] - var.array_indexes[0]
 
                                 if(len(val) != len_var):
                                     print("[Interpreter Error] line " + str(leaf.p_line) + ' column '+str(leaf.p_column)+ \
                                     '. Number of elements inserted are different from array size.')
                                     sys.exit(0)
+
                             else:
                                 val = input()
-                
+                                if val == "":
+                                    print("[Interpreter Error] line " + str(leaf.p_line) + ' column '+str(leaf.p_column)+ \
+                                    '. Empty variable input.')
+                                    sys.exit(0)
+
                                 if (val == 'false'):
                                     val = False
                                 elif (val == 'true'):
@@ -231,6 +242,12 @@ class InterpretedTreeEvaluator():
         recibe: exp : Expresion a Evaluar.
         """
         c_exp = str(self.ExpressionEvaluator(exp.childs[0]))
+
+        try:
+            c_exp = re.sub(r'\\','',c_exp)
+        except:
+            pass
+
         if(c_exp[0] == "\""):
             c_exp = c_exp[1:-1]
         elif(c_exp[0] == "["):
