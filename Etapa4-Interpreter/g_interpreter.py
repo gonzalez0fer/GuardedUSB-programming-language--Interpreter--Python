@@ -21,6 +21,7 @@ class InterpretedTreeEvaluator():
 
     inicializa con: 
             SymbolsTable : pila de scopes producidos en el SyntaxTreeContext
+            actual_scope : entero que indica el scope en el que estamos actualmente
     """
     def __init__(self, SymbolsTable):
         self. SymbolsTable = SymbolsTable
@@ -77,14 +78,8 @@ class InterpretedTreeEvaluator():
                             else:
                                 var_value = self.ExpressionEvaluator(assignation.childs[0])
 
-                            #la variable puede ser de tipo int, bool, sino arreglo
-                            if (isinstance(var_name,str)):
-                                self.setValue(var_name, var_value)
-                            else:
-                                #########################por definir idea
-                                pass
-                                array_index = self.ExpressionEvaluator(leaf.childs[0])
-                                self.setValue(var_name.p_value, var_value, array_index) 
+                            self.setValue(var_name, var_value)
+                             
 
                         elif (leaf.p_type == 'Variable'):
                             for child in leaf.childs:
@@ -144,7 +139,8 @@ class InterpretedTreeEvaluator():
                                 print("[Interpreter Error] line " + str(leaf.p_line) + ' column '+str(leaf.p_column)+ \
                                 '. Trying to asign list of expressions of different types.')
                                 sys.exit(0)
-                            self.setValue(var, val)
+
+                            self.setValue(var.s_value, val)
                         
                         elif(leaf.p_type == 'Conditional'):
                             self.ConditionalEvaluator(leaf)
@@ -167,7 +163,7 @@ class InterpretedTreeEvaluator():
                             min_limit = self.ExpressionEvaluator(leaf.childs[0])
                             self.setValue(leaf.p_value, min_limit)
                             max_limit = self.ExpressionEvaluator(leaf.childs[1])
-
+                            
                             self.actual_scope += 1
 
                             for i in range(min_limit, max_limit + 1):
@@ -275,7 +271,7 @@ class InterpretedTreeEvaluator():
             else:
                 if (expression.c_type == 'var'):
                     t = self.getValue(expression.c_lexeme)
-                    
+
                     if(t == False):
                         if expression.c_lexeme in self.SymbolsTable[0]:
                             t = self.SymbolsTable[0][expression.c_lexeme]
@@ -285,10 +281,16 @@ class InterpretedTreeEvaluator():
                             '. Variable ' + expression.c_lexeme + ' has not been declared before.')
                         sys.exit(0)
                     
-                    if(t.s_asignvalue is None):
-                        print("[Interpreter Error] line " + str(expression.p_line) + ' column '+ str(expression.p_column)+ \
-                            '. Variable ' + expression.c_lexeme + ' has not been asigned before.')
-                        sys.exit(0)
+                    if(not t.is_array):
+                        if(t.s_asignvalue is None):
+                            print("[Interpreter Error] line " + str(expression.p_line) + ' column '+ str(expression.p_column)+ \
+                                '. Variable ' + expression.c_lexeme + ' has not been asigned before.')
+                            sys.exit(0)
+                    else:
+                        if True in t.array_toList:
+                            print("[Interpreter Error] line " + str(expression.p_line) + ' column '+ str(expression.p_column)+ \
+                                '. Variable ' + expression.c_lexeme + ' has not been asigned before.')
+                            sys.exit(0)
                     
                     return t.s_asignvalue
                 else:
@@ -360,13 +362,12 @@ class InterpretedTreeEvaluator():
             return -op
 
         elif(expression.p_type == 'ArrayOperator'):
-            # POR AHORA NADA MAS EL CASO QUE SE LE PASE EL ID DE LA VARIABLE DE UNA VEZ
             var = self.getValue(expression.childs[0])
 
             if(expression.p_value == 'max'):
-                return max(var.s_asignvalue)
+                return int(max(var.s_asignvalue))
             elif(expression.p_value == 'min'):
-                return min(var.s_asignvalue)
+                return int(min(var.s_asignvalue))
             elif(expression.p_value == 'atoi'):
                 if(var.array_indexes[0] == var.array_indexes[1]):
                     return var.s_asignvalue[0]
@@ -390,8 +391,9 @@ class InterpretedTreeEvaluator():
                         print("[Context Error] line " + str(expression.p_line) + ' column '+\
                             str(expression.p_column)+ '. Array expression out of boundaries.')
                         sys.exit(0)
-                
-                return t.array_toList[index]
+                aux_list = [x for x in range(t.array_indexes[0], t.array_indexes[1]+1)]
+
+                return t.array_toList[aux_list.index(index)]
 
             else:
                 index = self.ExpressionEvaluator(expression.childs[0])
@@ -416,7 +418,7 @@ class InterpretedTreeEvaluator():
                             print("[Context Error] line " + str(expression.p_line) + ' column '+\
                             str(expression.p_column)+ '. Array expression out of boundaries.')
                             sys.exit(0)
-                
+
                         t.array_toList[aux_list.index(exp_index)] = exp_val
                 else:
                     t = self.getValue(expression.p_value, None, None)
@@ -445,8 +447,6 @@ class InterpretedTreeEvaluator():
 
                     if(self.SymbolsTable[i][var].is_array):
                         self.SymbolsTable[i][var].array_toList = val
-        
-        # Sino impresion de errores
 
     def getValue(self, var, isIndex=None, isControl=None):
         iterator = self.actual_scope

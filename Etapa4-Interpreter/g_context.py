@@ -254,6 +254,8 @@ class SyntaxTreeContext:
         if(is_array):
             new_symbol.array_indexes.append(s_type.p_value.childs[0])
             new_symbol.array_indexes.append(s_type.p_value.childs[1])
+
+            new_symbol.array_toList = [True for x in range(new_symbol.array_indexes[0], new_symbol.array_indexes[1]+1)]
         
         stack_top[leaf.p_value] = new_symbol
 
@@ -373,7 +375,6 @@ class SyntaxTreeContext:
                             exp = exp_asign.p_value
 
                             if(isinstance(exp, SyntaxLeaf)):
-                                print("Entre")
                                 asignvar = self.GetVariableArray(exp,[exp_asign.p_line,exp_asign.p_column])
                             else:
                                 asignvar = self.CheckId(exp)
