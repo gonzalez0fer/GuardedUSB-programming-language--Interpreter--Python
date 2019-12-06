@@ -127,7 +127,7 @@ class InterpretedTreeEvaluator():
 
 
                                 val = input_v.split(",")
-                                len_var = var.array_indexes[1] - var.array_indexes[0]
+                                len_var = (var.array_indexes[1] - var.array_indexes[0]) + 1
 
                                 if(len(val) != len_var):
                                     print("[Interpreter Error] line " + str(leaf.p_line) + ' column '+str(leaf.p_column)+ \
