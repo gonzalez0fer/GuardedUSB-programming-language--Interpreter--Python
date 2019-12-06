@@ -280,6 +280,11 @@ class InterpretedTreeEvaluator():
                         if expression.c_lexeme in self.SymbolsTable[0]:
                             t = self.SymbolsTable[0][expression.c_lexeme]
                     
+                    if(t == False):
+                        print("[Interpreter Error] line " + str(expression.p_line) + ' column '+ str(expression.p_column)+ \
+                            '. Variable ' + expression.c_lexeme + ' has not been declared before.')
+                        sys.exit(0)
+                    
                     return t.s_asignvalue
                 else:
                     if (expression.c_lexeme == 'true'):

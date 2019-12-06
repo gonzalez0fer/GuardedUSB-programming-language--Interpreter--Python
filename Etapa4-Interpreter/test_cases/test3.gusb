@@ -8,20 +8,15 @@
     println z;
     for x in 1 to 5 -->
         |[
-            declare
-                g : int
-            
             for q in 1 to 5 -->
                 |[
                     declare
                         w : bool
-                    
-                    g := 4
                 ]|
             rof
         ]|
     rof;
-    g := 3;
+    print w;
     //w := true;
     x := 7
 ]|
