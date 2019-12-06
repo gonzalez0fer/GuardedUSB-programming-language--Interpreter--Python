@@ -244,12 +244,6 @@ class InterpretedTreeEvaluator():
         c_exp = str(self.ExpressionEvaluator(exp.childs[0]))
 
         try:
-            if bool(re.search("\\\"", c_exp)):
-                print('HOLA')
-        except:
-            pass
-
-        try:
             c_exp = re.sub(r'\\','',c_exp)
         except:
             pass
