@@ -12,6 +12,7 @@
                 |[
                     declare
                         w : bool
+                    print q
                 ]|
             rof
         ]|

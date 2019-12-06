@@ -491,8 +491,11 @@ class InterpretedTreeEvaluator():
                 isControl : Variable que toma valor si Var es una variable de control.
         """
         iterator = self.actual_scope
+        print(len(self.SymbolsTable))
+        print(iterator)
         if (len(self.SymbolsTable) > 0):
             for i in range(iterator, 0, -1):
+                #print(self.SymbolsTable[i-1])
                 if var in self.SymbolsTable[i]:
                     
                     if(isControl != None):
