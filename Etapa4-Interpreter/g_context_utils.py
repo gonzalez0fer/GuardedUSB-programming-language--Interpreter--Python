@@ -66,6 +66,7 @@ def PrintFinalValueTable(c_auxScopes,identation):
             identation : identacion que presentara la tabla en la impresion.
     """    
     ini = 0
+    c_auxScopes.pop(0)
     values =[]
     types =[]
     for scope in c_auxScopes:
@@ -84,16 +85,16 @@ def PrintFinalValueTable(c_auxScopes,identation):
         for i in scope:
             if (len(str(scope[i].s_asignvalue)) < longest_val):
                 if len(str(scope[i].s_asignvalue)) % 2 == 0:
-                    print(' '+identation+color.RED+'Variable '+color.END+' '*((longest_val-len(str(scope[i].s_value))))+str(scope[i].s_asignvalue)+\
+                    print('     '+identation+color.RED+'Variable '+color.END+' '*((longest_val-len(str(scope[i].s_value))))+str(scope[i].s_asignvalue)+\
                         ' '+color.RED+'|'+color.END+ ' '+ color.RED+'Value '+color.END+str(scope[i].s_asignvalue))
                 else:
-                    print(' '+identation+color.RED+'Variable '+color.END+' '*((longest_val-len(str(scope[i].s_value))))+str(scope[i].s_asignvalue)+\
+                    print('     '+identation+color.RED+'Variable '+color.END+' '*((longest_val-len(str(scope[i].s_value))))+str(scope[i].s_asignvalue)+\
                         ' '+color.RED+'|'+color.END+ ' '+ color.RED+'Value '+color.END+str(scope[i].s_asignvalue))
             else:
                 if (scope[i].is_array):
-                    print(' '+identation+color.RED+'Variable '+color.END+str(scope[i].s_value)+' ' +color.RED+'|'+color.END+ ' '+ \
+                    print('     '+identation+color.RED+'Variable '+color.END+str(scope[i].s_value)+' ' +color.RED+'|'+color.END+ ' '+ \
                         color.RED+'Value '+color.END+str(scope[i].s_asignvalue))
                 else:
-                    print(' '+identation+color.RED+'Variable '+color.END+str(scope[i].s_value)+' ' +color.RED+'|'+color.END+ ' '+ \
+                    print('     '+identation+color.RED+'Variable '+color.END+str(scope[i].s_value)+' ' +color.RED+'|'+color.END+ ' '+ \
                         color.RED+'Value '+color.END+str(scope[i].s_asignvalue))
     print('\n')

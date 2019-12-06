@@ -442,4 +442,4 @@ def parser_builder(meta_program):
         if(res == "Y" or res == "y"):
             SyntaxTreePrinter(parsed_program, "", SCOPES)
             print('\n')
-            PrintFinalValueTable(SCOPES,"")
+            PrintFinalValueTable(['empty']+SCOPES," ")
