@@ -415,6 +415,7 @@ def p_error(p):
     else:
         msg = "[Syntax Error] at end of file."
     print (msg)
+    sys.exit(0)
     parser_error = True
 
 # Variable global del primer error del parser si existe.
