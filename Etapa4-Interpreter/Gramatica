@@ -18,7 +18,9 @@ Declaration ->   Variables TkTwoPoints Datatype
      
 
 Array   ->   TkArray TkOBracket TkNum TkSoForth TkNum TkCBracket
-
+        |   TkArray TkOBracket TkMinus TkNum TkSoForth TkMinus TkNum TkCBracket
+        |   TkArray TkOBracket TkMinus TkNum TkSoForth TkNum TkCBracket
+        |   TkArray TkOBracket TkNum TkSoForth TkMinus TkNum TkCBracket
 
 Terminal ->  TkId
         | TkString
@@ -75,7 +77,7 @@ Doloop ->   TkDo Expression TkArrow Content TkOd
         |   TkDo Expression TkArrow Content Guard TkOd 
 
 
-Forloop -> TkFor TkId TkIn Expression TkTo Expression TkArrow Content TkRof
+Forloop -> TkFor TkId TkIn Expression TkTo Expression TkArrow Block TkRof
 
 
 Expression  ->   AritmeticOperator

@@ -463,8 +463,14 @@ class InterpretedTreeEvaluator():
             return t
 
 
-    def setValue(self, var, val, index=None, is_array=False):
-        #Aqui recibira la tabla e ira asignando e imprimiendo errores
+    def setValue(self, var, val):
+        """ Definicion del metodo [setValue], el cual se encarga de hacer 
+        el tratamiento traduccion a lenguaje Python de los diversos valores
+        que tomaran las variables de GuardedUSB.
+
+        recibe: var : nombre de la variable a asignar.
+                val : valor de la variable a asignar.
+        """
         if (len(self.SymbolsTable) > 0):
             for i in range(len(self.SymbolsTable)):
                 if var in self.SymbolsTable[i]:
@@ -473,9 +479,18 @@ class InterpretedTreeEvaluator():
                     if(self.SymbolsTable[i][var].is_array):
                         self.SymbolsTable[i][var].array_toList = val
 
-    def getValue(self, var, isIndex=None, isControl=None):
-        iterator = self.actual_scope
 
+    def getValue(self, var, isIndex=None, isControl=None):
+        """ Definicion del metodo [getValue], el cual se encarga de obtener 
+        el simbolo actual a utilizar, tomando en consideracion en el scope
+        en el que se encuentre.
+
+        recibe: var : nombre de la variable a asignar.
+                val : valor de la variable a asignar.
+                isIndex : Variable que toma valor si Var es un index.
+                isControl : Variable que toma valor si Var es una variable de control.
+        """
+        iterator = self.actual_scope
         if (len(self.SymbolsTable) > 0):
             for i in range(iterator, 0, -1):
                 if var in self.SymbolsTable[i]:
