@@ -3,7 +3,8 @@
         x, y, z, p : int, int, array[0..2], array[0..2]
 
     x := 1;
-    y := 1;
+    //y := 1;
+    print y;
     z:= 4, 3, 2;
     println z;
     for x in 1 to 5 -->

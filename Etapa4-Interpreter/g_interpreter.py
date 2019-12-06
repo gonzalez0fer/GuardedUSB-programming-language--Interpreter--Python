@@ -285,6 +285,11 @@ class InterpretedTreeEvaluator():
                             '. Variable ' + expression.c_lexeme + ' has not been declared before.')
                         sys.exit(0)
                     
+                    if(t.s_asignvalue is None):
+                        print("[Interpreter Error] line " + str(expression.p_line) + ' column '+ str(expression.p_column)+ \
+                            '. Variable ' + expression.c_lexeme + ' has not been asigned before.')
+                        sys.exit(0)
+                    
                     return t.s_asignvalue
                 else:
                     if (expression.c_lexeme == 'true'):
