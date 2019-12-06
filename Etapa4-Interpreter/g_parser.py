@@ -436,8 +436,10 @@ def parser_builder(meta_program):
     interpreter.SyntaxTreeContextEvaluator(parsed_program)
 
     if not(parser_error):
-        print("\nDo you want to print the syntax tree? (Yes/No)")
+        print("\nDo you want to print the syntax tree? (Y/N)")
         res = input()
 
-        if(res == "Yes" or res == "yes"):
+        if(res == "Y" or res == "y"):
             SyntaxTreePrinter(parsed_program, "", SCOPES)
+            print('\n')
+            PrintFinalValueTable(SCOPES,"")

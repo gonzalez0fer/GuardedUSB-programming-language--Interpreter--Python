@@ -27,6 +27,7 @@ class color:
    BOLD = '\033[1m'
    UNDERLINE = '\033[4m'
    BLUWHITE = '\033[44m'
+   REWHITE = '\033[41m'
    END = '\033[0m'
 # Metodos para las impresiones de Tokens reservados
 # y secuenciadores

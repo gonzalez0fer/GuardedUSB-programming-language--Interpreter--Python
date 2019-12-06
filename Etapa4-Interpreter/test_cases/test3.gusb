@@ -4,7 +4,7 @@
 
     x := 1;
     //y := 1;
-    print y;
+    //print y;
     z:= 4, 3, 2;
     println z;
     for x in 1 to 5 -->
@@ -17,7 +17,7 @@
             rof
         ]|
     rof;
-    print w;
+    //print w;
     //w := true;
     x := 7
 ]|
