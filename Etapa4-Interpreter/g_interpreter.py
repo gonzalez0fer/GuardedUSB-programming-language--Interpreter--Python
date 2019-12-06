@@ -40,9 +40,13 @@ class InterpretedTreeEvaluator():
                 for leaf in SyntaxTreeStructure.childs:
                     if(leaf != ';'):
                         if(leaf.p_type == 'Block'):
-                            self.actual_scope += 1
+                            if(leaf.childs[0].p_type == "Declare"):
+                                self.actual_scope += 1
+
                             self.SyntaxTreeContextEvaluator(leaf)
-                            self.actual_scope -= 1
+
+                            if(leaf.childs[0].p_type == "Declare"):
+                                self.actual_scope -= 1
                             
                         elif (leaf.p_type == 'Asign'):
                             #almaceno el nombre de la variable
@@ -182,8 +186,6 @@ class InterpretedTreeEvaluator():
                             min_limit = self.ExpressionEvaluator(leaf.childs[0])
                             self.setValue(leaf.p_value, min_limit)
                             max_limit = self.ExpressionEvaluator(leaf.childs[1])
-                            
-                            self.actual_scope += 1
 
                             for i in range(min_limit, max_limit + 1):
                                 # actualizar valor del contador en cada iteracion
@@ -193,7 +195,6 @@ class InterpretedTreeEvaluator():
                             #self.setValue(leaf.p_value, val)
                             self.SymbolsTable[0].pop(leaf.p_value)
 
-                            self.actual_scope -= 1
 
                         elif (leaf.p_type == 'Doloop'):
                             exp = self.ExpressionEvaluator(leaf.childs[0])
@@ -491,11 +492,9 @@ class InterpretedTreeEvaluator():
                 isControl : Variable que toma valor si Var es una variable de control.
         """
         iterator = self.actual_scope
-        print(len(self.SymbolsTable))
-        print(iterator)
+
         if (len(self.SymbolsTable) > 0):
             for i in range(iterator, 0, -1):
-                #print(self.SymbolsTable[i-1])
                 if var in self.SymbolsTable[i]:
                     
                     if(isControl != None):

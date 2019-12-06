@@ -229,7 +229,7 @@ class SyntaxTreeContext:
                 s_type : tipaje de la hoja.
                 is_array : booleano si es un arreglo.
         """
-        
+        print(len(self.c_scopes))
         if(len(self.c_scopes) == 0):
             new_scope ={}
             self.c_scopes.insert(0,new_scope)
