@@ -77,6 +77,14 @@ class InterpretedTreeEvaluator():
                                 var_value.append(self.ExpressionEvaluator(assignation.childs[0]))
                             else:
                                 var_value = self.ExpressionEvaluator(assignation.childs[0])
+                            
+                            if(var.is_array and isinstance(var_value,list)):
+                                len_var = (var.array_indexes[1] - var.array_indexes[0]) + 1
+
+                                if(len_var != len(var_value)):
+                                    print("[Interpreter Error] line " + str(leaf.p_line) + ' column '+ str(leaf.p_column)+ \
+                                    '. Trying to asign to array a different length of numbers.')
+                                    sys.exit(0)
 
                             self.setValue(var_name, var_value)
                              

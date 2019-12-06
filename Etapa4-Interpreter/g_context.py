@@ -363,7 +363,8 @@ class SyntaxTreeContext:
                                 str(leaf.p_column)+  ". Different variable types.")
                             sys.exit(0)
                     else:
-
+                        if(exp_type == 'array'):
+                            continue
                         if(exp_type != 'int'):
                             print("[Context Error] line " + str(leaf.p_line) + ' column '+\
                                 str(leaf.p_column)+  ". Trying to asign array other type different than Integer.")
